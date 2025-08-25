@@ -7,28 +7,36 @@ import Banner from "@/components/Banner";
 import Footer from "@/components/Footer";
 import PhotoModal from "@/components/PhotoModal";
 
+// Define a proper type for your photos
+type Photo = {
+  src: string;
+  cc: string;
+  location: string;
+};
+
 export default function PhotographyPage() {
-  const [selectedPhoto, setSelectedPhoto] = useState<any | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [view, setView] = useState<"photos" | "gallery">("photos");
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 
-  const photos = [
-  { src: "/p1.jpg", cc: "Dreaming cat in slumber", location: "Tamarind Ridge, Bataan" },
-  { src: "/p14.jpg", cc: "A fragile curve of beauty", location: "Masagana Village, Bataan" },
-  { src: "/p2.jpg", cc: "Blue-eyed cat with a curious gaze", location: "Mulawin, Bataan" },
-  { src: "/p4.jpg", cc: "Time at rest — the watch stills", location: "Balanga, Bataan" },
-  { src: "/p13.jpg", cc: "A flower standing tall and proud", location: "Dinalupihan, Bataan" },
-  { src: "/p3.jpg", cc: "A delicate bloom aged by time", location: "Memorial Park, Bataan" },
-  { src: "/p12.jpg", cc: "A home embraced by whispering trees", location: "Sinag Tala, Bataan" },
-  { src: "/p10.jpg", cc: "A sharpened pencil poised for ideas", location: "Balanga, Bataan" },
+  const photos: Photo[] = [
+    { src: "/p1.jpg", cc: "Dreaming cat in slumber", location: "Tamarind Ridge, Bataan" },
+    { src: "/p14.jpg", cc: "A fragile curve of beauty", location: "Masagana Village, Bataan" },
+    { src: "/p2.jpg", cc: "Blue-eyed cat with a curious gaze", location: "Mulawin, Bataan" },
+    { src: "/p4.jpg", cc: "Time at rest — the watch stills", location: "Balanga, Bataan" },
+    { src: "/p13.jpg", cc: "A flower standing tall and proud", location: "Dinalupihan, Bataan" },
+    { src: "/p3.jpg", cc: "A delicate bloom aged by time", location: "Memorial Park, Bataan" },
+    { src: "/p12.jpg", cc: "A home embraced by whispering trees", location: "Sinag Tala, Bataan" },
+    { src: "/p10.jpg", cc: "A sharpened pencil poised for ideas", location: "Balanga, Bataan" },
   ];
 
-  const galleryBoxes = [];
+  // Divide photos into groups of 4 for the gallery
+  const galleryBoxes: Photo[][] = [];
   for (let i = 0; i < photos.length; i += 4) {
     galleryBoxes.push(photos.slice(i, i + 4));
   }
 
-  const handlePhotoClick = (photo: any) => setSelectedPhoto(photo);
+  const handlePhotoClick = (photo: Photo) => setSelectedPhoto(photo);
   const handleImageLoad = (src: string) =>
     setLoadedImages((prev) => ({ ...prev, [src]: true }));
 

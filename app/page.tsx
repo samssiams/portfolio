@@ -4,7 +4,6 @@ import { Instagram, Linkedin, ArrowUpRight, Mail, FileUser } from "lucide-react"
 import Header from "../components/Header";
 import Banner from "../components/Banner";
 import Footer from "../components/Footer";
-import Link from "next/link";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import MessageModal from "../components/MessageModal";
