@@ -81,7 +81,7 @@ export default function Home() {
               delivering efficient, user-focused solutions. I excel at
               coordinating teams, streamlining workflows, and bridging the gap
               between creative vision and technical execution. Alongside my technical
-              expertise, I'm a <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">photographer</span> who enjoys capturing stories and moments
+              expertise, I&apos;m a <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">photographer</span> who enjoys capturing stories and moments
               through my camera.
             </p>
           </div>
@@ -179,7 +179,7 @@ export default function Home() {
               <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">
                 button below
               </span>
-              , and I'll review it for you. I’ll provide the best response and give some
+              , and I&apos;ll review it for you. I&apos;ll provide the best response and give some
               good quality idea for you.
             </p>
           </div>
