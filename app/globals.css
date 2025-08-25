@@ -78,3 +78,9 @@ body {
   transform-origin: center center;
   transform: translate(-50%, -50%);
 }
+
+/* Hide system cursor everywhere */
+html, body, * {
+  cursor: none !important;
+}
+
