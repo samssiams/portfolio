@@ -1,15 +1,23 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Download } from "lucide-react";
+import { Download, MapPin } from "lucide-react";
 
 interface PhotoModalProps {
   isOpen: boolean;
   onClose: () => void;
   image: string;
+  cc?: string;
+  location?: string;
 }
 
-export default function PhotoModal({ isOpen, onClose, image }: PhotoModalProps) {
+export default function PhotoModal({
+  isOpen,
+  onClose,
+  image,
+  cc,
+  location,
+}: PhotoModalProps) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -35,16 +43,37 @@ export default function PhotoModal({ isOpen, onClose, image }: PhotoModalProps) 
                   alt="Selected Photo"
                   className="w-full h-auto max-h-[400px] object-contain rounded-lg"
                 />
-                {/* Plain white download icon bottom-right */}
+
+                {/* Download button */}
                 <a
                   href={image}
                   download
-                  className="absolute bottom-2 right-4 text-white"
+                  className="absolute bottom-3 right-3 text-white hover:text-[#81E6D9] transition-colors"
                 >
-                  <Download size={17} />
+                  <Download size={0} strokeWidth={2} />
                 </a>
               </div>
             )}
+
+            {/* Photo details */}
+            <div className="mt-3 flex flex-col gap-1">
+              {/* Location on top */}
+              {location && (
+                <span className="flex items-center gap-1 text-gray-200 text-sm">
+                  <MapPin size={12} /> {location}
+                </span>
+              )}
+
+              {/* CC below */}
+              {cc && (
+                <div className="flex items-center gap-1.5">
+                  <span className="bg-gray-600 text-white text-[10px] font-medium px-1 py-0.5 rounded-sm">
+                    cc
+                  </span>
+                  <span className="text-white text-sm">{cc}</span>
+                </div>
+              )}
+            </div>
           </motion.div>
         </motion.div>
       )}
