@@ -27,8 +27,12 @@ body {
 
   /* ✅ Use your imported Next.js font as the default */
   font-family: var(--font-chakra-petch), sans-serif;
+
+  /* Hide default cursor */
+  cursor: none;
 }
 
+/* --- Hover underline effect --- */
 .hover-underline {
   position: relative;
   display: inline-block;
@@ -48,4 +52,29 @@ body {
 
 .hover-underline:hover::after {
   width: 100%;
+}
+
+/* --- Ink Cursor Styles --- */
+.Cursor {
+  pointer-events: none;
+  position: fixed;
+  display: block;
+  border-radius: 0;
+  transform-origin: center center;
+  mix-blend-mode: difference;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  filter: url("#goo");
+}
+
+.Cursor span {
+  position: absolute;
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 20px;
+  background: #81E6D9;
+  transform-origin: center center;
+  transform: translate(-50%, -50%);
 }

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Chakra_Petch } from "next/font/google";
 import LenisScrollProvider from "@/providers/lenis-provider";
+import ClickSoundProvider from "@/providers/click-sound-provider";
+import InkCursor from "@/components/InkCursor"; // 👈 import new cursor
 import "./globals.css";
 
 const geistSans = Geist({
@@ -34,7 +36,12 @@ export default function RootLayout({
       <body
         className={`${chakraPetch.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <LenisScrollProvider>{children}</LenisScrollProvider>
+        <LenisScrollProvider>
+          <ClickSoundProvider>
+            <InkCursor /> {/* ✅ custom Ink Cursor */}
+            {children}
+          </ClickSoundProvider>
+        </LenisScrollProvider>
       </body>
     </html>
   );
