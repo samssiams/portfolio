@@ -32,6 +32,7 @@ export default function PhotographyPage() {
     { src: "/macrop10.jpg", cc: "A sharpened pencil poised for ideas", location: "Balanga, Bataan", theme: "Macro" },
     { src: "/cactus.jpg", cc: "A spiny cactus with sharp detail", location: "Beverly Heights, Bataan", theme: "Macro" },
     { src: "/dry.jpg", cc: "Dried dandelion in the middle of the field", location: "Dona, Bataan", theme: "Nature" },
+    { src: "/beach.jpg", cc: "A serene beach at sunset", location: "Bagac, Bataan", theme: "Places" },
   ];
 
   const groupedByTheme = photos.reduce<Record<string, Photo[]>>((acc, photo) => {
