@@ -18,9 +18,10 @@ type Photo = {
 export default function PhotographyPage() {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [activePhotos, setActivePhotos] = useState<Photo[]>([]); 
+  const [activePhotos, setActivePhotos] = useState<Photo[]>([]);
   const [view, setView] = useState<"photos" | "gallery">("photos");
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
+  const [showAll, setShowAll] = useState(false);
 
   const photos: Photo[] = [
     { src: "/catp1.jpg", cc: "Dreaming cat in slumber", location: "Tamarind Ridge, Bataan", theme: "Animals" },
@@ -32,7 +33,7 @@ export default function PhotographyPage() {
     { src: "/macrop10.jpg", cc: "A sharpened pencil poised for ideas", location: "Balanga, Bataan", theme: "Macro" },
     { src: "/cactus.jpg", cc: "A spiny cactus with sharp detail", location: "Beverly Heights, Bataan", theme: "Macro" },
     { src: "/dry.jpg", cc: "Dried dandelion in the middle of the field", location: "Dona, Bataan", theme: "Nature" },
-    { src: "/beach.jpg", cc: "A serene beach at sunset", location: "Bagac, Bataan", theme: "Places" },
+    { src: "/beaches.jpg", cc: "A serene beach at sunset", location: "Bagac, Bataan", theme: "Places" },
   ];
 
   const groupedByTheme = photos.reduce<Record<string, Photo[]>>((acc, photo) => {
@@ -105,27 +106,44 @@ export default function PhotographyPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.4 }}
-                  className="grid grid-cols-2 gap-6 mt-2"
+                  className="flex flex-col items-center"
                 >
-                  {photos.map((photo, index) => (
-                    <div
-                      key={photo.src}
-                      className="relative bg-[#2F3445] border border-gray-600 shadow-md rounded-lg overflow-hidden w-[260px] h-[160px] mx-auto cursor-pointer group"
-                      onClick={() => handlePhotoClick(photo, index)}
-                    >
-                      {!loadedImages[photo.src] && (
-                        <Skeleton className="absolute inset-0" />
-                      )}
-                      <img
-                        src={photo.src}
-                        alt={`Photo ${index + 1}`}
-                        className={`w-full h-full object-cover transition-opacity duration-500 ${
-                          loadedImages[photo.src] ? "opacity-100" : "opacity-0"
-                        }`}
-                        onLoad={() => handleImageLoad(photo.src)}
-                      />
+                  {/* First 6 photos */}
+                  <div className="grid grid-cols-2 gap-6 mt-2">
+                    {(showAll ? photos : photos.slice(0, 6)).map((photo, index) => (
+                      <div
+                        key={photo.src}
+                        className="relative bg-[#2F3445] border border-gray-600 shadow-md rounded-lg overflow-hidden w-[260px] h-[160px] mx-auto cursor-pointer group"
+                        onClick={() => handlePhotoClick(photo, index)}
+                      >
+                        {!loadedImages[photo.src] && (
+                          <Skeleton className="absolute inset-0" />
+                        )}
+                        <img
+                          src={photo.src}
+                          alt={`Photo ${index + 1}`}
+                          className={`w-full h-full object-cover transition-opacity duration-500 ${
+                            loadedImages[photo.src] ? "opacity-100" : "opacity-0"
+                          }`}
+                          onLoad={() => handleImageLoad(photo.src)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* View More Button with Line */}
+                  {!showAll && photos.length > 6 && (
+                    <div className="w-full max-w-[800px] mx-auto mt-10 flex items-center">
+                      <div className="flex-grow h-[0.5px] bg-gray-500 opacity-50"></div>
+                      <button
+                        onClick={() => setShowAll(true)}
+                        className="mx-4 text-white font-medium text-sm hover:text-[#81E6D9] transition"
+                      >
+                        View More
+                      </button>
+                      <div className="flex-grow h-[0.5px] bg-gray-500 opacity-50"></div>
                     </div>
-                  ))}
+                  )}
                 </motion.div>
               )}
 
