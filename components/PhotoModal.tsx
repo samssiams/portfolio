@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import { MapPin } from "lucide-react";
 import { useState } from "react";
 
@@ -26,21 +26,18 @@ export default function PhotoModal({
   currentIndex,
   setCurrentIndex,
 }: PhotoModalProps) {
-  if (!isOpen || photos.length === 0) return null;
-
+  // ✅ Hooks must always be at the top
   const [dragging, setDragging] = useState(false);
+
+  if (!isOpen || photos.length === 0) return null;
 
   const prevIndex = (currentIndex - 1 + photos.length) % photos.length;
   const nextIndex = (currentIndex + 1) % photos.length;
 
-  const handleSelect = (index: number) => {
-    setCurrentIndex(index);
-  };
+  const handleSelect = (index: number) => setCurrentIndex(index);
 
-  const handleDragEnd = (
-    _: any,
-    info: { offset: { x: number }; velocity: { x: number } }
-  ) => {
+  // ✅ Fix TypeScript error by using proper typing
+  const handleDragEnd = (_event: unknown, info: PanInfo) => {
     const swipe = info.offset.x;
 
     if (swipe < -100) {
@@ -90,7 +87,7 @@ export default function PhotoModal({
                 />
               )}
 
-              {/* Current (draggable to change image) */}
+              {/* Current */}
               <motion.img
                 key={`current-${currentPhoto.src}`}
                 src={currentPhoto.src}
