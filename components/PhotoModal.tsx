@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin } from "lucide-react";
+import { useState } from "react";
 
 interface Photo {
   src: string;
@@ -25,13 +26,31 @@ export default function PhotoModal({
   currentIndex,
   setCurrentIndex,
 }: PhotoModalProps) {
-  if (!isOpen || photos.length === 0) return null; // ✅ safeguard
+  if (!isOpen || photos.length === 0) return null;
+
+  const [dragging, setDragging] = useState(false);
 
   const prevIndex = (currentIndex - 1 + photos.length) % photos.length;
   const nextIndex = (currentIndex + 1) % photos.length;
 
   const handleSelect = (index: number) => {
     setCurrentIndex(index);
+  };
+
+  const handleDragEnd = (
+    _: any,
+    info: { offset: { x: number }; velocity: { x: number } }
+  ) => {
+    const swipe = info.offset.x;
+
+    if (swipe < -100) {
+      // dragged left → next image
+      setCurrentIndex((currentIndex + 1) % photos.length);
+    } else if (swipe > 100) {
+      // dragged right → previous image
+      setCurrentIndex((currentIndex - 1 + photos.length) % photos.length);
+    }
+    setDragging(false);
   };
 
   const currentPhoto = photos[currentIndex];
@@ -54,40 +73,51 @@ export default function PhotoModal({
             transition={{ duration: 0.3, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Image Row: Prev | Current | Next */}
+            {/* Image Row */}
             <div className="relative flex items-center justify-center w-full gap-4">
               {/* Prev */}
               {photos.length > 1 && (
                 <motion.img
-                  key={`prev-${photos[prevIndex].src}`} // ✅ unique key
+                  key={`prev-${photos[prevIndex].src}`}
                   src={photos[prevIndex].src}
                   alt="Previous"
                   className="w-[200px] h-[140px] object-cover rounded-lg opacity-50 cursor-pointer"
                   whileHover={{ scale: 1.05, opacity: 0.7 }}
-                  onClick={() => handleSelect(prevIndex)}
+                  drag="x"
+                  dragConstraints={{ left: -30, right: 30 }}
+                  dragElastic={0.3}
+                  onClick={() => !dragging && handleSelect(prevIndex)}
                 />
               )}
 
-              {/* Current */}
+              {/* Current (draggable to change image) */}
               <motion.img
-                key={`current-${currentPhoto.src}`} // ✅ unique key
+                key={`current-${currentPhoto.src}`}
                 src={currentPhoto.src}
                 alt="Selected"
-                className="w-[500px] max-h-[420px] object-contain rounded-xl border-2 border-[#81E6D9] shadow-xl"
+                className="w-[500px] max-h-[420px] object-contain rounded-xl border-2 border-[#81E6D9] shadow-xl cursor-grab active:cursor-grabbing"
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.4 }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.7}
+                onDragStart={() => setDragging(true)}
+                onDragEnd={handleDragEnd}
               />
 
               {/* Next */}
               {photos.length > 1 && (
                 <motion.img
-                  key={`next-${photos[nextIndex].src}`} // ✅ unique key
+                  key={`next-${photos[nextIndex].src}`}
                   src={photos[nextIndex].src}
                   alt="Next"
                   className="w-[200px] h-[140px] object-cover rounded-lg opacity-50 cursor-pointer"
                   whileHover={{ scale: 1.05, opacity: 0.7 }}
-                  onClick={() => handleSelect(nextIndex)}
+                  drag="x"
+                  dragConstraints={{ left: -30, right: 30 }}
+                  dragElastic={0.3}
+                  onClick={() => !dragging && handleSelect(nextIndex)}
                 />
               )}
             </div>
