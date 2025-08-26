@@ -146,16 +146,16 @@ export default function Home() {
             <h3 className="text-white text-[20px] font-bold">Photography</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-5">
               <div className="bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-[262px] h-[150px]">
-                <img src="/p1.jpg" alt="Project 1" className="w-full h-full object-cover" />
+                <img src="/catp1.jpg" alt="Project 1" className="w-full h-full object-cover" />
               </div>
               <div className="bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-[262px] h-[150px]">
-                <img src="/p13.jpg" alt="Project 2" className="w-full h-full object-cover" />
+                <img src="/flowerp13.jpg" alt="Project 2" className="w-full h-full object-cover" />
               </div>
               <div className="bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-[262px] h-[150px]">
-                <img src="/p14.jpg" alt="Project 3" className="w-full h-full object-cover" />
+                <img src="/flowerp14.jpg" alt="Project 3" className="w-full h-full object-cover" />
               </div>
               <div className="bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-[262px] h-[150px]">
-                <img src="/p2.jpg" alt="Project 4" className="w-full h-full object-cover" />
+                <img src="/catp2.jpg" alt="Project 4" className="w-full h-full object-cover" />
               </div>
             </div>
             <div className="flex justify-center mt-7">
