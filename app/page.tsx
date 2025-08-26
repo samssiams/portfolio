@@ -149,13 +149,13 @@ export default function Home() {
                 <img src="/catp1.jpg" alt="Project 1" className="w-full h-full object-cover" />
               </div>
               <div className="bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-[262px] h-[150px]">
-                <img src="/flowerp13.jpg" alt="Project 2" className="w-full h-full object-cover" />
+                <img src="/macrop4.jpg" alt="Project 2" className="w-full h-full object-cover" />
               </div>
               <div className="bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-[262px] h-[150px]">
-                <img src="/flowerp14.jpg" alt="Project 3" className="w-full h-full object-cover" />
+                <img src="/cactus.jpg" alt="Project 3" className="w-full h-full object-cover" />
               </div>
               <div className="bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-[262px] h-[150px]">
-                <img src="/catp2.jpg" alt="Project 4" className="w-full h-full object-cover" />
+                <img src="/macrop10.jpg" alt="Project 4" className="w-full h-full object-cover" />
               </div>
             </div>
             <div className="flex justify-center mt-7">
