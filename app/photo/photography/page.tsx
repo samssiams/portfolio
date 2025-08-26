@@ -6,6 +6,8 @@ import Header from "@/components/Header";
 import Banner from "@/components/Banner";
 import Footer from "@/components/Footer";
 import PhotoModal from "@/components/PhotoModal";
+import Skeleton from "@/components/Skeleton";
+
 
 // Define a proper type for your photos
 type Photo = {
@@ -104,12 +106,14 @@ export default function PhotographyPage() {
                       onClick={() => handlePhotoClick(photo)}
                     >
                       {!loadedImages[photo.src] && (
-                        <div className="absolute inset-0 bg-gray-700 animate-pulse" />
+                        <Skeleton className="absolute inset-0" />
                       )}
                       <img
                         src={photo.src}
                         alt={`Photo ${index + 1}`}
-                        className="w-full h-full object-cover"
+                          className={`w-full h-full object-cover transition-opacity duration-500 ${
+                          loadedImages[photo.src] ? "opacity-100" : "opacity-0"
+                           }`}
                         onLoad={() => handleImageLoad(photo.src)}
                       />
                     </div>
@@ -140,7 +144,7 @@ export default function PhotographyPage() {
                             onClick={() => handlePhotoClick(photo)}
                           >
                             {!loadedImages[photo.src] && (
-                              <div className="absolute inset-0 bg-gray-700 animate-pulse" />
+                              <Skeleton className="absolute inset-0" />
                             )}
                             <img
                               src={photo.src}
