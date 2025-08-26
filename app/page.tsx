@@ -51,7 +51,7 @@ export default function Home() {
                   </span>
                 </a>
 
-                <a href="/resume.pdf" download className="flex items-baseline gap-2">
+                <a href="/Resume.pdf" download className="flex items-baseline gap-2">
                   <FileUser size={20} className="relative top-[2px]" />
                   <span className="relative group">
                     Resume

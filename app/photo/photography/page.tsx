@@ -8,37 +8,43 @@ import Footer from "@/components/Footer";
 import PhotoModal from "@/components/PhotoModal";
 import Skeleton from "@/components/Skeleton";
 
-
-// Define a proper type for your photos
 type Photo = {
   src: string;
   cc: string;
   location: string;
+  theme: "Cats" | "Nature" | "Urban" | "Macro";
 };
 
 export default function PhotographyPage() {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [activePhotos, setActivePhotos] = useState<Photo[]>([]); 
   const [view, setView] = useState<"photos" | "gallery">("photos");
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 
   const photos: Photo[] = [
-    { src: "/p1.jpg", cc: "Dreaming cat in slumber", location: "Tamarind Ridge, Bataan" },
-    { src: "/p14.jpg", cc: "A fragile curve of beauty", location: "Masagana Village, Bataan" },
-    { src: "/p2.jpg", cc: "Blue-eyed cat with a curious gaze", location: "Mulawin, Bataan" },
-    { src: "/p4.jpg", cc: "Time at rest — the watch stills", location: "Balanga, Bataan" },
-    { src: "/p13.jpg", cc: "A flower standing tall and proud", location: "Dinalupihan, Bataan" },
-    { src: "/p3.jpg", cc: "A delicate bloom aged by time", location: "Memorial Park, Bataan" },
-    { src: "/p12.jpg", cc: "A home embraced by whispering trees", location: "Sinag Tala, Bataan" },
-    { src: "/p10.jpg", cc: "A sharpened pencil poised for ideas", location: "Balanga, Bataan" },
+    { src: "/catp1.jpg", cc: "Dreaming cat in slumber", location: "Tamarind Ridge, Bataan", theme: "Cats" },
+    { src: "/flowerp14.jpg", cc: "A fragile curve of beauty", location: "Masagana Village, Bataan", theme: "Nature" },
+    { src: "/catp2.jpg", cc: "Blue-eyed cat with a curious gaze", location: "Mulawin, Bataan", theme: "Cats" },
+    { src: "/macrop4.jpg", cc: "Time at rest — the watch stills", location: "Balanga, Bataan", theme: "Macro" },
+    { src: "/flowerp13.jpg", cc: "A flower standing tall and proud", location: "Dinalupihan, Bataan", theme: "Nature" },
+    { src: "/flowerp3.jpg", cc: "A delicate bloom aged by time", location: "Memorial Park, Bataan", theme: "Nature" },
+    { src: "/urbanp12.jpg", cc: "A home embraced by whispering trees", location: "Sinag Tala, Bataan", theme: "Urban" },
+    { src: "/macrop10.jpg", cc: "A sharpened pencil poised for ideas", location: "Balanga, Bataan", theme: "Macro" },
   ];
 
-  // Divide photos into groups of 4 for the gallery
-  const galleryBoxes: Photo[][] = [];
-  for (let i = 0; i < photos.length; i += 4) {
-    galleryBoxes.push(photos.slice(i, i + 4));
-  }
+  const groupedByTheme = photos.reduce<Record<string, Photo[]>>((acc, photo) => {
+    if (!acc[photo.theme]) acc[photo.theme] = [];
+    acc[photo.theme].push(photo);
+    return acc;
+  }, {});
 
-  const handlePhotoClick = (photo: Photo) => setSelectedPhoto(photo);
+  const handlePhotoClick = (photo: Photo, index: number, group?: Photo[]) => {
+    setSelectedPhoto(photo);
+    setActivePhotos(group ?? photos); // ✅ use theme group if in gallery view
+    setCurrentIndex(index);
+  };
+
   const handleImageLoad = (src: string) =>
     setLoadedImages((prev) => ({ ...prev, [src]: true }));
 
@@ -80,7 +86,7 @@ export default function PhotographyPage() {
                 }`}
                 onClick={() => setView("gallery")}
               >
-                Gallery <span className="text-[#81E6D9]">{galleryBoxes.length}</span>
+                Gallery <span className="text-[#81E6D9]">{Object.keys(groupedByTheme).length}</span>
                 <span
                   className={`absolute left-0 -bottom-[2px] h-[2px] bg-white transition-all duration-300 
                     ${view === "gallery" ? "w-full" : "w-0 group-hover:w-full"}`}
@@ -101,9 +107,9 @@ export default function PhotographyPage() {
                 >
                   {photos.map((photo, index) => (
                     <div
-                      key={index}
-                      className="relative bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-[260px] h-[160px] mx-auto cursor-pointer group"
-                      onClick={() => handlePhotoClick(photo)}
+                      key={photo.src}
+                      className="relative bg-[#2F3445] border border-gray-600 shadow-md rounded-lg overflow-hidden w-[260px] h-[160px] mx-auto cursor-pointer group"
+                      onClick={() => handlePhotoClick(photo, index)}
                     >
                       {!loadedImages[photo.src] && (
                         <Skeleton className="absolute inset-0" />
@@ -111,9 +117,9 @@ export default function PhotographyPage() {
                       <img
                         src={photo.src}
                         alt={`Photo ${index + 1}`}
-                          className={`w-full h-full object-cover transition-opacity duration-500 ${
+                        className={`w-full h-full object-cover transition-opacity duration-500 ${
                           loadedImages[photo.src] ? "opacity-100" : "opacity-0"
-                           }`}
+                        }`}
                         onLoad={() => handleImageLoad(photo.src)}
                       />
                     </div>
@@ -130,25 +136,28 @@ export default function PhotographyPage() {
                   transition={{ duration: 0.4 }}
                   className="flex flex-col gap-6 mt-2"
                 >
-                  {galleryBoxes.map((box, boxIndex) => (
+                  {Object.entries(groupedByTheme).map(([theme, themePhotos], themeIndex) => (
                     <div
-                      key={boxIndex}
+                      key={themeIndex}
                       className="relative bg-[#2F3445] rounded-lg p-4 shadow-lg"
                     >
-                      {/* Grid of photos */}
-                      <div className="grid grid-cols-2 gap-4">
-                        {box.map((photo, index) => (
+                      <span className="absolute top-3 left-4 text-white text-sm font-semibold">
+                        {theme}
+                      </span>
+
+                      <div className="grid grid-cols-2 gap-4 mt-6">
+                        {themePhotos.map((photo, index) => (
                           <div
-                            key={index}
-                            className="relative w-full h-[120px] overflow-hidden rounded-lg cursor-pointer group"
-                            onClick={() => handlePhotoClick(photo)}
+                            key={photo.src}
+                            className="relative w-full h-[120px] overflow-hidden rounded-lg cursor-pointer group border border-gray-600 shadow-md"
+                            onClick={() => handlePhotoClick(photo, index, themePhotos)}
                           >
                             {!loadedImages[photo.src] && (
                               <Skeleton className="absolute inset-0" />
                             )}
                             <img
                               src={photo.src}
-                              alt={`Gallery ${boxIndex * 4 + index + 1}`}
+                              alt={`${theme} ${index + 1}`}
                               className="w-full h-full object-cover"
                               onLoad={() => handleImageLoad(photo.src)}
                             />
@@ -156,7 +165,6 @@ export default function PhotographyPage() {
                         ))}
                       </div>
 
-                      {/* Profile and name (no box around) */}
                       <div className="mt-4 flex items-center gap-2">
                         <img
                           src="/profile.png"
@@ -180,10 +188,13 @@ export default function PhotographyPage() {
 
       <PhotoModal
         isOpen={!!selectedPhoto}
-        onClose={() => setSelectedPhoto(null)}
-        image={selectedPhoto?.src || ""}
-        cc={selectedPhoto?.cc || ""}
-        location={selectedPhoto?.location || ""}
+        onClose={() => {
+          setSelectedPhoto(null);
+          setActivePhotos([]);
+        }}
+        photos={activePhotos}
+        currentIndex={currentIndex}
+        setCurrentIndex={setCurrentIndex}
       />
     </div>
   );
