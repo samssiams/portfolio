@@ -26,7 +26,6 @@ export default function PhotoModal({
   currentIndex,
   setCurrentIndex,
 }: PhotoModalProps) {
-  // ✅ Hooks must always be at the top
   const [dragging, setDragging] = useState(false);
 
   if (!isOpen || photos.length === 0) return null;
@@ -36,15 +35,12 @@ export default function PhotoModal({
 
   const handleSelect = (index: number) => setCurrentIndex(index);
 
-  // ✅ Fix TypeScript error by using proper typing
   const handleDragEnd = (_event: unknown, info: PanInfo) => {
     const swipe = info.offset.x;
 
     if (swipe < -100) {
-      // dragged left → next image
       setCurrentIndex((currentIndex + 1) % photos.length);
     } else if (swipe > 100) {
-      // dragged right → previous image
       setCurrentIndex((currentIndex - 1 + photos.length) % photos.length);
     }
     setDragging(false);
@@ -120,20 +116,22 @@ export default function PhotoModal({
             </div>
 
             {/* Photo Info */}
-            <div className="mt-3 flex flex-col gap-1 text-center">
-              {currentPhoto.location && (
-                <span className="flex items-center gap-1 text-gray-200 text-sm justify-center">
-                  <MapPin size={12} /> {currentPhoto.location}
-                </span>
-              )}
-
+            <div className="mt-3 w-full flex justify-between px-64">
+              {/* CC - left */}
               {currentPhoto.cc && (
-                <div className="flex items-center gap-1.5 justify-center">
+                <div className="flex items-center gap-1.5">
                   <span className="bg-gray-600 text-white text-[10px] font-medium px-1 py-0.5 rounded-sm">
                     cc
                   </span>
                   <span className="text-white text-sm">{currentPhoto.cc}</span>
                 </div>
+              )}
+
+              {/* Location - right */}
+              {currentPhoto.location && (
+                <span className="flex items-center gap-1 text-gray-200 text-sm">
+                  <MapPin size={12} /> {currentPhoto.location}
+                </span>
               )}
             </div>
           </motion.div>
