@@ -85,7 +85,7 @@ export default function MessageModal({ isOpen, onClose }: MessageModalProps) {
                   />
                 </motion.div>
                 <motion.p
-                  className="text-[#81E6D9] font-semibold mt-4 text-lg"
+                  className="text-white text-[18px] font-sm mt-5"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
