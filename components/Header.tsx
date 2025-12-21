@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { navLinks } from "@/routers/router";
@@ -9,11 +8,23 @@ import { navLinks } from "@/routers/router";
 const Header = () => {
   const pathname = usePathname();
 
+  const handleNavClick = (href: string) => {
+    if (pathname === href) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      window.location.href = href;
+    }
+  };
+
   return (
     <header className="fixed top-0 left-1/2 z-10 w-full -translate-x-1/2 bg-[#232732]/50 backdrop-blur-sm py-1">
       <div className="mx-auto flex w-full max-w-[900px] items-center justify-between px-6 py-2 text-[20px] font-bold">
+
         {/* Logo */}
-        <div className="flex items-center gap-3">
+        <div
+          className="flex items-center gap-3 cursor-pointer"
+          onClick={() => handleNavClick("/")}
+        >
           <Image
             src="/Rectangle 93.svg"
             alt="Logo"
@@ -31,21 +42,20 @@ const Header = () => {
             const isHome = href === "/" && pathname === "/";
 
             return (
-              <Link
+              <span
                 key={href}
-                href={href}
-                className="group relative text-white"
+                className="group relative text-white cursor-pointer"
+                onClick={() => handleNavClick(href)}
               >
-                <span>{label}</span>
+                {label}
 
-                {/* Show underline only if NOT active Home */}
                 {!isHome && (
                   <span
                     className={`absolute left-0 bottom-0 h-[2px] bg-white transition-all duration-300 
                     ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}
                   />
                 )}
-              </Link>
+              </span>
             );
           })}
         </nav>

@@ -16,7 +16,6 @@ export default function Home() {
       <Header />
       <Banner />
 
-      {/* Animateable Content */}
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -25,52 +24,67 @@ export default function Home() {
           transition={{ duration: 0.5 }}
           className="w-full mt-10"
         >
-          {/* Samuel Cruz Info */}
-          <div className="max-w-[800px] w-full mx-auto px-31 flex items-center justify-between">
-            <div>
-              <h2 className="text-white text-[35px] font-bold">Samuel Cruz</h2>
-              <p className="text-gray-300 mt-1 text-[16px]">
-                Web Developer <span className="text-white">|</span> Project Management{" "}
-                <span className="text-white">|</span> Photography
-              </p>
+{/* Samuel Cruz Info */}
+<div className="max-w-[800px] w-full mx-auto px-31 flex items-center justify-between">
+  <div>
+    <h2 className="text-white text-[35px] font-bold">Samuel Cruz</h2>
 
-              <div className="flex gap-6 mt-3 text-[17px] font-semibold text-[#81E6D9] tracking-[0.38px]">
-                <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-baseline gap-2">
-                  <Instagram size={20} className="relative top-[2px]" />
-                  <span className="relative group">
-                    Samssiams
-                    <span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full"></span>
-                  </span>
-                </a>
+    <p className="text-gray-300 mt-2 text-[16px]">
+      Balanga, Bataan, Philippines
+    </p>
 
-                <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-baseline gap-2">
-                  <Linkedin size={20} className="relative top-[2px]" />
-                  <span className="relative group">
-                    Samssiams
-                    <span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full"></span>
-                  </span>
-                </a>
+    <p className="text-gray-300 mt-2 text-[16px]">
+      Web Developer <span className="text-white">|</span> Project Manager
+    </p>
 
-                <a href="/Resume.pdf" download className="flex items-baseline gap-2">
-                  <FileUser size={20} className="relative top-[2px]" />
-                  <span className="relative group">
-                    Resume
-                    <span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full"></span>
-                  </span>
-                </a>
-              </div>
-            </div>
+    <div className="flex gap-6 mt-4 text-[17px] font-semibold text-[#81E6D9] tracking-[0.38px]">
+      <a
+        href="https://www.instagram.com/samssiams/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-baseline gap-2"
+      >
+        <Instagram size={20} className="relative top-[2px]" />
+        <span className="relative group">
+          Samssiams
+          <span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full"></span>
+        </span>
+      </a>
 
-            <div>
-              <img
-                src="/profile.png"
-                alt="Samuel Cruz"
-                className="w-30 h-30 rounded-full border-2 border-white shadow-lg object-cover"
-              />
-            </div>
-          </div>
+      <a
+        href="https://www.linkedin.com/in/samssiams/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-baseline gap-2"
+      >
+        <Linkedin size={20} className="relative top-[2px]" />
+        <span className="relative group">
+          Samssiams
+          <span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full"></span>
+        </span>
+      </a>
 
-          {/* About Me Section */}
+      <a href="/Resume.pdf" download className="flex items-baseline gap-2">
+        <FileUser size={20} className="relative top-[2px]" />
+        <span className="relative group">
+          Resume
+          <span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full"></span>
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <div>
+    <img
+      src="/profile.png"
+      alt="Samuel Cruz"
+      className="w-30 h-30 rounded-full border-2 border-white shadow-lg object-cover"
+    />
+  </div>
+</div>
+
+
+          {/* About Me */}
           <div className="max-w-[800px] w-full mx-auto px-31 mt-10">
             <h3 className="text-white text-[20px] font-bold">About me</h3>
             <p className="text-gray-300 text-[16px] mt-3">
@@ -85,7 +99,21 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Bio Section */}
+                    {/* Work */}
+          <div className="max-w-[800px] w-full mx-auto px-31 mt-7">
+            <h3 className="text-white text-[20px] font-bold">Work</h3>
+            <div className="text-gray-300 text-[16px] mt-3">
+              <p>
+                <span className="font-bold tracking-[0.38px] mr-4">2025 – Present</span>
+                Technical Project Manager —{" "}
+                <span className="font-bold tracking-[0.38px] text-[#81E6D9]">
+                  Freelancer
+                </span>
+              </p>
+            </div>
+          </div>
+
+          {/* Bio */}
           <div className="max-w-[800px] w-full mx-auto px-31 mt-7">
             <h3 className="text-white text-[20px] font-bold">Bio</h3>
             <div className="text-gray-300 text-[16] mt-3 space-y-2">
@@ -95,16 +123,20 @@ export default function Home() {
               </p>
               <p>
                 <span className="font-bold tracking-[0.38px] mr-4">2024</span>
-                IC3 Digital Literacy Certification - <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Acquired</span>
+                IC3 Digital Literacy Certification -{" "}
+                <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Acquired</span>
               </p>
               <p className="pl-14">
-                Microsoft Office Specialist Associate (Microsoft 365) - <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Acquired</span>
+                Microsoft Office Specialist Associate (Microsoft 365) -{" "}
+                <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Acquired</span>
               </p>
               <p className="pl-14">
-                Information Technology Specialist in Network Security - <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Acquired</span>
+                Information Technology Specialist in Network Security -{" "}
+                <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Acquired</span>
               </p>
               <p className="pl-14">
-                Information Technology Specialist in Networking - <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Acquired</span>
+                Information Technology Specialist in Networking -{" "}
+                <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Acquired</span>
               </p>
               <p>
                 <span className="font-bold tracking-[0.38px] mr-4">2025</span>
@@ -113,7 +145,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Projects Section */}
+          {/* Projects */}
           <div className="max-w-[800px] w-full mx-auto px-31 mt-7">
             <h3 className="text-white text-[20px] font-bold">Projects</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-5">
@@ -130,10 +162,11 @@ export default function Home() {
                 <img src="/bankito.png" alt="Project 4" className="w-full h-full object-cover" />
               </div>
             </div>
+
             <div className="flex justify-center mt-7">
               <a
                 href="/projects/portfolio"
-                className="flex items-center gap-2 bg-[#81E6D9] text-black font-semibold px-4 py-2.5 rounded-lg hover:bg-[#4FD1C5] transition tracking-[0.38px] cursor-pointer"
+                className="flex items-center gap-2 bg-[#81E6D9] text-black font-semibold px-4 py-2.5 rounded-lg hover:bg-[#4FD1C5] transition tracking-[0.38px]"
               >
                 <span>Portfolio</span>
                 <ArrowUpRight size={20} />
@@ -141,27 +174,28 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Photography Section */}
+          {/* Photography */}
           <div className="max-w-[800px] w-full mx-auto px-31 mt-7">
             <h3 className="text-white text-[20px] font-bold">Photography</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-5">
               <div className="bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-[262px] h-[150px]">
-                <img src="/catp1.jpg" alt="Project 1" className="w-full h-full object-cover" />
+                <img src="/catp1.jpg" alt="Photo 1" className="w-full h-full object-cover" />
               </div>
               <div className="bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-[262px] h-[150px]">
-                <img src="/macrop4.jpg" alt="Project 2" className="w-full h-full object-cover" />
+                <img src="/macrop4.jpg" alt="Photo 2" className="w-full h-full object-cover" />
               </div>
               <div className="bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-[262px] h-[150px]">
-                <img src="/cactus.jpg" alt="Project 3" className="w-full h-full object-cover" />
+                <img src="/cactus.jpg" alt="Photo 3" className="w-full h-full object-cover" />
               </div>
               <div className="bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-[262px] h-[150px]">
-                <img src="/macrop10.jpg" alt="Project 4" className="w-full h-full object-cover" />
+                <img src="/macrop10.jpg" alt="Photo 4" className="w-full h-full object-cover" />
               </div>
             </div>
+
             <div className="flex justify-center mt-7">
               <a
                 href="/photo/photography"
-                className="flex items-center gap-2 bg-[#81E6D9] text-black font-semibold px-4 py-2.5 rounded-lg hover:bg-[#4FD1C5] transition tracking-[0.38px] cursor-pointer"
+                className="flex items-center gap-2 bg-[#81E6D9] text-black font-semibold px-4 py-2.5 rounded-lg hover:bg-[#4FD1C5] transition tracking-[0.38px]"
               >
                 <span>Photography</span>
                 <ArrowUpRight size={20} />
@@ -169,7 +203,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Catch Me Here Section */}
+          {/* Catch Me Here */}
           <div className="max-w-[800px] w-full mx-auto px-31 mt-7">
             <h3 className="text-white text-[20px] font-bold">Catch me here</h3>
             <p className="text-gray-300 text-[16px] mt-5">
@@ -183,12 +217,12 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Contact Section with Bottom Space */}
+          {/* Contact */}
           <div className="max-w-[800px] w-full mx-auto px-31 mt-10 mb-1">
             <div className="flex justify-center">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="flex items-center gap-2 bg-[#81E6D9] text-black font-semibold px-4 py-2.5 rounded-lg hover:bg-[#4FD1C5] transition tracking-[0.38px] cursor-pointer"
+                className="flex items-center gap-2 bg-[#81E6D9] text-black font-semibold px-4 py-2.5 rounded-lg hover:bg-[#4FD1C5] transition tracking-[0.38px]"
               >
                 <Mail size={20} />
                 <span>Send me a message here</span>
