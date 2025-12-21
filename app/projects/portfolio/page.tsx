@@ -111,7 +111,7 @@ export default function PortfolioPage() {
                     {project.stacks.map((stack, idx) => (
                       <span
                         key={idx}
-                        className="tracking-[0.38px] text-[#81E6D9] mr-1"
+                        className="tracking-[0.38px] text-white mr-1"
                       >
                         {stack}
                         {idx < project.stacks.length - 1 && ","}{" "}
