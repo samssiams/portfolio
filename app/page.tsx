@@ -12,7 +12,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#232732] font-chakra flex flex-col items-center">
+    <div className="min-h-screen bg-[#222732] font-chakra flex flex-col items-center">
       <Header />
       <Banner />
 
@@ -30,7 +30,7 @@ export default function Home() {
     <h2 className="text-white text-[35px] font-bold">Samuel Cruz</h2>
 
     <p className="text-gray-300 mt-2 text-[16px]">
-      Balanga, Bataan, Philippines
+      Bataan, Philippines
     </p>
 
     <p className="text-gray-300 mt-2 text-[16px]">
@@ -64,7 +64,7 @@ export default function Home() {
         </span>
       </a>
 
-      <a href="/Resume.pdf" download className="flex items-baseline gap-2">
+      <a href="/Cruz_CV.pdf" target="_blank" rel="noopener noreferrer" className="flex items-baseline gap-2">
         <FileUser size={20} className="relative top-[2px]" />
         <span className="relative group">
           Resume
@@ -166,7 +166,7 @@ export default function Home() {
             <div className="flex justify-center mt-7">
               <a
                 href="/projects/portfolio"
-                className="flex items-center gap-2 bg-[#81E6D9] text-black font-semibold px-4 py-2.5 rounded-lg hover:bg-[#4FD1C5] transition tracking-[0.38px]"
+                className="flex items-center gap-2 bg-[#81E6D9] text-black font-semibold px-4 py-2 rounded-lg hover:bg-[#4FD1C5] transition tracking-[0.38px]"
               >
                 <span>Portfolio</span>
                 <ArrowUpRight size={20} />
@@ -195,7 +195,7 @@ export default function Home() {
             <div className="flex justify-center mt-7">
               <a
                 href="/photo/photography"
-                className="flex items-center gap-2 bg-[#81E6D9] text-black font-semibold px-4 py-2.5 rounded-lg hover:bg-[#4FD1C5] transition tracking-[0.38px]"
+                className="flex items-center gap-2 bg-[#81E6D9] text-black font-semibold px-4 py-2 rounded-lg hover:bg-[#4FD1C5] transition tracking-[0.38px]"
               >
                 <span>Photography</span>
                 <ArrowUpRight size={20} />
@@ -222,7 +222,7 @@ export default function Home() {
             <div className="flex justify-center">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="flex items-center gap-2 bg-[#81E6D9] text-black font-semibold px-4 py-2.5 rounded-lg hover:bg-[#4FD1C5] transition tracking-[0.38px]"
+                className="flex items-center gap-2 bg-[#81E6D9] text-black font-semibold px-4 py-2 rounded-lg hover:bg-[#4FD1C5] transition tracking-[0.38px]"
               >
                 <Mail size={20} />
                 <span>Send me a message here</span>
