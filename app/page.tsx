@@ -1,6 +1,7 @@
 "use client";
 
-import { Instagram, Linkedin, ArrowUpRight, Mail, FileUser } from "lucide-react";
+import { Instagram, Linkedin, ArrowUpRight, Mail, FileUser, MapPin } from "lucide-react";
+
 import Header from "../components/Header";
 import Banner from "../components/Banner";
 import Footer from "../components/Footer";
@@ -29,11 +30,16 @@ export default function Home() {
   <div>
     <h2 className="text-white text-[35px] font-bold">Samuel Cruz</h2>
 
-    <p className="text-gray-300 mt-2 text-[16px]">
+    <p className="text-gray-300 mt-2 text-[16px] flex items-center gap-2">
+      <MapPin 
+      size={18} 
+      strokeWidth={2} 
+      className="relative top-[-2px]"
+      />
       Bataan, Philippines
     </p>
 
-    <p className="text-gray-300 mt-2 text-[16px]">
+    <p className="text-gray-300 mt-3 text-[16px]">
       Web Developer <span className="text-white">|</span> Project Manager
     </p>
 
@@ -107,7 +113,7 @@ export default function Home() {
                 <span className="font-bold tracking-[0.38px] mr-4">2025 – Present</span>
                 Technical Project Manager —{" "}
                 <span className="font-bold tracking-[0.38px] text-[#81E6D9]">
-                  Freelancer
+                  Freelancer.com 
                 </span>
               </p>
             </div>
@@ -121,23 +127,59 @@ export default function Home() {
                 <span className="font-bold tracking-[0.38px] mr-4">2021</span>
                 Graduated Senior High — With High Honors
               </p>
-              <p>
-                <span className="font-bold tracking-[0.38px] mr-4">2024</span>
-                IC3 Digital Literacy Certification -{" "}
-                <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Acquired</span>
-              </p>
-              <p className="pl-14">
-                Microsoft Office Specialist Associate (Microsoft 365) -{" "}
-                <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Acquired</span>
-              </p>
-              <p className="pl-14">
-                Information Technology Specialist in Network Security -{" "}
-                <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Acquired</span>
-              </p>
-              <p className="pl-14">
-                Information Technology Specialist in Networking -{" "}
-                <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Acquired</span>
-              </p>
+<p>
+  <span className="font-bold tracking-[0.38px] mr-4">2024</span>
+  IC3 Digital Literacy Certification -{" "}
+  <a
+    href="/IC3 GS6 Level 1.pdf"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="relative group font-bold tracking-[0.38px] text-[#81E6D9]"
+  >
+    Acquired
+    <span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full"></span>
+  </a>
+</p>
+
+<p className="pl-14">
+  Microsoft Office Specialist Associate (Microsoft 365) -{" "}
+  <a
+    href="/Microsoft Office Specialist  Associate.pdf"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="relative group font-bold tracking-[0.38px] text-[#81E6D9]"
+  >
+    Acquired
+    <span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full"></span>
+  </a>
+</p>
+
+<p className="pl-14">
+  Information Technology Specialist in Network Security -{" "}
+  <a
+    href="/Network Security.pdf"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="relative group font-bold tracking-[0.38px] text-[#81E6D9]"
+  >
+    Acquired
+    <span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full"></span>
+  </a>
+</p>
+
+<p className="pl-14">
+  Information Technology Specialist in Networking -{" "}
+  <a
+    href="/Networking.pdf"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="relative group font-bold tracking-[0.38px] text-[#81E6D9]"
+  >
+    Acquired
+    <span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full"></span>
+  </a>
+</p>
+
               <p>
                 <span className="font-bold tracking-[0.38px] mr-4">2025</span>
                 Graduated B.S. Computer Science — Latin Honors
