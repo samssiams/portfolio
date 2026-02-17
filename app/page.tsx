@@ -70,7 +70,7 @@ export default function Home() {
         </span>
       </a>
 
-      <a href="/Cruz_CV.pdf" target="_blank" rel="noopener noreferrer" className="flex items-baseline gap-2">
+      <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" className="flex items-baseline gap-2">
         <FileUser size={20} className="relative top-[2px]" />
         <span className="relative group">
           Resume

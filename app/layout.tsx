@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+
 const chakraPetch = Chakra_Petch({
   variable: "--font-chakra-petch",
   subsets: ["latin"],
@@ -36,8 +37,8 @@ export default function RootLayout({
         className={`${chakraPetch.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <LenisScrollProvider>
-            <InkCursor /> {/* ✅ custom Ink Cursor */}
-            {children}
+          <InkCursor /> 
+          {children}
         </LenisScrollProvider>
       </body>
     </html>
