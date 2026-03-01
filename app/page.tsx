@@ -158,64 +158,70 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Work */}
-          <div className="max-w-[800px] w-full mx-auto px-31 mt-7">
-            <h3 className="text-white text-[20px] font-bold">Experiences</h3>
-            <div className="text-gray-300 text-[16px] mt-3 flex flex-col gap-4">
-              <div className="flex flex-col gap-1">
-                <p>
-                  <span className="font-bold tracking-[0.38px] mr-4">2025 – Present</span>
-                  Technical Project Manager —{" "}
-                  <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Freelancer.com</span>
-                </p>
-                <div className="ml-1 mt-3 flex flex-col gap-3">
-                  {[
-                    { title: "Co-Pilot — Tamkeen Partnership Program", date: "2026", place: "Bonifacio Global City, Taguig", desc: "Coordinated stakeholders and teams to deliver a structured mentorship and partnership initiative." },
-                    { title: "Prominence Bank – Digital Banking Platform", date: "2026", place: "Bonifacio Global City, Taguig", desc: "Managed cross-functional teams and sprint planning for end-to-end digital banking delivery." },
-                    { title: "InnerX – AI-Based Emotional Analytics", date: "2025", place: "Bonifacio Global City, Taguig", desc: "Oversaw the development lifecycle of an AI-driven emotional analytics tool from concept to prototype." },
-                  ].map((project) => (
-                    <div key={project.title} className="project-card flex gap-4 cursor-default">
-                      <div className="flex flex-col items-center pt-[6px]">
-                        <div className="project-dot-inner w-[6px] h-[6px] rounded-full bg-white shrink-0" />
-                        <div className="w-px bg-gray-700 flex-1 mt-1" />
-                      </div>
-                      <div className="flex flex-col gap-[2px] pb-3">
-                        <p className="project-card-title text-gray-300 text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200">{project.title}</p>
-                        <p className="text-[13px] tracking-[0.3px]" style={{ color: "rgba(255,255,255,0.6)" }}>{project.date} · {project.place}</p>
-                        <p className="text-[15px] leading-relaxed mt-1" style={{ color: "rgba(255,255,255,0.6)" }}>{project.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p>
-                  <span className="font-bold tracking-[0.38px] mr-4">2024</span>
-                  Full-Stack Web Developer Intern —{" "}
-                  <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Kynatech Technologies Co.</span>
-                </p>
-                <div className="ml-1 mt-3 flex flex-col gap-3">
-                  {[
-                    { title: "Full Stack Web Development", date: "2024", place: "Bonifacio Global City, Taguig", desc: "Built a Next.js app with Supabase, Prisma, and NextAuth covering auth, timesheet, and payroll via REST APIs." },
-                    { title: "Project Management", date: "2024", place: "Bonifacio Global City, Taguig", desc: "Ensured on-time delivery through progress monitoring, task verification, and Agile & Waterfall methodologies." },
-                  ].map((project) => (
-                    <div key={project.title} className="project-card flex gap-4 cursor-default">
-                      <div className="flex flex-col items-center pt-[6px]">
-                        <div className="project-dot-inner w-[6px] h-[6px] rounded-full bg-white shrink-0" />
-                        <div className="w-px bg-gray-700 flex-1 mt-1" />
-                      </div>
-                      <div className="flex flex-col gap-[2px] pb-3">
-                        <p className="project-card-title text-gray-300 text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200">{project.title}</p>
-                        <p className="text-[13px] tracking-[0.3px]" style={{ color: "rgba(255,255,255,0.6)" }}>{project.date} · {project.place}</p>
-                        <p className="text-[15px] leading-relaxed mt-1" style={{ color: "rgba(255,255,255,0.6)" }}>{project.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+{/* Work */}
+<div className="max-w-[800px] w-full mx-auto px-31 mt-7">
+  <h3 className="text-white text-[20px] font-bold">Experiences</h3>
+  <div className="text-gray-300 text-[16px] mt-3 flex flex-col gap-4">
+    <div className="flex flex-col gap-1">
+      <p>
+        <span className="font-bold tracking-[0.38px] mr-4">2025 – Present</span>
+        Technical Project Manager —{" "}
+        <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Freelancer.com</span>
+      </p>
+      <div className="ml-1 mt-3 flex flex-col gap-3">
+        {[
+          { title: "Co-Pilot — Tamkeen Partnership Program", date: "2026", place: "Bonifacio Global City, Taguig", desc: "Worked closely with program leads and teams to keep the partnership on track, handles coordination and making sure key milestones were met." },
+          { title: "Prominence Bank – Digital Banking Platform", date: "2026", place: "Bonifacio Global City, Taguig", desc: "Managed the project from start to finish, keeping teams aligned, running sprints, and making sure the platform shipped on time and within scope." },
+          { title: "InnerX – AI-Based Emotional Analytics", date: "2025", place: "Bonifacio Global City, Taguig", desc: "Took the project from early concept to working prototype, staying on top of timelines, deliverables, and keeping everything moving in the right direction." },
+        ].map((project) => (
+          <div key={project.title} className="project-card flex gap-4 cursor-default">
+            <div className="flex flex-col items-center pt-[6px]">
+              <div className="project-dot-inner w-[6px] h-[6px] rounded-full bg-white shrink-0" />
+              <div className="w-px bg-gray-700 flex-1 mt-1" />
+            </div>
+            <div className="flex flex-col gap-[2px] pb-3">
+              <p className="project-card-title text-gray-300 text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200">{project.title}</p>
+<p className="text-[13px] tracking-[0.3px] flex items-baseline gap-1" style={{ color: "rgba(255,255,255,0.6)" }}>
+  {project.date && <span>{project.date} ·</span>}
+  <MapPin size={11} className="relative top-[1px] shrink-0" /> {project.place}
+</p>
+              <p className="text-[15px] leading-relaxed mt-1" style={{ color: "rgba(255,255,255,0.6)" }}>{project.desc}</p>
             </div>
           </div>
+        ))}
+      </div>
+    </div>
+
+    <div className="flex flex-col gap-1">
+      <p>
+        <span className="font-bold tracking-[0.38px] mr-4">2024</span>
+        Full-Stack Web Developer Intern —{" "}
+        <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Kynatech Technologies Co.</span>
+      </p>
+      <div className="ml-1 mt-3 flex flex-col gap-3">
+        {[
+          { title: "Full Stack Web Development", date: "", place: "Bonifacio Global City, Taguig", desc: "Built a Next.js app with Supabase, Prisma, and NextAuth covering auth, timesheet, and payroll via REST APIs." },
+          { title: "Project Management", date: "", place: "Bonifacio Global City, Taguig", desc: "Ensured on-time delivery through progress monitoring, task verification, and Agile & Waterfall methodologies." },
+        ].map((project) => (
+          <div key={project.title} className="project-card flex gap-4 cursor-default">
+            <div className="flex flex-col items-center pt-[6px]">
+              <div className="project-dot-inner w-[6px] h-[6px] rounded-full bg-white shrink-0" />
+              <div className="w-px bg-gray-700 flex-1 mt-1" />
+            </div>
+            <div className="flex flex-col gap-[2px] pb-3">
+              <p className="project-card-title text-gray-300 text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200">{project.title}</p>
+<p className="text-[13px] tracking-[0.3px] flex items-baseline gap-1" style={{ color: "rgba(255,255,255,0.6)" }}>
+  {project.date && <span>{project.date} ·</span>}
+  <MapPin size={11} className="relative top-[1px] shrink-0" /> {project.place}
+</p>
+              <p className="text-[15px] leading-relaxed mt-1" style={{ color: "rgba(255,255,255,0.6)" }}>{project.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
 
           {/* Bio */}
           <div className="max-w-[800px] w-full mx-auto px-31 mt-7">
@@ -231,10 +237,10 @@ export default function Home() {
               </p>
               <div className="ml-1 mt-3 flex flex-col gap-3">
                 {[
-                  { label: "IC3 Digital Literacy Certification", href: "/IC3 GS6 Level 1.pdf", date: "2024" },
-                  { label: "Microsoft Office Specialist Associate (Microsoft 365)", href: "/Microsoft Office Specialist  Associate.pdf", date: "2024" },
-                  { label: "Information Technology Specialist in Network Security", href: "/Network Security.pdf", date: "2024" },
-                  { label: "Information Technology Specialist in Networking", href: "/Networking.pdf", date: "2024" },
+                  { label: "IC3 Digital Literacy", href: "/IC3 GS6 Level 1.pdf", date: "" },
+                  { label: "Microsoft Office Specialist Associate (Microsoft 365)", href: "/Microsoft Office Specialist  Associate.pdf", date: "" },
+                  { label: "Information Technology Specialist in Network Security", href: "/Network Security.pdf", date: "" },
+                  { label: "Information Technology Specialist in Networking", href: "/Networking.pdf", date: "" },
                 ].map((cert) => {
                   const linkClass = "relative group italic font-light tracking-[0.38px] text-[#81E6D9]";
                   const spanClass = "absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full";
@@ -247,9 +253,9 @@ export default function Home() {
                       <div className="flex flex-col gap-[2px] pb-3">
                         <p className="cert-title text-gray-300 text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200">{cert.label}</p>
                         <p className="text-[13px] tracking-[0.3px]" style={{ color: "rgba(255,255,255,0.6)" }}>
-                          {cert.date} ·{" "}
+                          {cert.date} {" "}
                           <a href={cert.href} target="_blank" rel="noopener noreferrer" className={linkClass}>
-                            View
+                            View Certification
                             <span className={spanClass} />
                           </a>
                         </p>
