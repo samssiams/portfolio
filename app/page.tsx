@@ -166,13 +166,37 @@ export default function Home() {
       <p>
         <span className="font-bold tracking-[0.38px] mr-4">2025 – Present</span>
         Technical Project Manager —{" "}
-        <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Freelancer.com</span>
+        <a
+          href="https://www.freelancer.com/project-management"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative group font-bold tracking-[0.38px] text-[#81E6D9]"
+        >
+          Freelancer
+          <span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" />
+        </a>
       </p>
+
       <div className="ml-1 mt-3 flex flex-col gap-3">
         {[
-          { title: "Co-Pilot — Tamkeen Partnership Program", date: "2026", place: "Bonifacio Global City, Taguig", desc: "Worked closely with program leads and teams to keep the partnership on track, handles coordination and making sure key milestones were met." },
-          { title: "Prominence Bank – Digital Banking Platform", date: "2026", place: "Bonifacio Global City, Taguig", desc: "Managed the project from start to finish, keeping teams aligned, running sprints, and making sure the platform shipped on time and within scope." },
-          { title: "InnerX – AI-Based Emotional Analytics", date: "2025", place: "Bonifacio Global City, Taguig", desc: "Took the project from early concept to working prototype, staying on top of timelines, deliverables, and keeping everything moving in the right direction." },
+          {
+            title: "Co-Pilot — Tamkeen Partnership Program",
+            date: "2026",
+            place: "Bonifacio Global City, Taguig",
+            desc: "Worked closely with program leads and teams to keep the partnership on track, handles coordination and making sure key milestones were met.",
+          },
+          {
+            title: "Prominence Bank – Digital Banking Platform",
+            date: "2026",
+            place: "Bonifacio Global City, Taguig",
+            desc: "Managed the project from start to finish, keeping teams aligned, running sprints, and making sure the platform shipped on time and within scope.",
+          },
+          {
+            title: "InnerX – AI-Based Emotional Analytics",
+            date: "2025",
+            place: "Bonifacio Global City, Taguig",
+            desc: "Took the project from early concept to working prototype, staying on top of timelines, deliverables, and keeping everything moving in the right direction.",
+          },
         ].map((project) => (
           <div key={project.title} className="project-card flex gap-4 cursor-default">
             <div className="flex flex-col items-center pt-[6px]">
@@ -180,12 +204,23 @@ export default function Home() {
               <div className="w-px bg-gray-700 flex-1 mt-1" />
             </div>
             <div className="flex flex-col gap-[2px] pb-3">
-              <p className="project-card-title text-gray-300 text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200">{project.title}</p>
-<p className="text-[13px] tracking-[0.3px] flex items-baseline gap-1" style={{ color: "rgba(255,255,255,0.6)" }}>
-  {project.date && <span>{project.date} ·</span>}
-  <MapPin size={11} className="relative top-[1px] shrink-0" /> {project.place}
-</p>
-              <p className="text-[15px] leading-relaxed mt-1" style={{ color: "rgba(255,255,255,0.6)" }}>{project.desc}</p>
+              <p className="project-card-title text-gray-300 text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200">
+                {project.title}
+              </p>
+              <p
+                className="text-[13px] tracking-[0.3px] flex items-baseline gap-1"
+                style={{ color: "rgba(255,255,255,0.6)" }}
+              >
+                {project.date && <span>{project.date} ·</span>}
+                <MapPin size={11} className="relative top-[1px] shrink-0" />{" "}
+                {project.place}
+              </p>
+              <p
+                className="text-[15px] leading-relaxed mt-1"
+                style={{ color: "rgba(255,255,255,0.6)" }}
+              >
+                {project.desc}
+              </p>
             </div>
           </div>
         ))}
@@ -196,12 +231,31 @@ export default function Home() {
       <p>
         <span className="font-bold tracking-[0.38px] mr-4">2024</span>
         Full-Stack Web Developer Intern —{" "}
-        <span className="font-bold tracking-[0.38px] text-[#81E6D9]">Kynatech Technologies Co.</span>
+        <a
+          href="https://kynatech.ph/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative group font-bold tracking-[0.38px] text-[#81E6D9]"
+        >
+          Kynatech Technologies Co.
+          <span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" />
+        </a>
       </p>
+
       <div className="ml-1 mt-3 flex flex-col gap-3">
         {[
-          { title: "Full Stack Web Development", date: "", place: "Bonifacio Global City, Taguig", desc: "Built a Next.js app with Supabase, Prisma, and NextAuth covering auth, timesheet, and payroll via REST APIs." },
-          { title: "Project Management", date: "", place: "Bonifacio Global City, Taguig", desc: "Ensured on-time delivery through progress monitoring, task verification, and Agile & Waterfall methodologies." },
+          {
+            title: "Full Stack Web Development",
+            date: "",
+            place: "Bonifacio Global City, Taguig",
+            desc: "Built a Next.js app with Supabase, Prisma, and NextAuth covering auth, timesheet, and payroll via REST APIs.",
+          },
+          {
+            title: "Project Management",
+            date: "",
+            place: "Bonifacio Global City, Taguig",
+            desc: "Ensured on-time delivery through progress monitoring, task verification, and Agile & Waterfall methodologies.",
+          },
         ].map((project) => (
           <div key={project.title} className="project-card flex gap-4 cursor-default">
             <div className="flex flex-col items-center pt-[6px]">
@@ -209,12 +263,22 @@ export default function Home() {
               <div className="w-px bg-gray-700 flex-1 mt-1" />
             </div>
             <div className="flex flex-col gap-[2px] pb-3">
-              <p className="project-card-title text-gray-300 text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200">{project.title}</p>
-<p className="text-[13px] tracking-[0.3px] flex items-baseline gap-1" style={{ color: "rgba(255,255,255,0.6)" }}>
-  {project.date && <span>{project.date} ·</span>}
-  <MapPin size={11} className="relative top-[1px] shrink-0" /> {project.place}
-</p>
-              <p className="text-[15px] leading-relaxed mt-1" style={{ color: "rgba(255,255,255,0.6)" }}>{project.desc}</p>
+              <p className="project-card-title text-gray-300 text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200">
+                {project.title}
+              </p>
+              <p
+                className="text-[13px] tracking-[0.3px] flex items-baseline gap-1"
+                style={{ color: "rgba(255,255,255,0.6)" }}
+              >
+                <MapPin size={11} className="relative top-[1px] shrink-0" />{" "}
+                {project.place}
+              </p>
+              <p
+                className="text-[15px] leading-relaxed mt-1"
+                style={{ color: "rgba(255,255,255,0.6)" }}
+              >
+                {project.desc}
+              </p>
             </div>
           </div>
         ))}
