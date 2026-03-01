@@ -25,11 +25,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-
-  /* Use your imported Next.js font as the default */
   font-family: var(--font-chakra-petch), sans-serif;
-
-  /* Default cursor restored */
   cursor: default;
 }
 
@@ -53,4 +49,48 @@ body {
 
 .hover-underline:hover::after {
   width: 100%;
+}
+
+/* --- Project card hover --- */
+.project-card {
+  padding-left: 8px;
+  margin-top: 2px;
+}
+
+.project-card:hover .project-card-title {
+  color: white;
+}
+
+.project-card:hover .project-dot-inner {
+  transform: scale(1.6);
+  background-color: #81E6D9;
+  box-shadow: 0 0 6px #81E6D9;
+}
+
+.project-dot-inner {
+  transition: all 0.2s ease;
+}
+
+.project-text {
+  transition: color 0.2s ease;
+}
+
+.project-text {
+  transition: color 0.2s ease;
+}
+
+.cert-card {
+  padding-left: 8px;
+  margin-top: 2px;
+  transition: background 0.2s ease;
+}
+
+.cert-card:hover .cert-title {
+  color: white;
+}
+
+.cert-card:hover .project-dot-inner {
+  transform: scale(1.6);
+  background-color: #81E6D9;
+  box-shadow: 0 0 6px #81E6D9;
 }

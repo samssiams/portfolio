@@ -7,9 +7,10 @@ import { CheckCircle2, X } from "lucide-react";
 interface MessageModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
-export default function MessageModal({ isOpen, onClose }: MessageModalProps) {
+export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModalProps) {
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -34,6 +35,7 @@ export default function MessageModal({ isOpen, onClose }: MessageModalProps) {
       if (res.ok) {
         form.reset();
         setShowSuccess(true);
+        onSuccess?.();
         setTimeout(() => {
           setShowSuccess(false);
           onClose();
@@ -67,20 +69,16 @@ export default function MessageModal({ isOpen, onClose }: MessageModalProps) {
             transition={{ duration: 0.3, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header with Left-aligned Title and X button */}
             <div className="mb-4 flex items-start justify-between">
               <div className="text-left">
                 <h2 className="text-white text-xl font-bold leading-tight">
                   Send me a message
                 </h2>
                 <p className="text-gray-400 text-sm mt-3">
-                  Fill out the form below and I’ll get back to you.
+                   Fill out the form below and I&apos;ll get back to you.
                 </p>
               </div>
-              <button
-                onClick={onClose}
-                className="text-gray-400 hover:text-white transition ml-2"
-              >
+              <button onClick={onClose} className="text-gray-400 hover:text-white transition ml-2">
                 <X size={20} />
               </button>
             </div>
@@ -97,10 +95,7 @@ export default function MessageModal({ isOpen, onClose }: MessageModalProps) {
                   animate={{ scale: 1, rotate: 360 }}
                   transition={{ duration: 1, ease: "easeOut" }}
                 >
-                  <CheckCircle2
-                    size={64}
-                    className="text-[#81E6D9] drop-shadow-lg"
-                  />
+                  <CheckCircle2 size={64} className="text-[#81E6D9] drop-shadow-lg" />
                 </motion.div>
                 <motion.p
                   className="text-white text-[18px] font-sm mt-5"
