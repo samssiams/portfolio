@@ -72,8 +72,25 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#222732] font-chakra flex flex-col items-center">
+    <div 
+  className="min-h-screen font-chakra flex flex-col items-center"
+  style={{
+    backgroundColor: "#222732",
+    backgroundImage: "radial-gradient(circle, rgba(129,230,217,0.15) 1px, transparent 1px)",
+    backgroundSize: "24px 24px",
+    backgroundAttachment: "fixed",
+  }}
+>
       <Header />
+      {/* Scroll fade mask */}
+<div
+  className="fixed top-0 left-0 w-full pointer-events-none"
+  style={{
+    zIndex: 9,
+    height: "40px",
+    background: "linear-gradient(to bottom, #222732 0%, #222732 40%, rgba(34,39,50,0.7) 70%, transparent 100%)",
+  }}
+/>
       <Banner />
 
       {/* Toast */}
