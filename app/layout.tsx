@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Chakra_Petch } from "next/font/google";
 import LenisScrollProvider from "@/providers/lenis-provider";
-import InkCursor from "@/components/InkCursor"; // 👈 import new cursor
+import InkCursor from "@/components/InkCursor";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,7 +14,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
 const chakraPetch = Chakra_Petch({
   variable: "--font-chakra-petch",
   subsets: ["latin"],
@@ -24,6 +23,12 @@ const chakraPetch = Chakra_Petch({
 export const metadata: Metadata = {
   title: "Samssiams",
   description: "Portfolio",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
@@ -37,7 +42,7 @@ export default function RootLayout({
         className={`${chakraPetch.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <LenisScrollProvider>
-          <InkCursor /> 
+          <InkCursor />
           {children}
         </LenisScrollProvider>
       </body>

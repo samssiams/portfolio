@@ -18,7 +18,6 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close menu on route change
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
@@ -43,10 +42,7 @@ const Header = () => {
           }`}
       >
         <div className="flex w-full max-w-[800px] items-center justify-between px-6 py-2 text-[20px] font-bold">
-          <div
-            className="flex items-center gap-3 cursor-pointer"
-            onClick={() => handleNavClick("/")}
-          >
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => handleNavClick("/")}>
             <Image src="/Rectangle 93.svg" alt="Logo" width={40} height={40} priority />
             <span className="text-white">Samssiams</span>
           </div>
@@ -80,10 +76,7 @@ const Header = () => {
           }`}
       >
         <div className="flex items-center justify-between px-5 py-3">
-          <div
-            className="flex items-center gap-2 cursor-pointer"
-            onClick={() => handleNavClick("/")}
-          >
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => handleNavClick("/")}>
             <Image src="/Rectangle 93.svg" alt="Logo" width={32} height={32} priority />
             <span className="text-white font-bold text-[17px]">Samssiams</span>
           </div>
@@ -101,7 +94,6 @@ const Header = () => {
       <AnimatePresence>
         {menuOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               className="fixed inset-0 z-10 md:hidden"
               initial={{ opacity: 0 }}
@@ -109,8 +101,6 @@ const Header = () => {
               exit={{ opacity: 0 }}
               onClick={() => setMenuOpen(false)}
             />
-
-            {/* Menu panel */}
             <motion.div
               className="fixed left-4 right-4 z-20 md:hidden rounded-2xl overflow-hidden"
               style={{
@@ -144,10 +134,7 @@ const Header = () => {
                     >
                       {label}
                       {isActive && (
-                        <span
-                          className="w-1.5 h-1.5 rounded-full"
-                          style={{ background: "#81E6D9" }}
-                        />
+                        <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#81E6D9" }} />
                       )}
                     </motion.span>
                   );

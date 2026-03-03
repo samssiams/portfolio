@@ -107,10 +107,11 @@ export default function PortfolioPage() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.4 }}
+          className="w-full"
         >
           {/* Projects Section */}
-          <div className="max-w-[800px] w-full mx-auto px-31 mt-10">
-            <h3 className="text-white text-[20px] font-bold">Portfolio</h3>
+          <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-10">
+            <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Portfolio</h3>
 
             {projects.map((project, index) => {
               const isHovered = hoveredIndex === index;
@@ -125,10 +126,8 @@ export default function PortfolioPage() {
                   animate={{ opacity: isDimmed ? 0.35 : 1 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {/* Project header with counter + teal left border indicator */}
+                  {/* Project header — counter + title + stacks */}
                   <div className="flex items-start gap-3">
-                    {/* No indicator — number only */}
-
                     <div className="flex-1">
                       <div className="flex items-baseline gap-3">
                         {/* Editorial counter */}
@@ -146,15 +145,14 @@ export default function PortfolioPage() {
                           {String(index + 1).padStart(2, "0")}
                         </span>
 
-                        <div className="text-gray-300 text-[16px] space-y-1">
+                        <div className="text-gray-300 text-[14px] sm:text-[16px] space-y-1">
                           <p>
                             {project.title} —{" "}
                             <span className="tracking-[0.38px] text-[#81E6D9]">
                               {project.year}
                             </span>
-
                           </p>
-                          <p>
+                          <p className="flex flex-wrap gap-x-0">
                             Stacks —{" "}
                             {project.stacks.map((stack, idx) => (
                               <motion.span
@@ -174,14 +172,13 @@ export default function PortfolioPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6 items-center pl-5">
-                    {/* Image with glass hover overlay + subtle teal glow */}
+                  {/* Image + Description — stack on mobile, side by side on sm+ */}
+                  <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:items-center pl-5">
+                    {/* Image */}
                     <div
-                      className="relative bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-[250px] h-[150px] cursor-pointer group"
+                      className="relative bg-[#2F3445] rounded-lg overflow-hidden shadow-lg cursor-pointer group w-full sm:w-[250px] h-[180px] sm:h-[150px]"
                       onClick={() => setSelectedProject(project)}
-                      style={{
-                        boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-                      }}
+                      style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.3)" }}
                     >
                       <img
                         src={project.image}
@@ -206,10 +203,11 @@ export default function PortfolioPage() {
                       </div>
                     </div>
 
+                    {/* Description */}
                     <div
-                      className="text-gray-300 text-[15px] leading-relaxed"
+                      className="text-gray-300 text-[13px] sm:text-[15px] leading-relaxed"
                       dangerouslySetInnerHTML={{
-                        __html: `<p class="indent-8">${highlightWords(project.description)}</p>`,
+                        __html: `<p class="sm:indent-8">${highlightWords(project.description)}</p>`,
                       }}
                     />
                   </div>

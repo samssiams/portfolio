@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
 
 interface MessageModalProps {
   isOpen: boolean;
@@ -68,7 +67,7 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 flex items-center justify-center z-50"
+          className="fixed inset-0 flex items-end sm:items-center justify-center z-50 px-4 pb-4 sm:pb-0"
           style={{ backgroundColor: "rgba(0,0,0,0.4)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -76,7 +75,7 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
           onClick={onClose}
         >
           <motion.div
-            className="relative rounded-2xl shadow-xl p-6 max-w-sm w-full mx-4"
+            className="relative rounded-2xl shadow-xl p-5 sm:p-6 max-w-sm w-full"
             style={{
               background: "rgba(22, 26, 35, 0.88)",
               backdropFilter: "blur(32px)",
@@ -84,19 +83,19 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
               border: "1px solid rgba(255,255,255,0.18)",
               boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
             }}
-            initial={{ scale: 0.9, opacity: 0, y: 30 }}
+            initial={{ scale: 0.95, opacity: 0, y: 30 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 30 }}
+            exit={{ scale: 0.95, opacity: 0, y: 30 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="mb-5 flex items-start justify-between">
               <div>
-                <h2 className="text-white text-xl font-bold leading-tight">
+                <h2 className="text-white text-[18px] sm:text-xl font-bold leading-tight">
                   Send me a message
                 </h2>
-                <p className="text-[13px] mt-1" style={{ color: "rgba(255,255,255,0.4)" }}>
+                <p className="text-[12px] sm:text-[13px] mt-1" style={{ color: "rgba(255,255,255,0.4)" }}>
                   Fill out the form and I&apos;ll get back to you.
                 </p>
               </div>
@@ -118,12 +117,11 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
 
             {showSuccess ? (
               <motion.div
-                className="flex flex-col items-center justify-center py-10 text-center"
+                className="flex flex-col items-center justify-center py-8 sm:py-10 text-center"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                {/* Pulsing ring + checkmark */}
                 <div className="relative flex items-center justify-center">
                   <motion.div
                     className="absolute rounded-full"
@@ -144,44 +142,24 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
                   >
-                    <motion.svg
-                      width="28"
-                      height="28"
-                      viewBox="0 0 28 28"
-                      fill="none"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.3 }}
-                    >
+                    <motion.svg width="28" height="28" viewBox="0 0 28 28" fill="none"
+                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
                       <motion.path
                         d="M6 14.5L11.5 20L22 9"
-                        stroke="#81E6D9"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
+                        stroke="#81E6D9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                        initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
                         transition={{ duration: 0.5, delay: 0.35, ease: "easeOut" }}
                       />
                     </motion.svg>
                   </motion.div>
                 </div>
 
-                <motion.p
-                  className="text-white text-[15px] font-medium mt-5 tracking-[0.3px]"
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                >
+                <motion.p className="text-white text-[15px] font-medium mt-5 tracking-[0.3px]"
+                  initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
                   Message sent successfully!
                 </motion.p>
-                <motion.p
-                  className="text-[12px] mt-1"
-                  style={{ color: "rgba(255,255,255,0.35)" }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7 }}
-                >
+                <motion.p className="text-[12px] mt-1" style={{ color: "rgba(255,255,255,0.35)" }}
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
                   I&apos;ll get back to you soon.
                 </motion.p>
               </motion.div>
@@ -207,7 +185,7 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                 <textarea
                   name="message"
                   placeholder="Message"
-                  rows={4}
+                  rows={3}
                   required
                   onFocus={() => setFocused("message")}
                   onBlur={() => setFocused(null)}

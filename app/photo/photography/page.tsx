@@ -84,13 +84,13 @@ export default function PhotographyPage() {
           transition={{ duration: 0.5 }}
           className="w-full mt-10 flex-grow"
         >
-          <div className="max-w-[800px] w-full mx-auto px-31 flex flex-col gap-8">
-            <h3 className="text-white text-[20px] font-bold">Photography</h3>
+          <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 flex flex-col gap-8">
+            <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Photography</h3>
 
             {/* Section Buttons */}
             <div className="flex justify-center gap-8 mt-2">
               <button
-                className={`relative group text-[17px] font-medium focus:outline-none cursor-pointer ${
+                className={`relative group text-[15px] sm:text-[17px] font-medium focus:outline-none cursor-pointer ${
                   view === "photos" ? "text-white" : "text-gray-300"
                 }`}
                 onClick={() => setView("photos")}
@@ -100,7 +100,7 @@ export default function PhotographyPage() {
               </button>
 
               <button
-                className={`relative group text-[17px] font-medium focus:outline-none cursor-pointer ${
+                className={`relative group text-[15px] sm:text-[17px] font-medium focus:outline-none cursor-pointer ${
                   view === "gallery" ? "text-white" : "text-gray-300"
                 }`}
                 onClick={() => setView("gallery")}
@@ -120,11 +120,12 @@ export default function PhotographyPage() {
                   transition={{ duration: 0.4 }}
                   className="flex flex-col items-center"
                 >
-                  <div className="grid grid-cols-2 gap-6 mt-2">
+                  {/* 1 col on mobile, 2 cols on sm+ */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-2 w-full">
                     {(showAll ? photos : photos.slice(0, 6)).map((photo, index) => (
                       <div
                         key={photo.src}
-                        className="relative bg-[#2F3445] border border-gray-600 shadow-md rounded-lg overflow-hidden w-[260px] h-[160px] mx-auto cursor-pointer group"
+                        className="relative bg-[#2F3445] border border-gray-600 shadow-md rounded-lg overflow-hidden w-full sm:w-[260px] h-[200px] sm:h-[160px] mx-auto cursor-pointer group"
                         onClick={() => handlePhotoClick(photo, index)}
                       >
                         {!loadedImages[photo.src] && <Skeleton className="absolute inset-0" />}
@@ -183,8 +184,8 @@ export default function PhotographyPage() {
                           </span>
                         </div>
 
-                        {/* Featured + grid layout */}
-                        <div className="flex gap-2" style={{ height: "180px" }}>
+                        {/* Featured + grid — shorter on mobile */}
+                        <div className="flex gap-2" style={{ height: "140px" }}>
                           {/* Featured large photo — left 55% */}
                           <div
                             className="relative rounded-lg overflow-hidden cursor-pointer flex-shrink-0"
@@ -198,7 +199,6 @@ export default function PhotographyPage() {
                               className={`w-full h-full object-cover transition-transform duration-300 hover:scale-105 ${loadedImages[featured.src] ? "opacity-100" : "opacity-0"}`}
                               onLoad={() => handleImageLoad(featured.src)}
                             />
-
                           </div>
 
                           {/* Smaller photos — right side stacked */}
@@ -222,7 +222,6 @@ export default function PhotographyPage() {
                                     className={`w-full h-full object-cover transition-transform duration-300 hover:scale-105 ${loadedImages[photo.src] ? "opacity-100" : "opacity-0"}`}
                                     onLoad={() => handleImageLoad(photo.src)}
                                   />
-                                  {/* +N overlay on last visible if more exist */}
                                   {index === 2 && rest.length > 3 && (
                                     <div className="absolute inset-0 flex items-center justify-center rounded-lg"
                                       style={{ background: "rgba(0,0,0,0.55)" }}>

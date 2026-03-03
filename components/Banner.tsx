@@ -2,8 +2,8 @@ import React from "react";
 
 export default function Banner() {
   return (
-    <div className="w-full mt-20">
-      <div className="max-w-[1050px] w-full mx-auto px-60">
+    <div className="w-full mt-16 sm:mt-20">
+      <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31">
         <div
           className="rounded-xl py-3 text-center"
           style={{
@@ -14,7 +14,7 @@ export default function Banner() {
             boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
           }}
         >
-          <p className="text-white text-lg font-medium tracking-[0.3px]">
+          <p className="text-white text-[14px] sm:text-lg font-medium tracking-[0.3px]">
             Hello, I&apos;m Sam. Nice to meet you!
           </p>
         </div>

@@ -32,7 +32,7 @@ export default function Modal({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 flex items-center justify-center z-50"
+          className="fixed inset-0 flex items-center justify-center z-50 px-4"
           style={{ backgroundColor: "rgba(0,0,0,0.4)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -40,7 +40,7 @@ export default function Modal({
           onClick={onClose}
         >
           <motion.div
-            className="rounded-2xl shadow-xl p-6 max-w-md w-full mx-4"
+            className="rounded-2xl shadow-xl p-5 sm:p-6 max-w-md w-full"
             style={{
               background: "rgba(34, 39, 50, 0.65)",
               backdropFilter: "blur(24px)",
@@ -56,8 +56,8 @@ export default function Modal({
             {/* Title + Year + Close */}
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h2 className="text-white text-xl font-bold">{title}</h2>
-                <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>{year}</p>
+                <h2 className="text-white text-[18px] sm:text-xl font-bold">{title}</h2>
+                <p className="text-[12px] sm:text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>{year}</p>
               </div>
               <button
                 onClick={onClose}
@@ -70,7 +70,7 @@ export default function Modal({
               </button>
             </div>
 
-            {/* Image — static, no hover interaction */}
+            {/* Image */}
             {image && (
               <div
                 className="mb-4 rounded-lg overflow-hidden"
@@ -79,19 +79,19 @@ export default function Modal({
                 <img
                   src={image}
                   alt={title}
-                  className="w-full h-auto max-h-[300px] object-contain rounded-lg"
+                  className="w-full h-auto max-h-[220px] sm:max-h-[300px] object-contain rounded-lg"
                 />
               </div>
             )}
 
             {/* Stacks */}
             <div className="mb-3">
-              <p className="text-white font-semibold mb-2 text-[14px]">Stacks</p>
+              <p className="text-white font-semibold mb-2 text-[13px] sm:text-[14px]">Stacks</p>
               <div className="flex flex-wrap gap-2">
                 {stacks.map((stack, index) => (
                   <span
                     key={index}
-                    className="px-2 py-1 text-sm font-medium rounded-lg"
+                    className="px-2 py-1 text-[12px] sm:text-sm font-medium rounded-lg"
                     style={{
                       background: "rgba(129,230,217,0.08)",
                       border: "1px solid rgba(129,230,217,0.3)",
@@ -105,7 +105,7 @@ export default function Modal({
             </div>
 
             {/* Description */}
-            <p className="text-gray-300 text-[15px] leading-relaxed mb-4">
+            <p className="text-gray-300 text-[13px] sm:text-[15px] leading-relaxed mb-4">
               {description}
             </p>
 
@@ -127,7 +127,6 @@ export default function Modal({
                   <span className="absolute bottom-[-2px] left-0 w-0 h-[1px] bg-[#81E6D9] transition-all duration-500 group-hover:w-full" />
                 </a>
               )}
-
               {website && (
                 <a
                   href={website}
@@ -141,7 +140,6 @@ export default function Modal({
                   <span className="absolute bottom-[-2px] left-0 w-0 h-[1px] bg-[#81E6D9] transition-all duration-500 group-hover:w-full" />
                 </a>
               )}
-
               {apk && (
                 <a
                   href={apk}
