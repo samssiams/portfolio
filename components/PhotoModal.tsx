@@ -37,7 +37,6 @@ export default function PhotoModal({
 
   const handleDragEnd = (_event: unknown, info: PanInfo) => {
     const swipe = info.offset.x;
-
     if (swipe < -100) {
       setCurrentIndex((currentIndex + 1) % photos.length);
     } else if (swipe > 100) {
@@ -59,7 +58,7 @@ export default function PhotoModal({
           onClick={onClose}
         >
           <motion.div
-            className="relative bg-transparent rounded-2xl p-4 max-w-5xl w-full mx-4 flex flex-col items-center"
+            className="relative rounded-2xl p-4 max-w-5xl w-full mx-4 flex flex-col items-center"
             initial={{ scale: 0.9, opacity: 0, y: 30 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 30 }}
@@ -75,6 +74,7 @@ export default function PhotoModal({
                   src={photos[prevIndex].src}
                   alt="Previous"
                   className="w-[200px] h-[140px] object-cover rounded-lg opacity-50 cursor-pointer"
+                  style={{ border: "1px solid rgba(255,255,255,0.12)" }}
                   whileHover={{ scale: 1.05, opacity: 0.7 }}
                   drag="x"
                   dragConstraints={{ left: -30, right: 30 }}
@@ -83,21 +83,65 @@ export default function PhotoModal({
                 />
               )}
 
-              {/* Current */}
-              <motion.img
-                key={`current-${currentPhoto.src}`}
-                src={currentPhoto.src}
-                alt="Selected"
-                className="w-[500px] max-h-[420px] object-contain rounded-xl border-2 border-[#81E6D9] shadow-xl cursor-grab active:cursor-grabbing"
+              {/* Current — glassy frame with info inside */}
+              <motion.div
+                key={`frame-${currentPhoto.src}`}
+                className="flex flex-col rounded-2xl"
+                style={{
+                  background: "rgba(22, 26, 35, 0.82)",
+                  backdropFilter: "blur(24px)",
+                  WebkitBackdropFilter: "blur(24px)",
+                  border: "1px solid rgba(255,255,255,0.18)",
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                  padding: "8px 8px 0px 8px",
+                }}
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.4 }}
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.7}
-                onDragStart={() => setDragging(true)}
-                onDragEnd={handleDragEnd}
-              />
+              >
+                {/* Image */}
+                <motion.img
+                  src={currentPhoto.src}
+                  alt="Selected"
+                  className="w-[500px] max-h-[420px] object-contain rounded-xl cursor-grab active:cursor-grabbing"
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.7}
+                  onDragStart={() => setDragging(true)}
+                  onDragEnd={handleDragEnd}
+                />
+
+                {/* Info bar inside the frame */}
+                <div className="flex items-center justify-between px-4 py-4 mt-1">
+                  {/* CC */}
+                  {currentPhoto.cc ? (
+                    <div className="flex items-center gap-1.5">
+                      <span
+                        className="text-[10px] font-medium px-1 py-0.5 rounded-sm"
+                        style={{
+                          background: "rgba(255,255,255,0.1)",
+                          color: "rgba(255,255,255,0.6)",
+                          border: "1px solid rgba(255,255,255,0.12)",
+                        }}
+                      >
+                        cc
+                      </span>
+                      <span className="text-white text-sm">{currentPhoto.cc}</span>
+                    </div>
+                  ) : <span />}
+
+                  {/* Location */}
+                  {currentPhoto.location && (
+                    <span
+                      className="flex items-center gap-1 text-sm"
+                      style={{ color: "rgba(255,255,255,0.5)" }}
+                    >
+                      <MapPin size={12} />
+                      {currentPhoto.location}
+                    </span>
+                  )}
+                </div>
+              </motion.div>
 
               {/* Next */}
               {photos.length > 1 && (
@@ -106,32 +150,13 @@ export default function PhotoModal({
                   src={photos[nextIndex].src}
                   alt="Next"
                   className="w-[200px] h-[140px] object-cover rounded-lg opacity-50 cursor-pointer"
+                  style={{ border: "1px solid rgba(255,255,255,0.12)" }}
                   whileHover={{ scale: 1.05, opacity: 0.7 }}
                   drag="x"
                   dragConstraints={{ left: -30, right: 30 }}
                   dragElastic={0.3}
                   onClick={() => !dragging && handleSelect(nextIndex)}
                 />
-              )}
-            </div>
-
-            {/* Photo Info */}
-            <div className="mt-3 w-full flex justify-between px-64">
-              {/* CC - left */}
-              {currentPhoto.cc && (
-                <div className="flex items-center gap-1.5">
-                  <span className="bg-gray-600 text-white text-[10px] font-medium px-1 py-0.5 rounded-sm">
-                    cc
-                  </span>
-                  <span className="text-white text-sm">{currentPhoto.cc}</span>
-                </div>
-              )}
-
-              {/* Location - right */}
-              {currentPhoto.location && (
-                <span className="flex items-center gap-1 text-gray-200 text-sm">
-                  <MapPin size={12} /> {currentPhoto.location}
-                </span>
               )}
             </div>
           </motion.div>

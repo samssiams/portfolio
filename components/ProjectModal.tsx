@@ -70,14 +70,16 @@ export default function Modal({
               </button>
             </div>
 
-            {/* Image */}
+            {/* Image — static, no hover interaction */}
             {image && (
-              <div className="mb-4 flex justify-center">
+              <div
+                className="mb-4 rounded-lg overflow-hidden"
+                style={{ border: "1px solid rgba(255,255,255,0.08)" }}
+              >
                 <img
                   src={image}
                   alt={title}
                   className="w-full h-auto max-h-[300px] object-contain rounded-lg"
-                  style={{ border: "1px solid rgba(255,255,255,0.08)" }}
                 />
               </div>
             )}
