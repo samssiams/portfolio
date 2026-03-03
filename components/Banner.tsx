@@ -7,7 +7,7 @@ export default function Banner() {
         <div
           className="rounded-xl py-3 text-center"
           style={{
-            background: "rgba(34, 39, 50, 0.82)",
+            background: "rgba(26, 30, 40, 0.82)",
             backdropFilter: "blur(24px)",
             WebkitBackdropFilter: "blur(24px)",
             border: "1px solid rgba(255,255,255,0.18)",

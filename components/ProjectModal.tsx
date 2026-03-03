@@ -42,7 +42,7 @@ export default function Modal({
           <motion.div
             className="rounded-2xl shadow-xl p-5 sm:p-6 max-w-md w-full"
             style={{
-              background: "rgba(34, 39, 50, 0.65)",
+              background: "rgba(26, 30, 40, 0.65)",
               backdropFilter: "blur(24px)",
               WebkitBackdropFilter: "blur(24px)",
               border: "1px solid rgba(255,255,255,0.18)",

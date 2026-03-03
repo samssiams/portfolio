@@ -77,7 +77,7 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
           <motion.div
             className="relative rounded-2xl shadow-xl p-5 sm:p-6 max-w-sm w-full"
             style={{
-              background: "rgba(22, 26, 35, 0.88)",
+              background: "rgba(26, 30, 40, 0.88)",
               backdropFilter: "blur(32px)",
               WebkitBackdropFilter: "blur(32px)",
               border: "1px solid rgba(255,255,255,0.18)",

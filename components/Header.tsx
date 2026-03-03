@@ -37,7 +37,7 @@ const Header = () => {
       <header
         className={`fixed left-1/2 z-20 -translate-x-1/2 py-1 transition-all duration-300 hidden md:block w-[800px]
           ${scrolled
-            ? "top-4 rounded-2xl bg-[#1a1e2a]/75 backdrop-blur-md border border-white/10"
+            ? "top-4 rounded-2xl bg-[#1a1e28]/75 backdrop-blur-md border border-white/10"
             : "top-0 bg-transparent border-transparent shadow-none"
           }`}
       >
@@ -71,8 +71,8 @@ const Header = () => {
       <header
         className={`fixed left-0 right-0 z-20 transition-all duration-300 md:hidden
           ${scrolled
-            ? "top-3 mx-4 rounded-2xl bg-[#1a1e2a]/85 backdrop-blur-md border border-white/10"
-            : "top-0 bg-[#222732]/90 backdrop-blur-sm border-b border-white/5"
+            ? "top-3 mx-4 rounded-2xl bg-[#1a1e28]/85 backdrop-blur-md border border-white/10"
+            : "top-0 bg-[#1a1e28]/90 backdrop-blur-sm border-b border-white/5"
           }`}
       >
         <div className="flex items-center justify-between px-5 py-3">

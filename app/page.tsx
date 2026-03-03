@@ -1,6 +1,7 @@
 "use client";
 
 import { Instagram, Linkedin, ArrowUpRight, Mail, FileUser, MapPin } from "lucide-react";
+import Image from "next/image";
 import Header from "../components/Header";
 import Banner from "../components/Banner";
 import Footer from "../components/Footer";
@@ -171,241 +172,324 @@ export default function Home() {
 
   return (
     <div
-      className="min-h-screen font-chakra flex flex-col items-center"
-      style={{
-        backgroundColor: "#222732",
-        backgroundImage: "radial-gradient(circle, rgba(129,230,217,0.15) 1px, transparent 1px)",
-        backgroundSize: "24px 24px",
-        backgroundAttachment: "fixed",
-      }}
+      className="min-h-screen font-chakra flex flex-col items-center relative"
+      style={{ backgroundColor: "#1a1e28" }}
     >
-      <Header />
-
+      {/* ── Static Film Grain ── */}
       <div
-        className="fixed top-0 left-0 w-full pointer-events-none"
+        className="fixed inset-0 pointer-events-none"
         style={{
-          zIndex: 9,
-          height: "40px",
-          background: "linear-gradient(to bottom, #222732 0%, #222732 40%, rgba(34,39,50,0.7) 70%, transparent 100%)",
+          zIndex: 2,
+          opacity: 0.18,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "200px 200px",
+          mixBlendMode: "overlay",
         }}
       />
 
-      <Banner />
+      {/* ── Vignette ── */}
+      <div
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          zIndex: 1,
+          background: `
+            radial-gradient(ellipse 80% 60% at 50% 0%, rgba(129,230,217,0.04) 0%, transparent 70%),
+            radial-gradient(ellipse 100% 80% at 50% 100%, rgba(10,12,18,0.6) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 100% at 0% 50%, rgba(10,12,18,0.3) 0%, transparent 70%),
+            radial-gradient(ellipse 60% 100% at 100% 50%, rgba(10,12,18,0.3) 0%, transparent 70%)
+          `,
+        }}
+      />
 
-      <AnimatePresence>
-        {toast && (
+      {/* ── Dot Grid ── */}
+      <div
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          zIndex: 0,
+          backgroundImage: "radial-gradient(circle, rgba(129,230,217,0.09) 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+          backgroundAttachment: "fixed",
+          maskImage: "radial-gradient(ellipse 90% 90% at 50% 40%, black 40%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(ellipse 90% 90% at 50% 40%, black 40%, transparent 100%)",
+        }}
+      />
+
+      {/* ── Ambient Glow Blobs ── */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+        <div style={{
+          position: "absolute",
+          top: "10%", left: "50%",
+          transform: "translateX(-50%)",
+          width: "600px", height: "300px",
+          background: "radial-gradient(ellipse, rgba(129,230,217,0.035) 0%, transparent 70%)",
+          filter: "blur(40px)",
+        }} />
+        <div style={{
+          position: "absolute",
+          bottom: "20%", left: "20%",
+          width: "400px", height: "400px",
+          background: "radial-gradient(ellipse, rgba(100,120,200,0.025) 0%, transparent 70%)",
+          filter: "blur(60px)",
+        }} />
+      </div>
+
+      {/* ── All Content ── */}
+      <div className="relative w-full flex flex-col items-center" style={{ zIndex: 10 }}>
+        <Header />
+
+        <div
+          className="fixed top-0 left-0 w-full pointer-events-none"
+          style={{
+            zIndex: 9,
+            height: "40px",
+            background: "linear-gradient(to bottom, #1a1e28 0%, #1a1e28 40%, rgba(26,30,40,0.7) 70%, transparent 100%)",
+          }}
+        />
+
+        <Banner />
+
+        <AnimatePresence>
+          {toast && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="fixed bottom-5 right-4 z-50 px-4 py-3 rounded-lg text-[13px] font-medium tracking-[0.3px] shadow-lg max-w-[calc(100vw-2rem)]"
+              style={{
+                background: toast.type === "success" ? "rgba(129,230,217,0.15)" : toast.type === "warning" ? "rgba(255,200,80,0.15)" : "rgba(255,100,100,0.15)",
+                border: `1px solid ${toast.type === "success" ? "rgba(129,230,217,0.4)" : toast.type === "warning" ? "rgba(255,200,80,0.4)" : "rgba(255,100,100,0.4)"}`,
+                color: toast.type === "success" ? "#81E6D9" : toast.type === "warning" ? "#FFC850" : "#FF6464",
+              }}
+            >
+              {toast.message}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
-            className="fixed bottom-5 right-4 z-50 px-4 py-3 rounded-lg text-[13px] font-medium tracking-[0.3px] shadow-lg max-w-[calc(100vw-2rem)]"
-            style={{
-              background: toast.type === "success" ? "rgba(129,230,217,0.15)" : toast.type === "warning" ? "rgba(255,200,80,0.15)" : "rgba(255,100,100,0.15)",
-              border: `1px solid ${toast.type === "success" ? "rgba(129,230,217,0.4)" : toast.type === "warning" ? "rgba(255,200,80,0.4)" : "rgba(255,100,100,0.4)"}`,
-              color: toast.type === "success" ? "#81E6D9" : toast.type === "warning" ? "#FFC850" : "#FF6464",
-            }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+            className="w-full mt-10"
           >
-            {toast.message}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.5 }}
-          className="w-full mt-10"
-        >
-          {/* ── Hero / Profile ── */}
-          <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31">
-            {/* Mobile */}
-            <div className="flex flex-col items-center sm:hidden text-center mb-6">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/profile.png" alt="Samuel Cruz" className="w-24 h-24 rounded-full border-2 border-white shadow-lg object-cover" />
-              <h2 className="text-white text-[26px] font-bold leading-tight mt-4">Samuel Cruz</h2>
-              <p className="text-gray-300 mt-2 text-[14px] flex items-center justify-center gap-1.5">
-                <MapPin size={14} strokeWidth={2} className="shrink-0" /> Bataan, Philippines
-              </p>
-              <p className="text-gray-300 mt-1 text-[14px]">Web Developer <span className="text-white">|</span> Project Manager</p>
-              <div className="flex flex-wrap justify-center gap-3 mt-4 text-[14px] font-semibold text-[#81E6D9] tracking-[0.38px]">
-                <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
-                  <Instagram size={16} /><span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
-                </a>
-                <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
-                  <Linkedin size={16} /><span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
-                </a>
-                <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
-                  <FileUser size={16} /><span className="relative group">Resume<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
-                </a>
-              </div>
-            </div>
-
-            {/* Desktop */}
-            <div className="hidden sm:flex items-center justify-between gap-4">
-              <div className="flex-1 min-w-0">
-                <h2 className="text-white text-[32px] md:text-[35px] font-bold leading-tight">Samuel Cruz</h2>
-                <p className="text-gray-300 mt-2 text-[16px] flex items-center gap-1.5">
-                  <MapPin size={15} strokeWidth={2} className="relative top-[-1px] shrink-0" /> Bataan, Philippines
+            {/* ── Hero / Profile ── */}
+            <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31">
+              {/* Mobile */}
+              <div className="flex flex-col items-center sm:hidden text-center mb-6">
+                <div className="relative w-24 h-24 rounded-full border-2 border-white shadow-lg overflow-hidden">
+                  <Image
+                    src="/profile.png"
+                    alt="Samuel Cruz"
+                    fill
+                    priority
+                    sizes="96px"
+                    className="object-cover"
+                  />
+                </div>
+                <h2 className="text-white text-[26px] font-bold leading-tight mt-4">Samuel Cruz</h2>
+                <p className="text-gray-300 mt-2 text-[14px] flex items-center justify-center gap-1.5">
+                  <MapPin size={14} strokeWidth={2} className="shrink-0" /> Bataan, Philippines
                 </p>
-                <p className="text-gray-300 mt-2 text-[16px]">Web Developer <span className="text-white">|</span> Project Manager</p>
-                <div className="flex flex-wrap gap-6 mt-4 text-[17px] font-semibold text-[#81E6D9] tracking-[0.38px]">
+                <p className="text-gray-300 mt-1 text-[14px]">Web Developer <span className="text-white">|</span> Project Manager</p>
+                <div className="flex flex-wrap justify-center gap-3 mt-4 text-[14px] font-semibold text-[#81E6D9] tracking-[0.38px]">
                   <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
-                    <Instagram size={17} /><span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
+                    <Instagram size={16} /><span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
                   <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
-                    <Linkedin size={17} /><span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
+                    <Linkedin size={16} /><span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
                   <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
-                    <FileUser size={17} /><span className="relative group">Resume<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
+                    <FileUser size={16} /><span className="relative group">Resume<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
                 </div>
               </div>
-              <div className="shrink-0">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/profile.png" alt="Samuel Cruz" className="w-24 h-24 md:w-30 md:h-30 rounded-full border-2 border-white shadow-lg object-cover" />
+
+              {/* Desktop */}
+              <div className="hidden sm:flex items-center justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-white text-[32px] md:text-[35px] font-bold leading-tight">Samuel Cruz</h2>
+                  <p className="text-gray-300 mt-2 text-[16px] flex items-center gap-1.5">
+                    <MapPin size={15} strokeWidth={2} className="relative top-[-1px] shrink-0" /> Bataan, Philippines
+                  </p>
+                  <p className="text-gray-300 mt-2 text-[16px]">Web Developer <span className="text-white">|</span> Project Manager</p>
+                  <div className="flex flex-wrap gap-6 mt-4 text-[17px] font-semibold text-[#81E6D9] tracking-[0.38px]">
+                    <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                      <Instagram size={17} /><span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                      <Linkedin size={17} /><span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
+                    </a>
+                    <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                      <FileUser size={17} /><span className="relative group">Resume<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
+                    </a>
+                  </div>
+                </div>
+                <div className="shrink-0">
+                  <div className="relative w-24 h-24 md:w-[120px] md:h-[120px] rounded-full border-2 border-white shadow-lg overflow-hidden">
+                    <Image
+                      src="/profile.png"
+                      alt="Samuel Cruz"
+                      fill
+                      priority
+                      sizes="(min-width: 768px) 120px, 96px"
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* ── About Me ── */}
-          <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-10">
-            <h3 className="text-white text-[18px] sm:text-[20px] font-bold">About me</h3>
-            <p className="text-gray-300 text-[14px] sm:text-[16px] mt-3 leading-relaxed">
-              <span className="pl-6 inline-block">I am</span>{" "}
-              a <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">web developer</span> and{" "}
-              <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">project manager</span> with a strong track record in
-              delivering efficient, user-focused solutions. I excel at coordinating teams, streamlining workflows, and bridging the gap
-              between creative vision and technical execution. Alongside my technical expertise, I&apos;m a{" "}
-              <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">photographer</span> who enjoys capturing stories and moments through my camera.
-            </p>
-          </div>
+            {/* ── About Me ── */}
+            <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-10">
+              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">About me</h3>
+              <p className="text-gray-300 text-[14px] sm:text-[16px] mt-3 leading-relaxed">
+                <span className="pl-6 inline-block">I am</span>{" "}
+                a <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">web developer</span> and{" "}
+                <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">project manager</span> with a strong track record in
+                delivering efficient, user-focused solutions. I excel at coordinating teams, streamlining workflows, and bridging the gap
+                between creative vision and technical execution. Alongside my technical expertise, I&apos;m a{" "}
+                <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">photographer</span> who enjoys capturing stories and moments through my camera.
+              </p>
+            </div>
 
-          {/* ── Experiences ── */}
-          <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
-            <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Experiences</h3>
-            <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 flex flex-col gap-4">
-              <div className="flex flex-col gap-1">
-                <p className="leading-relaxed">
-                  <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2025 – Present</span>
-                  Technical Project Manager —{" "}
-                  <a href="https://www.freelancer.com/project-management" target="_blank" rel="noopener noreferrer" className="relative group font-bold tracking-[0.38px] text-[#81E6D9]">
-                    Freelancer<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" />
-                  </a>
-                </p>
+            {/* ── Experiences ── */}
+            <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
+              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Experiences</h3>
+              <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                  <p className="leading-relaxed">
+                    <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2025 – Present</span>
+                    Technical Project Manager —{" "}
+                    <a href="https://www.freelancer.com/project-management" target="_blank" rel="noopener noreferrer" className="relative group font-bold tracking-[0.38px] text-[#81E6D9]">
+                      Freelancer<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" />
+                    </a>
+                  </p>
+                  <div className="ml-1 mt-3 flex flex-col gap-3">
+                    <ProjectCard title="Co-Pilot — Tamkeen Partnership Program" date="2026" place="Bonifacio Global City, Taguig" desc="Worked closely with program leads and teams to keep the partnership on track, handles coordination and making sure key milestones were met." />
+                    <ProjectCard title="Prominence Bank – Digital Banking Platform" date="2026" place="Bonifacio Global City, Taguig" desc="Managed the project from start to finish, keeping teams aligned, running sprints, and making sure the platform shipped on time and within scope." />
+                    <ProjectCard title="InnerX – AI-Based Emotional Analytics" date="2025" place="Bonifacio Global City, Taguig" desc="Took the project from early concept to working prototype, staying on top of timelines, deliverables, and keeping everything moving in the right direction." />
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <p className="leading-relaxed">
+                    <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2024</span>
+                    Full-Stack Web Developer Intern —{" "}
+                    <a href="https://kynatech.ph/" target="_blank" rel="noopener noreferrer" className="relative group font-bold tracking-[0.38px] text-[#81E6D9]">
+                      Kynatech Technologies Co.<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" />
+                    </a>
+                  </p>
+                  <div className="ml-1 mt-3 flex flex-col gap-3">
+                    <ProjectCard title="Full Stack Web Development" place="Bonifacio Global City, Taguig" desc="Built a Next.js app with Supabase, Prisma, and NextAuth covering auth, timesheet, and payroll via REST APIs." />
+                    <ProjectCard title="Project Management" place="Bonifacio Global City, Taguig" desc="Ensured on-time delivery through progress monitoring, task verification, and Agile & Waterfall methodologies." />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ── Bio ── */}
+            <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
+              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Bio</h3>
+              <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 space-y-2">
+                <p><span className="font-bold tracking-[0.38px] mr-4">2021</span>Graduated Senior High — With High Honors</p>
+                <p><span className="font-bold tracking-[0.38px] mr-4">2024</span>Digital Credentials &amp; Certifications</p>
                 <div className="ml-1 mt-3 flex flex-col gap-3">
-                  <ProjectCard title="Co-Pilot — Tamkeen Partnership Program" date="2026" place="Bonifacio Global City, Taguig" desc="Worked closely with program leads and teams to keep the partnership on track, handles coordination and making sure key milestones were met." />
-                  <ProjectCard title="Prominence Bank – Digital Banking Platform" date="2026" place="Bonifacio Global City, Taguig" desc="Managed the project from start to finish, keeping teams aligned, running sprints, and making sure the platform shipped on time and within scope." />
-                  <ProjectCard title="InnerX – AI-Based Emotional Analytics" date="2025" place="Bonifacio Global City, Taguig" desc="Took the project from early concept to working prototype, staying on top of timelines, deliverables, and keeping everything moving in the right direction." />
+                  <CertCard label="IC3 Digital Literacy" href="/IC3 GS6 Level 1.pdf" />
+                  <CertCard label="Microsoft Office Specialist Associate (Microsoft 365)" href="/Microsoft Office Specialist  Associate.pdf" />
+                  <CertCard label="Information Technology Specialist in Network Security" href="/Network Security.pdf" />
+                  <CertCard label="Information Technology Specialist in Networking" href="/Networking.pdf" />
                 </div>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="leading-relaxed">
-                  <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2024</span>
-                  Full-Stack Web Developer Intern —{" "}
-                  <a href="https://kynatech.ph/" target="_blank" rel="noopener noreferrer" className="relative group font-bold tracking-[0.38px] text-[#81E6D9]">
-                    Kynatech Technologies Co.<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" />
-                  </a>
-                </p>
-                <div className="ml-1 mt-3 flex flex-col gap-3">
-                  <ProjectCard title="Full Stack Web Development" place="Bonifacio Global City, Taguig" desc="Built a Next.js app with Supabase, Prisma, and NextAuth covering auth, timesheet, and payroll via REST APIs." />
-                  <ProjectCard title="Project Management" place="Bonifacio Global City, Taguig" desc="Ensured on-time delivery through progress monitoring, task verification, and Agile & Waterfall methodologies." />
-                </div>
+                <p className="mt-2"><span className="font-bold tracking-[0.38px] mr-4">2025</span>Graduated B.S. Computer Science — Latin Honors</p>
               </div>
             </div>
-          </div>
 
-          {/* ── Bio ── */}
-          <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
-            <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Bio</h3>
-            <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 space-y-2">
-              <p><span className="font-bold tracking-[0.38px] mr-4">2021</span>Graduated Senior High — With High Honors</p>
-              <p><span className="font-bold tracking-[0.38px] mr-4">2024</span>Digital Credentials &amp; Certifications</p>
-              <div className="ml-1 mt-3 flex flex-col gap-3">
-                <CertCard label="IC3 Digital Literacy" href="/IC3 GS6 Level 1.pdf" />
-                <CertCard label="Microsoft Office Specialist Associate (Microsoft 365)" href="/Microsoft Office Specialist  Associate.pdf" />
-                <CertCard label="Information Technology Specialist in Network Security" href="/Network Security.pdf" />
-                <CertCard label="Information Technology Specialist in Networking" href="/Networking.pdf" />
+            {/* ── Projects ── */}
+            <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
+              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Projects</h3>
+              <div className="grid grid-cols-2 gap-3 sm:gap-6 mt-5">
+                {projectImages.map((img) => (
+                  <div key={img.alt} className="relative bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-full aspect-[7/4]">
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      loading="lazy"
+                      sizes="(min-width: 640px) 350px, 50vw"
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
               </div>
-              <p className="mt-2"><span className="font-bold tracking-[0.38px] mr-4">2025</span>Graduated B.S. Computer Science — Latin Honors</p>
+              <div className="flex justify-center mt-7">
+                <a href="/projects/portfolio" onMouseEnter={() => setPortfolioHovered(true)} onMouseLeave={() => setPortfolioHovered(false)}
+                  className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300" style={glassButtonStyle}>
+                  <span>Portfolio</span>
+                  <motion.span animate={{ width: portfolioHovered ? 24 : 0, opacity: portfolioHovered ? 1 : 0 }} transition={{ duration: 0.25, ease: "easeOut" }} style={{ overflow: "hidden", display: "flex", alignItems: "center" }}>
+                    <ArrowUpRight size={18} style={{ marginLeft: "6px", flexShrink: 0 }} />
+                  </motion.span>
+                </a>
+              </div>
             </div>
-          </div>
 
-          {/* ── Projects ── */}
-          <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
-            <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Projects</h3>
-            {/* eslint-disable @next/next/no-img-element */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-6 mt-5">
-              {projectImages.map((img) => (
-                <div key={img.alt} className="bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-full aspect-[7/4]">
-                  <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
-                </div>
-              ))}
+            {/* ── Photography ── */}
+            <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
+              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Photography</h3>
+              <div className="grid grid-cols-2 gap-3 sm:gap-6 mt-5">
+                {photoImages.map((img) => (
+                  <div key={img.alt} className="relative bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-full aspect-[7/4]">
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      loading="lazy"
+                      sizes="(min-width: 640px) 350px, 50vw"
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-center mt-7">
+                <a href="/photo/photography" onMouseEnter={() => setPhotoHovered(true)} onMouseLeave={() => setPhotoHovered(false)}
+                  className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300" style={glassButtonStyle}>
+                  <span>Photography</span>
+                  <motion.span animate={{ width: photoHovered ? 24 : 0, opacity: photoHovered ? 1 : 0 }} transition={{ duration: 0.25, ease: "easeOut" }} style={{ overflow: "hidden", display: "flex", alignItems: "center" }}>
+                    <ArrowUpRight size={18} style={{ marginLeft: "6px", flexShrink: 0 }} />
+                  </motion.span>
+                </a>
+              </div>
             </div>
-            {/* eslint-enable @next/next/no-img-element */}
-            <div className="flex justify-center mt-7">
-              <a href="/projects/portfolio" onMouseEnter={() => setPortfolioHovered(true)} onMouseLeave={() => setPortfolioHovered(false)}
-                className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300" style={glassButtonStyle}>
-                <span>Portfolio</span>
-                <motion.span animate={{ width: portfolioHovered ? 24 : 0, opacity: portfolioHovered ? 1 : 0 }} transition={{ duration: 0.25, ease: "easeOut" }} style={{ overflow: "hidden", display: "flex", alignItems: "center" }}>
-                  <ArrowUpRight size={18} style={{ marginLeft: "6px", flexShrink: 0 }} />
-                </motion.span>
-              </a>
-            </div>
-          </div>
 
-          {/* ── Photography ── */}
-          <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
-            <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Photography</h3>
-            {/* eslint-disable @next/next/no-img-element */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-6 mt-5">
-              {photoImages.map((img) => (
-                <div key={img.alt} className="bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-full aspect-[7/4]">
-                  <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
-                </div>
-              ))}
+            {/* ── Catch Me Here ── */}
+            <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
+              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Catch me here</h3>
+              <p className="text-gray-300 text-[14px] sm:text-[16px] mt-5 leading-relaxed">
+                <span className="pl-6 inline-block">If you</span> need clarifications, have questions, or would like more information, simply click the{" "}
+                <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">button below</span>, and I&apos;ll review it for you. I&apos;ll provide the best response and give some good quality idea for you.
+              </p>
             </div>
-            {/* eslint-enable @next/next/no-img-element */}
-            <div className="flex justify-center mt-7">
-              <a href="/photo/photography" onMouseEnter={() => setPhotoHovered(true)} onMouseLeave={() => setPhotoHovered(false)}
-                className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300" style={glassButtonStyle}>
-                <span>Photography</span>
-                <motion.span animate={{ width: photoHovered ? 24 : 0, opacity: photoHovered ? 1 : 0 }} transition={{ duration: 0.25, ease: "easeOut" }} style={{ overflow: "hidden", display: "flex", alignItems: "center" }}>
-                  <ArrowUpRight size={18} style={{ marginLeft: "6px", flexShrink: 0 }} />
-                </motion.span>
-              </a>
+
+            {/* ── Contact ── */}
+            <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-10 mb-1">
+              <div className="flex justify-center">
+                <button onClick={handleOpenModal} onMouseEnter={() => setMsgHovered(true)} onMouseLeave={() => setMsgHovered(false)}
+                  className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300 cursor-pointer" style={glassButtonStyle}>
+                  <motion.span animate={{ width: msgHovered ? 24 : 0, opacity: msgHovered ? 1 : 0 }} transition={{ duration: 0.25, ease: "easeOut" }} style={{ overflow: "hidden", display: "flex", alignItems: "center" }}>
+                    <Mail size={18} style={{ marginRight: "6px", flexShrink: 0 }} />
+                  </motion.span>
+                  <span>Send me a message here</span>
+                </button>
+              </div>
             </div>
-          </div>
+          </motion.div>
+        </AnimatePresence>
 
-          {/* ── Catch Me Here ── */}
-          <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
-            <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Catch me here</h3>
-            <p className="text-gray-300 text-[14px] sm:text-[16px] mt-5 leading-relaxed">
-              <span className="pl-6 inline-block">If you</span> need clarifications, have questions, or would like more information, simply click the{" "}
-              <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">button below</span>, and I&apos;ll review it for you. I&apos;ll provide the best response and give some good quality idea for you.
-            </p>
-          </div>
-
-          {/* ── Contact ── */}
-          <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-10 mb-1">
-            <div className="flex justify-center">
-              <button onClick={handleOpenModal} onMouseEnter={() => setMsgHovered(true)} onMouseLeave={() => setMsgHovered(false)}
-                className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300 cursor-pointer" style={glassButtonStyle}>
-                <motion.span animate={{ width: msgHovered ? 24 : 0, opacity: msgHovered ? 1 : 0 }} transition={{ duration: 0.25, ease: "easeOut" }} style={{ overflow: "hidden", display: "flex", alignItems: "center" }}>
-                  <Mail size={18} style={{ marginRight: "6px", flexShrink: 0 }} />
-                </motion.span>
-                <span>Send me a message here</span>
-              </button>
-            </div>
-          </div>
-        </motion.div>
-      </AnimatePresence>
-
-      <MessageModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSuccess={handleMessageSent} />
-      <Footer />
+        <MessageModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSuccess={handleMessageSent} />
+        <Footer />
+      </div>
     </div>
   );
 }
