@@ -27,6 +27,8 @@ function getTodayString() {
   return new Date().toISOString().split("T")[0];
 }
 
+const canHover = typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
+
 const glassButtonStyle = {
   background: "rgba(129,230,217,0.08)",
   backdropFilter: "blur(24px)",
@@ -41,8 +43,8 @@ function ProjectCard({ title, date, place, desc }: { title: string; date?: strin
   return (
     <div
       className="flex gap-3 sm:gap-4 cursor-default"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseEnter={() => { if (canHover) setHovered(true); }}
+      onMouseLeave={() => { if (canHover) setHovered(false); }}
     >
       <div className="flex flex-col items-center pt-[6px]">
         <div
@@ -62,7 +64,7 @@ function ProjectCard({ title, date, place, desc }: { title: string; date?: strin
           {title}
         </p>
         <p className="text-[12px] sm:text-[13px] tracking-[0.3px] flex items-baseline gap-1" style={{ color: "rgba(255,255,255,0.6)" }}>
-          {date && <span>{date} ·</span>}
+          {date && <span>{date} &middot;</span>}
           <MapPin size={11} className="relative top-[1px] shrink-0" /> {place}
         </p>
         <p className="text-[13px] sm:text-[15px] leading-relaxed mt-1" style={{ color: "rgba(255,255,255,0.6)" }}>{desc}</p>
@@ -73,11 +75,12 @@ function ProjectCard({ title, date, place, desc }: { title: string; date?: strin
 
 function CertCard({ label, href }: { label: string; href: string }) {
   const [hovered, setHovered] = useState(false);
+  const [linkHovered, setLinkHovered] = useState(false);
   return (
     <div
       className="flex gap-3 sm:gap-4 cursor-default"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseEnter={() => { if (canHover) setHovered(true); }}
+      onMouseLeave={() => { if (canHover) setHovered(false); }}
     >
       <div className="flex flex-col items-center pt-[6px]">
         <div
@@ -96,15 +99,83 @@ function CertCard({ label, href }: { label: string; href: string }) {
         >
           {label}
         </p>
-        <p className="text-[12px] sm:text-[13px] tracking-[0.3px]" style={{ color: "rgba(255,255,255,0.6)" }}>
-          <a href={href} target="_blank" rel="noopener noreferrer"
-            className="relative group italic font-light tracking-[0.38px] text-[#81E6D9]">
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap--1 italic font-light tracking-[0.38px] text-[#81E6D9] text-[12px] sm:text-[13px]"
+          style={{ marginLeft: "2px" }}
+          onMouseEnter={() => { if (canHover) setLinkHovered(true); }}
+          onMouseLeave={() => { if (canHover) setLinkHovered(false); }}
+        >
+          <motion.span
+            animate={{ x: linkHovered ? -4 : 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
             View Certification
-            <span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" />
-          </a>
-        </p>
+          </motion.span>
+          <span
+            style={{
+              width: 16,
+              height: 16,
+              display: "inline-flex",
+              alignItems: "center",
+              overflow: "hidden",
+            }}
+          >
+            <motion.span
+              animate={linkHovered ? { x: 0, y: 0, opacity: 1 } : { x: -6, y: 6, opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <ArrowUpRight size={13} style={{ flexShrink: 0 }} />
+            </motion.span>
+          </span>
+        </a>
       </div>
     </div>
+  );
+}
+
+// CHANGED: added marginLeft: "6px" for dash breathing room, label animates -2px instead of -4px
+function ExperienceLink({ href, label }: { href: string; label: string }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseEnter={() => { if (canHover) setHovered(true); }}
+      onMouseLeave={() => { if (canHover) setHovered(false); }}
+      className="inline-flex items-center font-bold tracking-[0.38px] text-[#81E6D9]"
+      style={{ marginLeft: "6px" }}
+    >
+      <motion.span
+        animate={{ x: hovered ? -2 : 0 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+      >
+        {label}
+      </motion.span>
+      <span
+        style={{
+          width: 22,
+          height: 22,
+          display: "inline-flex",
+          alignItems: "center",
+          overflow: "hidden",
+          marginLeft: hovered ? "4px" : "0px",
+          transition: "margin 0.25s ease",
+        }}
+      >
+        <motion.span
+          animate={hovered ? { x: 0, y: 0, opacity: 1 } : { x: -8, y: 8, opacity: 0 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          style={{ display: "flex", alignItems: "center" }}
+        >
+          <ArrowUpRight size={18} style={{ flexShrink: 0 }} />
+        </motion.span>
+      </span>
+    </a>
   );
 }
 
@@ -175,7 +246,6 @@ export default function Home() {
       className="min-h-screen font-chakra flex flex-col items-center relative"
       style={{ backgroundColor: "#1a1e28" }}
     >
-      {/* ── Static Film Grain ── */}
       <div
         className="fixed inset-0 pointer-events-none"
         style={{
@@ -187,8 +257,6 @@ export default function Home() {
           mixBlendMode: "overlay",
         }}
       />
-
-      {/* ── Vignette ── */}
       <div
         className="fixed inset-0 pointer-events-none"
         style={{
@@ -201,8 +269,6 @@ export default function Home() {
           `,
         }}
       />
-
-      {/* ── Dot Grid ── */}
       <div
         className="fixed inset-0 pointer-events-none"
         style={{
@@ -214,39 +280,30 @@ export default function Home() {
           WebkitMaskImage: "radial-gradient(ellipse 90% 90% at 50% 40%, black 40%, transparent 100%)",
         }}
       />
-
-      {/* ── Ambient Glow Blobs ── */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
         <div style={{
-          position: "absolute",
-          top: "10%", left: "50%",
-          transform: "translateX(-50%)",
+          position: "absolute", top: "10%", left: "50%", transform: "translateX(-50%)",
           width: "600px", height: "300px",
           background: "radial-gradient(ellipse, rgba(129,230,217,0.035) 0%, transparent 70%)",
           filter: "blur(40px)",
         }} />
         <div style={{
-          position: "absolute",
-          bottom: "20%", left: "20%",
+          position: "absolute", bottom: "20%", left: "20%",
           width: "400px", height: "400px",
           background: "radial-gradient(ellipse, rgba(100,120,200,0.025) 0%, transparent 70%)",
           filter: "blur(60px)",
         }} />
       </div>
 
-      {/* ── All Content ── */}
       <div className="relative w-full flex flex-col items-center" style={{ zIndex: 10 }}>
         <Header />
-
         <div
           className="fixed top-0 left-0 w-full pointer-events-none"
           style={{
-            zIndex: 9,
-            height: "40px",
+            zIndex: 9, height: "40px",
             background: "linear-gradient(to bottom, #1a1e28 0%, #1a1e28 40%, rgba(26,30,40,0.7) 70%, transparent 100%)",
           }}
         />
-
         <Banner />
 
         <AnimatePresence>
@@ -276,19 +333,10 @@ export default function Home() {
             transition={{ duration: 0.5 }}
             className="w-full mt-10"
           >
-            {/* ── Hero / Profile ── */}
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31">
-              {/* Mobile */}
               <div className="flex flex-col items-center sm:hidden text-center mb-6">
                 <div className="relative w-24 h-24 rounded-full border-2 border-white shadow-lg overflow-hidden">
-                  <Image
-                    src="/profile.png"
-                    alt="Samuel Cruz"
-                    fill
-                    priority
-                    sizes="96px"
-                    className="object-cover"
-                  />
+                  <Image src="/profile.png" alt="Samuel Cruz" fill priority sizes="96px" className="object-cover" />
                 </div>
                 <h2 className="text-white text-[26px] font-bold leading-tight mt-4">Samuel Cruz</h2>
                 <p className="text-gray-300 mt-2 text-[14px] flex items-center justify-center gap-1.5">
@@ -307,8 +355,6 @@ export default function Home() {
                   </a>
                 </div>
               </div>
-
-              {/* Desktop */}
               <div className="hidden sm:flex items-center justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <h2 className="text-white text-[32px] md:text-[35px] font-bold leading-tight">Samuel Cruz</h2>
@@ -330,20 +376,12 @@ export default function Home() {
                 </div>
                 <div className="shrink-0">
                   <div className="relative w-24 h-24 md:w-[120px] md:h-[120px] rounded-full border-2 border-white shadow-lg overflow-hidden">
-                    <Image
-                      src="/profile.png"
-                      alt="Samuel Cruz"
-                      fill
-                      priority
-                      sizes="(min-width: 768px) 120px, 96px"
-                      className="object-cover"
-                    />
+                    <Image src="/profile.png" alt="Samuel Cruz" fill priority sizes="(min-width: 768px) 120px, 96px" className="object-cover" />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* ── About Me ── */}
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-10">
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">About me</h3>
               <p className="text-gray-300 text-[14px] sm:text-[16px] mt-3 leading-relaxed">
@@ -356,17 +394,14 @@ export default function Home() {
               </p>
             </div>
 
-            {/* ── Experiences ── */}
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Experiences</h3>
               <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 flex flex-col gap-4">
                 <div className="flex flex-col gap-1">
                   <p className="leading-relaxed">
-                    <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2025 – Present</span>
-                    Technical Project Manager —{" "}
-                    <a href="https://www.freelancer.com/project-management" target="_blank" rel="noopener noreferrer" className="relative group font-bold tracking-[0.38px] text-[#81E6D9]">
-                      Freelancer<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" />
-                    </a>
+                    <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2025 &ndash; Present</span>
+                    Technical Project Manager &mdash;{" "}
+                    <ExperienceLink href="https://www.freelancer.com/project-management" label="Freelancer" />
                   </p>
                   <div className="ml-1 mt-3 flex flex-col gap-3">
                     <ProjectCard title="Co-Pilot — Tamkeen Partnership Program" date="2026" place="Bonifacio Global City, Taguig" desc="Worked closely with program leads and teams to keep the partnership on track, handles coordination and making sure key milestones were met." />
@@ -374,14 +409,11 @@ export default function Home() {
                     <ProjectCard title="InnerX – AI-Based Emotional Analytics" date="2025" place="Bonifacio Global City, Taguig" desc="Took the project from early concept to working prototype, staying on top of timelines, deliverables, and keeping everything moving in the right direction." />
                   </div>
                 </div>
-
                 <div className="flex flex-col gap-1">
                   <p className="leading-relaxed">
                     <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2024</span>
-                    Full-Stack Web Developer Intern —{" "}
-                    <a href="https://kynatech.ph/" target="_blank" rel="noopener noreferrer" className="relative group font-bold tracking-[0.38px] text-[#81E6D9]">
-                      Kynatech Technologies Co.<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" />
-                    </a>
+                    Full-Stack Web Developer Intern &mdash;{" "}
+                    <ExperienceLink href="https://kynatech.ph/" label="Kynatech Co." />
                   </p>
                   <div className="ml-1 mt-3 flex flex-col gap-3">
                     <ProjectCard title="Full Stack Web Development" place="Bonifacio Global City, Taguig" desc="Built a Next.js app with Supabase, Prisma, and NextAuth covering auth, timesheet, and payroll via REST APIs." />
@@ -391,11 +423,10 @@ export default function Home() {
               </div>
             </div>
 
-            {/* ── Bio ── */}
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Bio</h3>
               <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 space-y-2">
-                <p><span className="font-bold tracking-[0.38px] mr-4">2021</span>Graduated Senior High — With High Honors</p>
+                <p><span className="font-bold tracking-[0.38px] mr-4">2021</span>Graduated Senior High &mdash; With High Honors</p>
                 <p><span className="font-bold tracking-[0.38px] mr-4">2024</span>Digital Credentials &amp; Certifications</p>
                 <div className="ml-1 mt-3 flex flex-col gap-3">
                   <CertCard label="IC3 Digital Literacy" href="/IC3 GS6 Level 1.pdf" />
@@ -403,67 +434,68 @@ export default function Home() {
                   <CertCard label="Information Technology Specialist in Network Security" href="/Network Security.pdf" />
                   <CertCard label="Information Technology Specialist in Networking" href="/Networking.pdf" />
                 </div>
-                <p className="mt-2"><span className="font-bold tracking-[0.38px] mr-4">2025</span>Graduated B.S. Computer Science — Latin Honors</p>
+                <p className="mt-2"><span className="font-bold tracking-[0.38px] mr-4">2025</span>Graduated B.S. Computer Science &mdash; Latin Honors</p>
               </div>
             </div>
 
-            {/* ── Projects ── */}
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Projects</h3>
               <div className="grid grid-cols-2 gap-3 sm:gap-6 mt-5">
                 {projectImages.map((img) => (
                   <div key={img.alt} className="relative bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-full aspect-[7/4]">
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      fill
-                      loading="lazy"
-                      sizes="(min-width: 640px) 350px, 50vw"
-                      className="object-cover"
-                    />
+                    <Image src={img.src} alt={img.alt} fill loading="lazy" sizes="(min-width: 640px) 350px, 50vw" className="object-cover" />
                   </div>
                 ))}
               </div>
               <div className="flex justify-center mt-7">
-                <a href="/projects/portfolio" onMouseEnter={() => setPortfolioHovered(true)} onMouseLeave={() => setPortfolioHovered(false)}
-                  className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300" style={glassButtonStyle}>
+                <a
+                  href="/projects/portfolio"
+                  onMouseEnter={() => { if (canHover) setPortfolioHovered(true); }}
+                  onMouseLeave={() => { if (canHover) setPortfolioHovered(false); }}
+                  className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300"
+                  style={glassButtonStyle}
+                >
                   <span>Portfolio</span>
-                  <motion.span animate={{ width: portfolioHovered ? 24 : 0, opacity: portfolioHovered ? 1 : 0 }} transition={{ duration: 0.25, ease: "easeOut" }} style={{ overflow: "hidden", display: "flex", alignItems: "center" }}>
+                  <motion.span
+                    animate={{ width: portfolioHovered ? 24 : 0, opacity: portfolioHovered ? 1 : 0 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    style={{ overflow: "hidden", display: "flex", alignItems: "center" }}
+                  >
                     <ArrowUpRight size={18} style={{ marginLeft: "6px", flexShrink: 0 }} />
                   </motion.span>
                 </a>
               </div>
             </div>
 
-            {/* ── Photography ── */}
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Photography</h3>
               <div className="grid grid-cols-2 gap-3 sm:gap-6 mt-5">
                 {photoImages.map((img) => (
                   <div key={img.alt} className="relative bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-full aspect-[7/4]">
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      fill
-                      loading="lazy"
-                      sizes="(min-width: 640px) 350px, 50vw"
-                      className="object-cover"
-                    />
+                    <Image src={img.src} alt={img.alt} fill loading="lazy" sizes="(min-width: 640px) 350px, 50vw" className="object-cover" />
                   </div>
                 ))}
               </div>
               <div className="flex justify-center mt-7">
-                <a href="/photo/photography" onMouseEnter={() => setPhotoHovered(true)} onMouseLeave={() => setPhotoHovered(false)}
-                  className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300" style={glassButtonStyle}>
+                <a
+                  href="/photo/photography"
+                  onMouseEnter={() => { if (canHover) setPhotoHovered(true); }}
+                  onMouseLeave={() => { if (canHover) setPhotoHovered(false); }}
+                  className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300"
+                  style={glassButtonStyle}
+                >
                   <span>Photography</span>
-                  <motion.span animate={{ width: photoHovered ? 24 : 0, opacity: photoHovered ? 1 : 0 }} transition={{ duration: 0.25, ease: "easeOut" }} style={{ overflow: "hidden", display: "flex", alignItems: "center" }}>
+                  <motion.span
+                    animate={{ width: photoHovered ? 24 : 0, opacity: photoHovered ? 1 : 0 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    style={{ overflow: "hidden", display: "flex", alignItems: "center" }}
+                  >
                     <ArrowUpRight size={18} style={{ marginLeft: "6px", flexShrink: 0 }} />
                   </motion.span>
                 </a>
               </div>
             </div>
 
-            {/* ── Catch Me Here ── */}
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Catch me here</h3>
               <p className="text-gray-300 text-[14px] sm:text-[16px] mt-5 leading-relaxed">
@@ -472,12 +504,20 @@ export default function Home() {
               </p>
             </div>
 
-            {/* ── Contact ── */}
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-10 mb-1">
               <div className="flex justify-center">
-                <button onClick={handleOpenModal} onMouseEnter={() => setMsgHovered(true)} onMouseLeave={() => setMsgHovered(false)}
-                  className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300 cursor-pointer" style={glassButtonStyle}>
-                  <motion.span animate={{ width: msgHovered ? 24 : 0, opacity: msgHovered ? 1 : 0 }} transition={{ duration: 0.25, ease: "easeOut" }} style={{ overflow: "hidden", display: "flex", alignItems: "center" }}>
+                <button
+                  onClick={handleOpenModal}
+                  onMouseEnter={() => { if (canHover) setMsgHovered(true); }}
+                  onMouseLeave={() => { if (canHover) setMsgHovered(false); }}
+                  className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300 cursor-pointer"
+                  style={glassButtonStyle}
+                >
+                  <motion.span
+                    animate={{ width: msgHovered ? 24 : 0, opacity: msgHovered ? 1 : 0 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    style={{ overflow: "hidden", display: "flex", alignItems: "center" }}
+                  >
                     <Mail size={18} style={{ marginRight: "6px", flexShrink: 0 }} />
                   </motion.span>
                   <span>Send me a message here</span>
