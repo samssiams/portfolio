@@ -93,8 +93,8 @@ export const metadata: Metadata = {
 
   // ── Icons ─────────────────────────────────────────────────────────────────
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: "/icon.png",
+    apple: "/icon.png",
   },
 
   verification: {
