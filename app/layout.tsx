@@ -26,19 +26,22 @@ export const metadata: Metadata = {
   // ── Core ──────────────────────────────────────────────────────────────────
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Samssiams - Project Manager",
+    default: "Samssiams - Technical Project Manager",
     template: "%s | Samssiams",
   },
   description:
-    "Samssiams is the personal portfolio of Samuel Cruz — a Full Stack Developer, Project Manager, and Photographer based in Bataan, Philippines. Explore projects, experience, and photography.",
+    "I am a developer and project manager with a strong track record in delivering efficient, user-focused solutions. I excel at coordinating teams, streamlining workflows, and bridging the gap between creative vision and technical execution. Alongside my technical expertise, I'm a photographer who enjoys capturing stories and moments through my camera.",
   keywords: [
     "Samssiams",
     "Samuel Cruz",
     "Full Stack Developer Philippines",
+    "Quality Assurance Philippines",
+    "Technical Project Manager Philippines",
     "Project Manager Philippines",
     "Next.js Developer Bataan",
     "Web Developer Portfolio",
     "Photographer Bataan",
+    "Photography",
     "samssiams.com",
   ],
   authors: [{ name: "Samuel Cruz", url: BASE_URL }],
@@ -55,9 +58,9 @@ export const metadata: Metadata = {
     type: "website",
     url: BASE_URL,
     siteName: "Samssiams",
-    title: "Samssiams - Project Manager",
+    title: "Samssiams - Technical Project Manager",
     description:
-      "Portfolio of Samuel Cruz (Samssiams) — Full Stack Developer, Project Manager, and Photographer from Bataan, Philippines.",
+      "I am a developer and project manager with a strong track record in delivering efficient, user-focused solutions. I excel at coordinating teams, streamlining workflows, and bridging the gap between creative vision and technical execution. Alongside my technical expertise, I'm a photographer who enjoys capturing stories and moments through my camera.",
     images: [
       {
         url: "/og-image.png",
@@ -72,9 +75,9 @@ export const metadata: Metadata = {
   // ── Twitter / X Card ──────────────────────────────────────────────────────
   twitter: {
     card: "summary_large_image",
-    title: "Samssiams - Project Manager",
+    title: "Samssiams - Technical Project Manager",
     description:
-      "Portfolio of Samuel Cruz (Samssiams) — Full Stack Developer, Project Manager, and Photographer from Bataan, Philippines.",
+      "I am a developer and project manager with a strong track record in delivering efficient, user-focused solutions. I excel at coordinating teams, streamlining workflows, and bridging the gap between creative vision and technical execution. Alongside my technical expertise, I'm a photographer who enjoys capturing stories and moments through my camera.",
     images: ["/og-image.png"],
     creator: "@samssiams",
   },
