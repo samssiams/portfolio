@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   // ── Core ──────────────────────────────────────────────────────────────────
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Samssiams — Samuel Cruz | Full Stack Developer & Project Manager",
+    default: "Samssiams - Project Manager",
     template: "%s | Samssiams",
   },
   description:
@@ -55,12 +55,12 @@ export const metadata: Metadata = {
     type: "website",
     url: BASE_URL,
     siteName: "Samssiams",
-    title: "Samssiams — Samuel Cruz | Full Stack Developer & Project Manager",
+    title: "Samssiams - Project Manager",
     description:
       "Portfolio of Samuel Cruz (Samssiams) — Full Stack Developer, Project Manager, and Photographer from Bataan, Philippines.",
     images: [
       {
-        url: "/og-image.png", // 📌 Add a 1200×630 image to your /public folder
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Samssiams — Samuel Cruz Portfolio",
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
   // ── Twitter / X Card ──────────────────────────────────────────────────────
   twitter: {
     card: "summary_large_image",
-    title: "Samssiams — Samuel Cruz | Full Stack Developer & Project Manager",
+    title: "Samssiams - Project Manager",
     description:
       "Portfolio of Samuel Cruz (Samssiams) — Full Stack Developer, Project Manager, and Photographer from Bataan, Philippines.",
     images: ["/og-image.png"],
