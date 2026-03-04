@@ -41,10 +41,8 @@ export default function RootLayout({
       <body
         className={`${chakraPetch.variable} ${geistSans.variable} ${geistMono.variable} antialiased bg-[#1a1e28]`}
       >
-        <LenisScrollProvider>
           <InkCursor />
           {children}
-        </LenisScrollProvider>
       </body>
     </html>
   );

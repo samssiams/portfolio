@@ -163,7 +163,7 @@ function ExperienceLink({ href, label }: { href: string; label: string }) {
           display: "inline-flex",
           alignItems: "center",
           overflow: "hidden",
-          marginLeft: hovered ? "4px" : "0px",
+          marginLeft: hovered ? "1px" : "0px",
           transition: "margin 0.25s ease",
         }}
       >
