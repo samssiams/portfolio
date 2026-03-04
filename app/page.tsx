@@ -342,7 +342,7 @@ export default function Home() {
                 <p className="text-gray-300 mt-2 text-[14px] flex items-center justify-center gap-1.5">
                   <MapPin size={14} strokeWidth={2} className="shrink-0" /> Bataan, Philippines
                 </p>
-                <p className="text-gray-300 mt-1 text-[14px]">Web Developer <span className="text-white">|</span> Project Manager</p>
+                <p className="text-gray-300 mt-1 text-[14px]">Full Stack Developer <span className="text-white">|</span> Project Manager</p>
                 <div className="flex flex-wrap justify-center gap-3 mt-4 text-[14px] font-semibold text-[#81E6D9] tracking-[0.38px]">
                   <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                     <Instagram size={16} /><span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
@@ -361,7 +361,7 @@ export default function Home() {
                   <p className="text-gray-300 mt-2 text-[16px] flex items-center gap-1.5">
                     <MapPin size={15} strokeWidth={2} className="relative top-[-1px] shrink-0" /> Bataan, Philippines
                   </p>
-                  <p className="text-gray-300 mt-2 text-[16px]">Web Developer <span className="text-white">|</span> Project Manager</p>
+                  <p className="text-gray-300 mt-2 text-[16px]">Full Stack Developer <span className="text-white">|</span> Project Manager</p>
                   <div className="flex flex-wrap gap-6 mt-4 text-[17px] font-semibold text-[#81E6D9] tracking-[0.38px]">
                     <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                       <Instagram size={17} /><span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
@@ -386,7 +386,7 @@ export default function Home() {
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">About me</h3>
               <p className="text-gray-300 text-[14px] sm:text-[16px] mt-3 leading-relaxed">
                 <span className="pl-6 inline-block">I am</span>{" "}
-                a <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">web developer</span> and{" "}
+                a <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">developer</span> and{" "}
                 <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">project manager</span> with a strong track record in
                 delivering efficient, user-focused solutions. I excel at coordinating teams, streamlining workflows, and bridging the gap
                 between creative vision and technical execution. Alongside my technical expertise, I&apos;m a{" "}
