@@ -26,11 +26,11 @@ export const metadata: Metadata = {
   // ── Core ──────────────────────────────────────────────────────────────────
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Samssiams - Technical Project Manager",
+    default: "Samssiams - Full Stack Developer & Technical Project Manager",
     template: "%s | Samssiams",
   },
   description:
-    "I am a developer and project manager with a strong track record in delivering efficient, user-focused solutions. I excel at coordinating teams, streamlining workflows, and bridging the gap between creative vision and technical execution. Alongside my technical expertise, I'm a photographer who enjoys capturing stories and moments through my camera.",
+    "Developer and Technical Project Manager delivering efficient, user-focused solutions. I coordinate teams, manage workflows, and capture stories through photography.",
   keywords: [
     "Samssiams",
     "Samuel Cruz",
@@ -58,9 +58,9 @@ export const metadata: Metadata = {
     type: "website",
     url: BASE_URL,
     siteName: "Samssiams",
-    title: "Samssiams - Technical Project Manager",
+    title: "Samssiams - Full Stack Developer & Technical Project Manager",
     description:
-      "I am a developer and project manager with a strong track record in delivering efficient, user-focused solutions. I excel at coordinating teams, streamlining workflows, and bridging the gap between creative vision and technical execution. Alongside my technical expertise, I'm a photographer who enjoys capturing stories and moments through my camera.",
+      "Developer and Technical Project Manager delivering efficient, user-focused solutions. I coordinate teams, manage workflows, and capture stories through photography.",
     images: [
       {
         url: "/og-image.png",
@@ -75,9 +75,9 @@ export const metadata: Metadata = {
   // ── Twitter / X Card ──────────────────────────────────────────────────────
   twitter: {
     card: "summary_large_image",
-    title: "Samssiams - Technical Project Manager",
+    title: "Samssiams - Full Stack Developer & Technical Project Manager",
     description:
-      "I am a developer and project manager with a strong track record in delivering efficient, user-focused solutions. I excel at coordinating teams, streamlining workflows, and bridging the gap between creative vision and technical execution. Alongside my technical expertise, I'm a photographer who enjoys capturing stories and moments through my camera.",
+      "Developer and Technical Project Manager delivering efficient, user-focused solutions. I coordinate teams, manage workflows, and capture stories through photography.",
     images: ["/og-image.png"],
     creator: "@samssiams",
   },
