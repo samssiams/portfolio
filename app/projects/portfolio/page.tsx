@@ -11,6 +11,9 @@ interface Project {
   title: string;
   year: string;
   stacks: string[];
+  role?: string;
+  contributions?: string[];
+  shortDescription: string;
   description: string;
   image: string;
   github: string;
@@ -21,12 +24,81 @@ interface Project {
 export default function PortfolioPage() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
-  const projects: Project[] = [
+  const visibleProjects: Project[] = [
+    {
+      title: "Tamkeen",
+      year: "2026",
+      stacks: [],
+      role: "Co-Pilot",
+      contributions: [
+        "Coordinated between program leads and partner teams",
+        "Tracked deliverables and flagged blockers early",
+        "Maintained alignment across all stakeholders throughout the engagement",
+      ],
+      shortDescription: "A real-world industry engagement where I stepped in as Co-Pilot, making sure the right people had the right information and that nothing slipped between the cracks.",
+      description: "Tamkeen is a partnership program under Co-Pilot, where I worked closely with program leads and teams to keep the partnership on track, handling coordination and ensuring key milestones were met.",
+      image: "/tk.png",
+      github: "",
+      website: "",
+    },
+    {
+      title: "Noticer",
+      year: "2026",
+      stacks: [],
+      role: "Technical Project Manager",
+      contributions: [
+        "Led sprint planning and milestone tracking",
+        "Coordinated cross-functional teams across design and development",
+        "Maintained delivery timeline and kept scope from drifting",
+      ],
+      shortDescription: "A mobile adaptation project I managed end-to-end, focused on bringing an existing web platform to mobile without losing the experience that made it work in the first place.",
+      description: "Noticer is a mobile adaptation project where I led cross-functional teams to translate the existing web platform into a responsive mobile experience.",
+      image: "/nn.png",
+      github: "",
+      website: "",
+    },
+    {
+      title: "Prominence Bank",
+      year: "2026",
+      stacks: [],
+      role: "Technical Project Manager",
+      contributions: [
+        "Led sprint planning and milestone tracking",
+        "Coordinated cross-functional teams across design and development",
+        "Maintained delivery timeline and scope from kickoff to launch",
+      ],
+      shortDescription: "A high-stakes digital banking build with no room for loose ends. I kept the team focused, the sprints moving, and the scope locked so the product actually shipped.",
+      description: "Prominence Bank is a digital banking platform I managed from start to finish — keeping teams aligned, running sprints, and ensuring the platform shipped on time and within scope.",
+      image: "/pb.png",
+      github: "",
+      website: "",
+    },
+    {
+      title: "InnerX",
+      year: "2025",
+      stacks: [],
+      role: "Technical Project Manager",
+      contributions: [
+        "Led sprint planning and milestone tracking",
+        "Coordinated cross-functional teams across design and development",
+        "Drove the project from early concept through to working prototype",
+      ],
+      shortDescription: "Took an emotional analytics concept from a rough idea to a working AI prototype, staying hands-on with the timeline and making sure every deliverable landed on time.",
+      description: "InnerX is an AI-based emotional analytics tool I took from early concept to working prototype, staying on top of timelines, deliverables, and keeping everything moving in the right direction.",
+      image: "/ix.png",
+      github: "",
+      website: "",
+    },
+  ];
+
+  const hiddenProjects: Project[] = [
     {
       title: "Protecture",
       year: "2025",
       stacks: ["Next.js", "JavaScript", "Tailwind", "Supabase"],
+      shortDescription: "A Next.js and Supabase web system that uses FGSM adversarial perturbation to protect architectural images from being scraped and replicated by AI models.",
       description: "Protecture is a system designed to secure architectural images by applying FGSM-based encryption, protecting them from unauthorized AI use.",
       image: "/protecture1.png",
       github: "https://github.com/samssiams/Protecture",
@@ -36,6 +108,7 @@ export default function PortfolioPage() {
       title: "Thrift and Trend",
       year: "2024",
       stacks: ["Android Studio", "Java", "Firebase"],
+      shortDescription: "An Android thrift store app built with Java and Firebase that makes buying and selling secondhand clothing straightforward, affordable, and worth trusting.",
       description: "Thrift and Trend is a thrift store offering a wide selection of used and second-hand clothing that focuses on providing pre-loved fashion items at affordable prices.",
       image: "/tat.png",
       github: "https://github.com/samssiams/Thrift-and-Trend",
@@ -46,6 +119,7 @@ export default function PortfolioPage() {
       title: "Precision Arms",
       year: "2023",
       stacks: ["HTML", "PHP", "Tailwind", "MySql"],
+      shortDescription: "A PHP and MySQL weblog built for firearm enthusiasts who want clean, readable content without the noise. Gear specs, reviews, and analysis laid out to actually be useful.",
       description: "Precision Arms is a weblog for gun enthusiasts, offering insights, expert advice, and detailed analysis of firearms and accessories to enhance knowledge and decision-making.",
       image: "/pa1.png",
       github: "https://github.com/samssiams/Precision-Arms",
@@ -55,6 +129,7 @@ export default function PortfolioPage() {
       title: "BankITO",
       year: "2022",
       stacks: ["C#", "CSS", "MySQL"],
+      shortDescription: "A C# desktop banking system backed by MySQL where getting the data model right was everything. Built with reliability in mind from the very first table.",
       description: "BankITO is a banking system that securely manages customer accounts and transactions, ensuring efficiency and reliability in financial operations.",
       image: "/bankito.png",
       github: "https://github.com/samssiams/BankITO",
@@ -62,14 +137,27 @@ export default function PortfolioPage() {
     },
   ];
 
+  const displayedProjects = showAll
+    ? [...visibleProjects, ...hiddenProjects]
+    : visibleProjects;
+
   const highlightWords = (text: string) => {
-    const keywords = ["Protecture", "Thrift and Trend", "Precision Arms", "BankITO"];
-    let highlightedText = text;
+    const keywords = [
+      "Tamkeen", "Noticer", "Prominence Bank", "InnerX",
+      "Protecture", "Thrift and Trend", "Precision Arms", "BankITO",
+      "Co-Pilot", "Technical Project Manager",
+      "Next.js", "Supabase", "Java", "Firebase", "Android",
+      "PHP", "MySQL", "C#", "FGSM",
+      "mobile adaptation", "digital banking", "emotional analytics",
+      "adversarial encryption", "weblog", "thrift store",
+    ];
+    let highlighted = text;
     keywords.forEach((word) => {
-      const regex = new RegExp(`(${word})`, "gi");
-      highlightedText = highlightedText.replace(regex, `<span class="text-[#81E6D9]">$1</span>`);
+      const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regex = new RegExp(`(${escaped})`, "gi");
+      highlighted = highlighted.replace(regex, `<span class="text-[#81E6D9]">$1</span>`);
     });
-    return highlightedText;
+    return highlighted;
   };
 
   return (
@@ -140,12 +228,15 @@ export default function PortfolioPage() {
       <div className="relative w-full flex flex-col items-center" style={{ zIndex: 10 }}>
         <Header />
 
+        {/* ✅ FIX: Hide top gradient when modal is open so it doesn't bleed over backdrop */}
         <div
           className="fixed top-0 left-0 w-full pointer-events-none"
           style={{
             zIndex: 9,
             height: "40px",
             background: "linear-gradient(to bottom, #1a1e28 0%, #1a1e28 40%, rgba(26,30,40,0.7) 70%, transparent 100%)",
+            opacity: selectedProject ? 0 : 1,
+            transition: "opacity 0.3s ease",
           }}
         />
 
@@ -163,16 +254,16 @@ export default function PortfolioPage() {
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-10">
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Portfolio</h3>
 
-              {projects.map((project, index) => {
+              {displayedProjects.map((project, index) => {
                 const isHovered = hoveredIndex === index;
                 const isDimmed = hoveredIndex !== null && !isHovered;
 
                 return (
                   <motion.div
-                    key={index}
+                    key={project.title}
                     className="mt-5"
-                    onHoverStart={() => setHoveredIndex(index)}
-                    onHoverEnd={() => setHoveredIndex(null)}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
                     animate={{ opacity: isDimmed ? 0.35 : 1 }}
                     transition={{ duration: 0.3 }}
                   >
@@ -198,17 +289,25 @@ export default function PortfolioPage() {
                               {project.title} —{" "}
                               <span className="tracking-[0.38px] text-[#81E6D9]">{project.year}</span>
                             </p>
-                            <p className="flex flex-wrap gap-x-0">
-                              Stacks —{" "}
-                              {project.stacks.map((stack, idx) => (
-                                <span
-                                  key={idx}
-                                  className="tracking-[0.38px] text-white mr-1"
-                                >
-                                  {stack}{idx < project.stacks.length - 1 && ","}{" "}
-                                </span>
-                              ))}
-                            </p>
+                            {project.role && (
+                              <p>
+                                Role —{" "}
+                                <span className="tracking-[0.38px] text-white">{project.role}</span>
+                              </p>
+                            )}
+                            {project.stacks.length > 0 && (
+                              <p className="flex flex-wrap gap-x-0">
+                                Stacks —{" "}
+                                {project.stacks.map((stack, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="tracking-[0.38px] text-white mr-1"
+                                  >
+                                    {stack}{idx < project.stacks.length - 1 && ","}{" "}
+                                  </span>
+                                ))}
+                              </p>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -244,20 +343,32 @@ export default function PortfolioPage() {
                         </div>
                       </div>
 
-                      {/* Description */}
+                      {/* Short Description */}
                       <div
                         className="text-gray-300 text-[13px] sm:text-[15px] leading-relaxed"
                         dangerouslySetInnerHTML={{
-                          __html: `<p class="sm:indent-8">${highlightWords(project.description)}</p>`,
+                          __html: `<p class="sm:indent-8">${highlightWords(project.shortDescription)}</p>`,
                         }}
                       />
                     </div>
 
-                    {index !== projects.length - 1 && (
+                    {/* Divider or View More button */}
+                    {index === visibleProjects.length - 1 && !showAll ? (
+                      <div className="w-full max-w-[800px] mx-auto mt-10 flex items-center">
+                        <div className="flex-grow h-[0.5px] bg-gray-500 opacity-50"></div>
+                        <button
+                          onClick={() => setShowAll(true)}
+                          className="mx-4 text-white font-medium text-sm hover:text-[#81E6D9] transition cursor-pointer"
+                        >
+                          View More
+                        </button>
+                        <div className="flex-grow h-[0.5px] bg-gray-500 opacity-50"></div>
+                      </div>
+                    ) : index !== displayedProjects.length - 1 ? (
                       <div className="w-full max-w-[800px] mx-auto mt-10">
                         <div className="h-[0.5px] bg-gray-500 opacity-50" />
                       </div>
-                    )}
+                    ) : null}
                   </motion.div>
                 );
               })}
@@ -271,6 +382,8 @@ export default function PortfolioPage() {
               title={selectedProject?.title || ""}
               year={selectedProject?.year || ""}
               stacks={selectedProject?.stacks || []}
+              role={selectedProject?.role || ""}
+              contributions={selectedProject?.contributions || []}
               description={selectedProject?.description || ""}
               image={selectedProject?.image || ""}
               github={selectedProject?.github || ""}

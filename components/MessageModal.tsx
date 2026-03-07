@@ -101,13 +101,10 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
               </div>
               <button
                 onClick={onClose}
-                className="cursor-pointer ml-2 mt-1 transition-colors duration-200"
-                style={{ color: "rgba(255,255,255,0.4)" }}
-                onMouseEnter={e => (e.currentTarget.style.color = "white")}
-                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
+                className="flex items-center justify-center w-7 h-7 rounded-full cursor-pointer ml-2 mt-1 shrink-0 group"
               >
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                  <path d="M1 1L13 13M13 1L1 13" stroke="rgba(156,163,175,1)" strokeWidth="1.5" strokeLinecap="round" className="transition-all duration-200 group-hover:stroke-white"/>
                 </svg>
               </button>
             </div>

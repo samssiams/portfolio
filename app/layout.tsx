@@ -100,15 +100,19 @@ export const metadata: Metadata = {
     apple: "/icon.png",
   },
 
+  // ✅ SEO IMPROVEMENT 1: Added category — helps Google classify your site type
+  category: "technology",
+
   verification: {
     google: "8Q50KcwGCkpRr4aU-vcuDd1zZcNc5Js0dcFSgNInD3w",
   },
 };
 
+// ── Viewport (accessibility fix) ─────────────────────────────────────────────
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
+  // maximumScale removed — allows users to zoom for accessibility
 };
 
 // ── JSON-LD Structured Data (Person schema) ───────────────────────────────────
@@ -132,6 +136,25 @@ const jsonLd = {
     "https://www.linkedin.com/in/samssiams/",
     "https://github.com/samssiams",
   ],
+  // ✅ SEO IMPROVEMENT 2: Added knowsAbout — tells Google your areas of expertise
+  knowsAbout: [
+    "Full Stack Web Development",
+    "Project Management",
+    "Next.js",
+    "Supabase",
+    "Photography",
+    "Agile Methodology",
+  ],
+  // ✅ SEO IMPROVEMENT 3: Added nationality and worksFor — richer Google Knowledge Panel
+  nationality: {
+    "@type": "Country",
+    name: "Philippines",
+  },
+  worksFor: {
+    "@type": "Organization",
+    name: "Freelancer",
+    url: "https://www.freelancer.com",
+  },
 };
 
 export default function RootLayout({
@@ -147,12 +170,18 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* ✅ SEO IMPROVEMENT 4: DNS prefetch for external domains —
+            speeds up page load which is a Google ranking factor */}
+        <link rel="dns-prefetch" href="//www.instagram.com" />
+        <link rel="dns-prefetch" href="//www.linkedin.com" />
+        <link rel="dns-prefetch" href="//github.com" />
       </head>
       <body
         className={`${chakraPetch.variable} ${geistSans.variable} ${geistMono.variable} antialiased bg-[#1a1e28]`}
       >
         <InkCursor />
-        {children}
+        {/* <main> satisfies the landmark accessibility requirement */}
+        <main>{children}</main>
       </body>
     </html>
   );
