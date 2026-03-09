@@ -11,6 +11,10 @@ const tealScrollbar = `
   .modal-scroll {
     scrollbar-width: none;
   }
+  body.modal-open {
+    overflow: hidden;
+    touch-action: none;
+  }
 `;
 
 interface ModalProps {
@@ -74,7 +78,7 @@ export default function Modal({
                 WebkitBackdropFilter: "blur(24px)",
                 border: "1px solid rgba(255,255,255,0.18)",
                 borderRadius: "16px",
-                maxHeight: "85vh",
+                maxHeight: "75vh",
                 overflow: "hidden",
               }}
               initial={{ scale: 0.9, opacity: 0, y: 30 }}
@@ -95,7 +99,7 @@ export default function Modal({
 
               <div
                 className="modal-scroll overflow-y-auto p-5 sm:p-6 pb-8"
-                style={{ maxHeight: "85vh", borderRadius: "16px" }}
+                style={{ maxHeight: "75vh", borderRadius: "16px" }}
               >
                 {/* Title + Year + Close */}
                 <div className="flex items-start justify-between mb-4">

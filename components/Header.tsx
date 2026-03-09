@@ -7,10 +7,19 @@ import { navLinks } from "@/routers/router";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Menu } from "lucide-react";
 
+const shakeVariants = {
+  idle: { rotate: 0 },
+  shake: {
+    rotate: [0, -8, 8, -5, 5, -2, 2, 0],
+    transition: { duration: 0.8, ease: "easeInOut" as const },
+  },
+};
+
 const Header = () => {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [logoHovered, setLogoHovered] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -42,8 +51,18 @@ const Header = () => {
           }`}
       >
         <div className="flex w-full max-w-[800px] items-center justify-between px-6 py-2 text-[20px] font-bold">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => handleNavClick("/")}>
-            <Image src="/Rectangle 93.svg" alt="Logo" width={40} height={40} priority />
+          <div
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={() => handleNavClick("/")}
+            onMouseEnter={() => setLogoHovered(true)}
+            onMouseLeave={() => setLogoHovered(false)}
+          >
+            <motion.div
+              variants={shakeVariants}
+              animate={logoHovered ? "shake" : "idle"}
+            >
+              <Image src="/Rectangle 93.svg" alt="Logo" width={40} height={40} priority />
+            </motion.div>
             <span className="text-white">Samssiams</span>
           </div>
           <nav className="flex gap-9 text-[16px] font-semibold tracking-[0.38px]">

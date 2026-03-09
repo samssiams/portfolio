@@ -25,6 +25,7 @@ export default function PortfolioPage() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [showAll, setShowAll] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
 
   const visibleProjects: Project[] = [
     {
@@ -160,10 +161,22 @@ export default function PortfolioPage() {
     return highlighted;
   };
 
+  // Only apply hover effects on desktop (pointer: fine = mouse)
+  const canHover = !isTouch;
+
+  const handleMouseEnter = (index: number) => {
+    if (canHover) setHoveredIndex(index);
+  };
+
+  const handleMouseLeave = () => {
+    if (canHover) setHoveredIndex(null);
+  };
+
   return (
     <div
       className="min-h-screen font-chakra flex flex-col items-center relative"
       style={{ backgroundColor: "#1a1e28" }}
+      onTouchStart={() => setIsTouch(true)}
     >
       {/* ── Static Film Grain ── */}
       <div
@@ -228,7 +241,6 @@ export default function PortfolioPage() {
       <div className="relative w-full flex flex-col items-center" style={{ zIndex: 10 }}>
         <Header />
 
-        {/* ✅ FIX: Hide top gradient when modal is open so it doesn't bleed over backdrop */}
         <div
           className="fixed top-0 left-0 w-full pointer-events-none"
           style={{
@@ -256,14 +268,15 @@ export default function PortfolioPage() {
 
               {displayedProjects.map((project, index) => {
                 const isHovered = hoveredIndex === index;
-                const isDimmed = hoveredIndex !== null && !isHovered;
+                // Only dim others on desktop hover, never on touch
+                const isDimmed = canHover && hoveredIndex !== null && !isHovered;
 
                 return (
                   <motion.div
                     key={project.title}
                     className="mt-5"
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(null)}
+                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseLeave={handleMouseLeave}
                     animate={{ opacity: isDimmed ? 0.35 : 1 }}
                     transition={{ duration: 0.3 }}
                   >
@@ -273,12 +286,12 @@ export default function PortfolioPage() {
                           <span
                             style={{
                               fontSize: "13px",
-                              color: isHovered ? "#81E6D9" : "rgba(129,230,217,0.25)",
+                              color: isHovered && canHover ? "#81E6D9" : "rgba(129,230,217,0.25)",
                               fontVariantNumeric: "tabular-nums",
                               transition: "color 300ms ease, text-shadow 300ms ease",
                               letterSpacing: "0.05em",
                               flexShrink: 0,
-                              textShadow: isHovered ? "0 0 8px rgba(129,230,217,0.6)" : "none",
+                              textShadow: isHovered && canHover ? "0 0 8px rgba(129,230,217,0.6)" : "none",
                             }}
                           >
                             {String(index + 1).padStart(2, "0")}
@@ -328,8 +341,9 @@ export default function PortfolioPage() {
                           sizes="(min-width: 640px) 250px, 100vw"
                           className="object-cover"
                         />
+                        {/* Only show hover overlay on desktop */}
                         <div
-                          className="absolute inset-0 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-lg"
+                          className="absolute inset-0 sm:opacity-0 sm:group-hover:opacity-100 opacity-0 flex items-center justify-center rounded-lg"
                           style={{
                             background: "rgba(26, 30, 40, 0.82)",
                             backdropFilter: "blur(8px)",
