@@ -161,7 +161,6 @@ export default function PortfolioPage() {
     return highlighted;
   };
 
-  // Only apply hover effects on desktop (pointer: fine = mouse)
   const canHover = !isTouch;
 
   const handleMouseEnter = (index: number) => {
@@ -268,8 +267,6 @@ export default function PortfolioPage() {
 
               {displayedProjects.map((project, index) => {
                 const isHovered = hoveredIndex === index;
-                // Only dim others on desktop hover, never on touch
-                const isDimmed = canHover && hoveredIndex !== null && !isHovered;
 
                 return (
                   <motion.div
@@ -277,8 +274,6 @@ export default function PortfolioPage() {
                     className="mt-5"
                     onMouseEnter={() => handleMouseEnter(index)}
                     onMouseLeave={handleMouseLeave}
-                    animate={{ opacity: isDimmed ? 0.35 : 1 }}
-                    transition={{ duration: 0.3 }}
                   >
                     <div className="flex items-start gap-3">
                       <div className="flex-1">
@@ -312,10 +307,7 @@ export default function PortfolioPage() {
                               <p className="flex flex-wrap gap-x-0">
                                 Stacks —{" "}
                                 {project.stacks.map((stack, idx) => (
-                                  <span
-                                    key={idx}
-                                    className="tracking-[0.38px] text-white mr-1"
-                                  >
+                                  <span key={idx} className="tracking-[0.38px] text-white mr-1">
                                     {stack}{idx < project.stacks.length - 1 && ","}{" "}
                                   </span>
                                 ))}
@@ -327,30 +319,39 @@ export default function PortfolioPage() {
                     </div>
 
                     <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:items-center pl-5">
-                      {/* Image */}
+                      {/* Framed Image */}
                       <div
-                        className="relative bg-[#2F3445] rounded-lg overflow-hidden shadow-lg cursor-pointer group w-full sm:w-[250px] h-[180px] sm:h-[150px]"
+                        className="relative cursor-pointer group w-full sm:w-[250px] h-[180px] sm:h-[150px] rounded-[10px] overflow-hidden"
                         onClick={() => setSelectedProject(project)}
-                        style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.3)" }}
+                        style={{
+                          background: "rgba(22,26,35,0.95)",
+                          border: "1px solid rgba(255,255,255,0.12)",
+                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                          backdropFilter: "blur(24px)",
+                          WebkitBackdropFilter: "blur(24px)",
+                        }}
                       >
-                        <Image
-                          src={project.image}
-                          alt={`${project.title} Preview`}
-                          fill
-                          loading="lazy"
-                          sizes="(min-width: 640px) 250px, 100vw"
-                          className="object-cover"
-                        />
-                        {/* Only show hover overlay on desktop */}
+                        {/* Inset image */}
+                        <div className="absolute inset-[7px] rounded-[6px] overflow-hidden">
+                          <Image
+                            src={project.image}
+                            alt={`${project.title} Preview`}
+                            fill
+                            loading="lazy"
+                            sizes="(min-width: 640px) 250px, 100vw"
+                            className="object-cover"
+                          />
+                        </div>
+
+                        {/* Hover overlay — matches image bounds exactly, frame stays clean */}
                         <div
-                          className="absolute inset-0 sm:opacity-0 sm:group-hover:opacity-100 opacity-0 flex items-center justify-center rounded-lg"
+                          className="absolute inset-[6px] rounded-[6px] sm:opacity-0 sm:group-hover:opacity-100 opacity-0 flex items-center justify-center"
                           style={{
                             background: "rgba(26, 30, 40, 0.82)",
                             backdropFilter: "blur(8px)",
                             WebkitBackdropFilter: "blur(8px)",
-                            border: "1px solid rgba(255,255,255,0.18)",
-                            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
                             transition: "opacity 300ms ease-in-out",
+                            zIndex: 10,
                           }}
                         >
                           <span className="text-white text-[15px] font-medium tracking-[0.3px] italic">View</span>
@@ -366,7 +367,7 @@ export default function PortfolioPage() {
                       />
                     </div>
 
-                    {/* Divider or View More button */}
+                    {/* Divider or View More */}
                     {index === visibleProjects.length - 1 && !showAll ? (
                       <div className="w-full max-w-[800px] mx-auto mt-10 flex items-center">
                         <div className="flex-grow h-[0.5px] bg-gray-500 opacity-50"></div>

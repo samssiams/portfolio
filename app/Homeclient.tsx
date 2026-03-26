@@ -114,15 +114,7 @@ function CertCard({ label, href }: { label: string; href: string }) {
           >
             View Certification
           </motion.span>
-          <span
-            style={{
-              width: 16,
-              height: 16,
-              display: "inline-flex",
-              alignItems: "center",
-              overflow: "hidden",
-            }}
-          >
+          <span style={{ width: 16, height: 16, display: "inline-flex", alignItems: "center", overflow: "hidden" }}>
             <motion.span
               animate={linkHovered ? { x: 0, y: 0, opacity: 1 } : { x: -6, y: 6, opacity: 0 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
@@ -149,23 +141,10 @@ function ExperienceLink({ href, label }: { href: string; label: string }) {
       className="inline-flex items-center font-bold tracking-[0.38px] text-[#81E6D9]"
       style={{ marginLeft: "6px" }}
     >
-      <motion.span
-        animate={{ x: hovered ? -2 : 0 }}
-        transition={{ duration: 0.2, ease: "easeOut" }}
-      >
+      <motion.span animate={{ x: hovered ? -2 : 0 }} transition={{ duration: 0.2, ease: "easeOut" }}>
         {label}
       </motion.span>
-      <span
-        style={{
-          width: 22,
-          height: 22,
-          display: "inline-flex",
-          alignItems: "center",
-          overflow: "hidden",
-          marginLeft: hovered ? "1px" : "0px",
-          transition: "margin 0.25s ease",
-        }}
-      >
+      <span style={{ width: 22, height: 22, display: "inline-flex", alignItems: "center", overflow: "hidden", marginLeft: hovered ? "1px" : "0px", transition: "margin 0.25s ease" }}>
         <motion.span
           animate={hovered ? { x: 0, y: 0, opacity: 1 } : { x: -8, y: 8, opacity: 0 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
@@ -182,8 +161,7 @@ export default function HomeClient() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showMoreExp, setShowMoreExp] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "warning" | "error" } | null>(null);
-  const [portfolioHovered, setPortfolioHovered] = useState(false);
-  const [photoHovered, setPhotoHovered] = useState(false);
+  const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [msgHovered, setMsgHovered] = useState(false);
 
   useEffect(() => {
@@ -227,18 +205,29 @@ export default function HomeClient() {
     }
   };
 
-  const projectImages = [
-    { src: "/protecture1.png", alt: "Protecture" },
-    { src: "/pa1.png", alt: "Precision Arms" },
-    { src: "/tat.png", alt: "Thrift and Trend" },
-    { src: "/bankito.png", alt: "BankITO" },
-  ];
-
-  const photoImages = [
-    { src: "/catp1.jpg", alt: "Photo 1" },
-    { src: "/macrop4.jpg", alt: "Photo 2" },
-    { src: "/cactus.jpg", alt: "Photo 3" },
-    { src: "/macrop10.jpg", alt: "Photo 4" },
+  const mediaSections = [
+    {
+      label: "Projects",
+      href: "/projects/portfolio",
+      key: "portfolio",
+      images: [
+        { src: "/protecture1.png", alt: "Protecture" },
+        { src: "/pa1.png", alt: "Precision Arms" },
+        { src: "/tat.png", alt: "Thrift and Trend" },
+        { src: "/bankito.png", alt: "BankITO" },
+      ],
+    },
+    {
+      label: "Photography",
+      href: "/photo/photography",
+      key: "photography",
+      images: [
+        { src: "/catp1.jpg", alt: "Photo 1" },
+        { src: "/macrop4.jpg", alt: "Photo 2" },
+        { src: "/cactus.jpg", alt: "Photo 3" },
+        { src: "/macrop10.jpg", alt: "Photo 4" },
+      ],
+    },
   ];
 
   return (
@@ -249,12 +238,9 @@ export default function HomeClient() {
       <div
         className="fixed inset-0 pointer-events-none"
         style={{
-          zIndex: 2,
-          opacity: 0.18,
+          zIndex: 2, opacity: 0.18,
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          backgroundRepeat: "repeat",
-          backgroundSize: "200px 200px",
-          mixBlendMode: "overlay",
+          backgroundRepeat: "repeat", backgroundSize: "200px 200px", mixBlendMode: "overlay",
         }}
       />
       <div
@@ -274,44 +260,28 @@ export default function HomeClient() {
         style={{
           zIndex: 0,
           backgroundImage: "radial-gradient(circle, rgba(129,230,217,0.09) 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
-          backgroundAttachment: "fixed",
+          backgroundSize: "24px 24px", backgroundAttachment: "fixed",
           maskImage: "radial-gradient(ellipse 90% 90% at 50% 40%, black 40%, transparent 100%)",
           WebkitMaskImage: "radial-gradient(ellipse 90% 90% at 50% 40%, black 40%, transparent 100%)",
         }}
       />
       <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-        <div style={{
-          position: "absolute", top: "10%", left: "50%", transform: "translateX(-50%)",
-          width: "600px", height: "300px",
-          background: "radial-gradient(ellipse, rgba(129,230,217,0.035) 0%, transparent 70%)",
-          filter: "blur(40px)",
-        }} />
-        <div style={{
-          position: "absolute", bottom: "20%", left: "20%",
-          width: "400px", height: "400px",
-          background: "radial-gradient(ellipse, rgba(100,120,200,0.025) 0%, transparent 70%)",
-          filter: "blur(60px)",
-        }} />
+        <div style={{ position: "absolute", top: "10%", left: "50%", transform: "translateX(-50%)", width: "600px", height: "300px", background: "radial-gradient(ellipse, rgba(129,230,217,0.035) 0%, transparent 70%)", filter: "blur(40px)" }} />
+        <div style={{ position: "absolute", bottom: "20%", left: "20%", width: "400px", height: "400px", background: "radial-gradient(ellipse, rgba(100,120,200,0.025) 0%, transparent 70%)", filter: "blur(60px)" }} />
       </div>
 
       <div className="relative w-full flex flex-col items-center" style={{ zIndex: 10 }}>
         <Header />
         <div
           className="fixed top-0 left-0 w-full pointer-events-none"
-          style={{
-            zIndex: 9, height: "40px",
-            background: "linear-gradient(to bottom, #1a1e28 0%, #1a1e28 40%, rgba(26,30,40,0.7) 70%, transparent 100%)",
-          }}
+          style={{ zIndex: 9, height: "40px", background: "linear-gradient(to bottom, #1a1e28 0%, #1a1e28 40%, rgba(26,30,40,0.7) 70%, transparent 100%)" }}
         />
         <Banner />
 
         <AnimatePresence>
           {toast && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.3 }}
               className="fixed bottom-5 right-4 z-50 px-4 py-3 rounded-lg text-[13px] font-medium tracking-[0.3px] shadow-lg max-w-[calc(100vw-2rem)]"
               style={{
@@ -327,9 +297,7 @@ export default function HomeClient() {
 
         <AnimatePresence>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
             className="w-full mt-10"
           >
@@ -345,15 +313,15 @@ export default function HomeClient() {
                 </p>
                 <p className="text-gray-300 mt-1 text-[14px]">Full Stack Developer <span className="text-white">|</span> Project Manager</p>
                 <div className="flex flex-wrap justify-center gap-3 mt-4 text-[14px] font-semibold text-[#81E6D9] tracking-[0.38px]">
-                  <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" aria-label="Samssiams on Instagram" className="flex items-center gap-1.5">
+                  <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                     <Instagram size={16} style={{ position: "relative", top: "-1px" }} />
                     <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
-                  <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" aria-label="Samssiams on LinkedIn" className="flex items-center gap-1.5">
+                  <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                     <Linkedin size={16} style={{ position: "relative", top: "-1px" }} />
                     <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
-                  <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" aria-label="Download Samuel Cruz Resume" className="flex items-center gap-1.5">
+                  <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                     <FileUser size={16} style={{ position: "relative", top: "-1px" }} />
                     <span className="relative group">Resume<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
@@ -369,15 +337,15 @@ export default function HomeClient() {
                   </p>
                   <p className="text-gray-300 mt-2 text-[16px]">Full Stack Developer <span className="text-white">|</span> Project Manager</p>
                   <div className="flex flex-wrap gap-6 mt-4 text-[17px] font-semibold text-[#81E6D9] tracking-[0.38px]">
-                    <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" aria-label="Samssiams on Instagram" className="flex items-center gap-1.5">
+                    <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                       <Instagram size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                     </a>
-                    <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" aria-label="Samssiams on LinkedIn" className="flex items-center gap-1.5">
+                    <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                       <Linkedin size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                     </a>
-                    <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" aria-label="Download Samuel Cruz Resume" className="flex items-center gap-1.5">
+                    <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                       <FileUser size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Resume<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                     </a>
@@ -420,10 +388,8 @@ export default function HomeClient() {
                     <AnimatePresence>
                       {showMoreExp && (
                         <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3, ease: "easeOut" }}
+                          initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3, ease: "easeOut" }}
                           style={{ overflow: "hidden" }}
                         >
                           <ProjectCard title="InnerX – AI-Based Emotional Analytics" date="2025" place="Bonifacio Global City, Taguig" desc="Took the project from early concept to working prototype, staying on top of timelines, deliverables, and keeping everything moving in the right direction." />
@@ -440,11 +406,7 @@ export default function HomeClient() {
                         className="flex items-center gap-1.5 cursor-pointer w-fit"
                         style={{ color: "#81E6D9", fontSize: "13px", letterSpacing: "0.3px", background: "none", border: "none", padding: 0, marginTop: "-8px" }}
                       >
-                        <motion.span
-                          animate={{ rotate: showMoreExp ? 180 : 0 }}
-                          transition={{ duration: 0.25, ease: "easeOut" }}
-                          style={{ display: "flex", alignItems: "center" }}
-                        >
+                        <motion.span animate={{ rotate: showMoreExp ? 180 : 0 }} transition={{ duration: 0.25, ease: "easeOut" }} style={{ display: "flex", alignItems: "center" }}>
                           <ChevronDown size={14} />
                         </motion.span>
                         <span>{showMoreExp ? "Show less" : "View more"}</span>
@@ -481,63 +443,49 @@ export default function HomeClient() {
               </div>
             </div>
 
-            <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
-              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Projects</h3>
-              <div className="grid grid-cols-2 gap-3 sm:gap-6 mt-5">
-                {projectImages.map((img) => (
-                  <div key={img.alt} className="relative bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-full aspect-[7/4]">
-                    <Image src={img.src} alt={img.alt} fill loading="lazy" sizes="(min-width: 640px) 350px, 50vw" className="object-cover" />
-                  </div>
-                ))}
-              </div>
-              <div className="flex justify-center mt-7">
-                <a
-                  href="/projects/portfolio"
-                  onMouseEnter={() => { if (canHover) setPortfolioHovered(true); }}
-                  onMouseLeave={() => { if (canHover) setPortfolioHovered(false); }}
-                  className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300"
-                  style={glassButtonStyle}
-                >
-                  <span>Portfolio</span>
-                  <motion.span
-                    animate={{ width: portfolioHovered ? 24 : 0, opacity: portfolioHovered ? 1 : 0 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
-                    style={{ overflow: "hidden", display: "flex", alignItems: "center" }}
+            {mediaSections.map(({ label, href, key, images }) => (
+              <div key={key} className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
+                <h3 className="text-white text-[18px] sm:text-[20px] font-bold">{label}</h3>
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-5">
+                  {images.map((img) => (
+                    <div
+                      key={img.alt}
+                      className="relative w-full aspect-[7/4] rounded-[10px] overflow-hidden"
+                      style={{
+                        background: "rgba(22,26,35,0.95)",
+                        border: "1px solid rgba(255,255,255,0.12)",
+                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                        backdropFilter: "blur(24px)",
+                        WebkitBackdropFilter: "blur(24px)",
+                      }}
+                    >
+                      <div className="absolute inset-[6px] rounded-[6px] overflow-hidden">
+                        <Image src={img.src} alt={img.alt} fill loading="lazy" sizes="(min-width: 640px) 350px, 50vw" className="object-cover" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-center mt-7">
+                  {/* Arrow always visible — animates upright on hover */}
+                  <a
+                    href={href}
+                    onMouseEnter={() => { if (canHover) setHoveredSection(key); }}
+                    onMouseLeave={() => { if (canHover) setHoveredSection(null); }}
+                    className="flex items-center justify-center gap-1.5 font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-all duration-300"
+                    style={glassButtonStyle}
                   >
-                    <ArrowUpRight size={18} style={{ marginLeft: "6px", flexShrink: 0 }} />
-                  </motion.span>
-                </a>
+                    <span>{label}</span>
+                    <motion.span
+                      animate={hoveredSection === key ? { x: 2, y: -2 } : { x: 0, y: 0 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <ArrowUpRight size={16} />
+                    </motion.span>
+                  </a>
+                </div>
               </div>
-            </div>
-
-            <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
-              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Photography</h3>
-              <div className="grid grid-cols-2 gap-3 sm:gap-6 mt-5">
-                {photoImages.map((img) => (
-                  <div key={img.alt} className="relative bg-[#2F3445] rounded-lg overflow-hidden shadow-lg w-full aspect-[7/4]">
-                    <Image src={img.src} alt={img.alt} fill loading="lazy" sizes="(min-width: 640px) 350px, 50vw" className="object-cover" />
-                  </div>
-                ))}
-              </div>
-              <div className="flex justify-center mt-7">
-                <a
-                  href="/photo/photography"
-                  onMouseEnter={() => { if (canHover) setPhotoHovered(true); }}
-                  onMouseLeave={() => { if (canHover) setPhotoHovered(false); }}
-                  className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300"
-                  style={glassButtonStyle}
-                >
-                  <span>Photography</span>
-                  <motion.span
-                    animate={{ width: photoHovered ? 24 : 0, opacity: photoHovered ? 1 : 0 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
-                    style={{ overflow: "hidden", display: "flex", alignItems: "center" }}
-                  >
-                    <ArrowUpRight size={18} style={{ marginLeft: "6px", flexShrink: 0 }} />
-                  </motion.span>
-                </a>
-              </div>
-            </div>
+            ))}
 
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Catch me here</h3>
@@ -549,19 +497,20 @@ export default function HomeClient() {
 
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-10 mb-1">
               <div className="flex justify-center">
+                {/* Mail icon always visible — animates on hover */}
                 <button
                   onClick={handleOpenModal}
                   onMouseEnter={() => { if (canHover) setMsgHovered(true); }}
                   onMouseLeave={() => { if (canHover) setMsgHovered(false); }}
-                  className="flex items-center justify-center font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300 cursor-pointer"
+                  className="flex items-center justify-center gap-2 font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300 cursor-pointer"
                   style={glassButtonStyle}
                 >
                   <motion.span
-                    animate={{ width: msgHovered ? 24 : 0, opacity: msgHovered ? 1 : 0 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
-                    style={{ overflow: "hidden", display: "flex", alignItems: "center" }}
+                    animate={msgHovered ? { rotate: -15, scale: 1.2 } : { rotate: 0, scale: 1 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    style={{ display: "flex", alignItems: "center" }}
                   >
-                    <Mail size={18} style={{ marginRight: "6px", flexShrink: 0 }} />
+                    <Mail size={16} />
                   </motion.span>
                   <span>Send me a message here</span>
                 </button>
