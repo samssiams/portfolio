@@ -44,7 +44,7 @@ const Header = () => {
     <>
       {/* ── Desktop Header ── */}
       <header
-        className={`fixed left-1/2 z-20 -translate-x-1/2 py-1 transition-all duration-300 hidden md:block w-[800px]
+        className={`fixed left-1/2 z-[49] -translate-x-1/2 py-1 transition-all duration-300 hidden md:block w-[800px]
           ${scrolled
             ? "top-4 rounded-2xl bg-[#1a1e28]/75 backdrop-blur-md border border-white/10"
             : "top-0 bg-transparent border-transparent shadow-none"
@@ -88,7 +88,7 @@ const Header = () => {
 
       {/* ── Mobile Header ── */}
       <header
-        className={`fixed left-0 right-0 z-20 transition-all duration-300 md:hidden
+        className={`fixed left-0 right-0 z-[49] transition-all duration-300 md:hidden
           ${scrolled
             ? "top-3 mx-4 rounded-2xl bg-[#1a1e28]/85 backdrop-blur-md border border-white/10"
             : "top-0 bg-[#1a1e28]/90 backdrop-blur-sm border-b border-white/5"
@@ -114,14 +114,14 @@ const Header = () => {
         {menuOpen && (
           <>
             <motion.div
-              className="fixed inset-0 z-10 md:hidden"
+              className="fixed inset-0 z-[48] md:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMenuOpen(false)}
             />
             <motion.div
-              className="fixed left-4 right-4 z-20 md:hidden rounded-2xl overflow-hidden"
+              className="fixed left-4 right-4 z-[49] md:hidden rounded-2xl overflow-hidden"
               style={{
                 top: scrolled ? "68px" : "60px",
                 background: "rgba(22, 26, 35, 0.95)",

@@ -182,7 +182,8 @@ export default function PortfolioPage() {
         className="fixed inset-0 pointer-events-none"
         style={{
           zIndex: 2,
-          opacity: 0.18,
+          opacity: selectedProject ? 0 : 0.18,
+          transition: "opacity 0.3s ease",
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           backgroundRepeat: "repeat",
           backgroundSize: "200px 200px",
@@ -195,6 +196,8 @@ export default function PortfolioPage() {
         className="fixed inset-0 pointer-events-none"
         style={{
           zIndex: 1,
+          opacity: selectedProject ? 0 : 1,
+          transition: "opacity 0.3s ease",
           background: `
             radial-gradient(ellipse 80% 60% at 50% 0%, rgba(129,230,217,0.04) 0%, transparent 70%),
             radial-gradient(ellipse 100% 80% at 50% 100%, rgba(10,12,18,0.6) 0%, transparent 60%),
@@ -209,6 +212,8 @@ export default function PortfolioPage() {
         className="fixed inset-0 pointer-events-none"
         style={{
           zIndex: 0,
+          opacity: selectedProject ? 0 : 1,
+          transition: "opacity 0.3s ease",
           backgroundImage: "radial-gradient(circle, rgba(129,230,217,0.09) 1px, transparent 1px)",
           backgroundSize: "24px 24px",
           backgroundAttachment: "fixed",
@@ -391,22 +396,23 @@ export default function PortfolioPage() {
               <Footer />
             </div>
 
-            <Modal
-              isOpen={!!selectedProject}
-              onClose={() => setSelectedProject(null)}
-              title={selectedProject?.title || ""}
-              year={selectedProject?.year || ""}
-              stacks={selectedProject?.stacks || []}
-              role={selectedProject?.role || ""}
-              contributions={selectedProject?.contributions || []}
-              description={selectedProject?.description || ""}
-              image={selectedProject?.image || ""}
-              github={selectedProject?.github || ""}
-              website={selectedProject?.website || ""}
-              apk={selectedProject?.apk || ""}
-            />
           </motion.div>
         </AnimatePresence>
+
+        <Modal
+          isOpen={!!selectedProject}
+          onClose={() => setSelectedProject(null)}
+          title={selectedProject?.title || ""}
+          year={selectedProject?.year || ""}
+          stacks={selectedProject?.stacks || []}
+          role={selectedProject?.role || ""}
+          contributions={selectedProject?.contributions || []}
+          description={selectedProject?.description || ""}
+          image={selectedProject?.image || ""}
+          github={selectedProject?.github || ""}
+          website={selectedProject?.website || ""}
+          apk={selectedProject?.apk || ""}
+        />
       </div>
     </div>
   );

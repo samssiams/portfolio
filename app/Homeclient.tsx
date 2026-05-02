@@ -312,7 +312,7 @@ export default function HomeClient() {
                   <MapPin size={14} strokeWidth={2} className="shrink-0" /> Bataan, Philippines
                 </p>
                 <p className="text-gray-300 mt-1 text-[14px]">Full Stack Developer <span className="text-white">|</span> Project Manager</p>
-                <div className="flex flex-wrap justify-center gap-3 mt-4 text-[14px] font-semibold text-[#81E6D9] tracking-[0.38px]">
+                <div className="flex flex-wrap justify-center gap-2 mt-4 text-[14px] font-semibold text-[#81E6D9] tracking-[0.38px]">
                   <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                     <Instagram size={16} style={{ position: "relative", top: "-1px" }} />
                     <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
@@ -321,7 +321,7 @@ export default function HomeClient() {
                     <Linkedin size={16} style={{ position: "relative", top: "-1px" }} />
                     <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
-                  <a href="/Present.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                  <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                     <FileUser size={16} style={{ position: "relative", top: "-1px" }} />
                     <span className="relative group">Resume<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
@@ -336,7 +336,7 @@ export default function HomeClient() {
                     <MapPin size={15} strokeWidth={2} className="relative top-[-1px] shrink-0" /> Bataan, Philippines
                   </p>
                   <p className="text-gray-300 mt-2 text-[16px]">Full Stack Developer <span className="text-white">|</span> Project Manager</p>
-                  <div className="flex flex-wrap gap-6 mt-4 text-[17px] font-semibold text-[#81E6D9] tracking-[0.38px]">
+                  <div className="flex flex-wrap gap-6 mt-3 text-[17px] font-semibold text-[#81E6D9] tracking-[0.38px]">
                     <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                       <Instagram size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
@@ -345,7 +345,7 @@ export default function HomeClient() {
                       <Linkedin size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                     </a>
-                    <a href="/Present.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                    <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                       <FileUser size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Resume<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                     </a>
@@ -359,7 +359,7 @@ export default function HomeClient() {
               </div>
             </div>
 
-            <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-10">
+            <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">About me</h3>
               <p className="text-gray-300 text-[14px] sm:text-[16px] mt-3 leading-relaxed">
                 <span className="pl-6 inline-block">I am</span>{" "}
@@ -381,10 +381,10 @@ export default function HomeClient() {
                     <ExperienceLink href="https://www.freelancer.com/project-management" label="Freelancer" />
                   </p>
                   <div className="ml-1 mt-3 flex flex-col gap-3">
+                    <ProjectCard title="Cross-Platform E-Commerce – Body Oil, Multimedia Art & Jewelry" date="Apr 2026 – May 2026" place="Bonifacio Global City, Taguig" desc="Managed a Shopify-Etsy integration project, defining delivery phases and milestones, keeping client communications aligned throughout the progress." />
                     <ProjectCard title="Co-Pilot — Tamkeen Partnership Program" date="2026" place="Bonifacio Global City, Taguig" desc="Worked closely with program leads and teams to keep the partnership on track, handles coordination and making sure key milestones were met." />
                     <ProjectCard title="Noticer – Mobile Version Implementation" date="2026" place="Bonifacio Global City, Taguig" desc="Led the mobile adaptation of Noticer, coordinating cross-functional teams to translate the web platform into a responsive mobile experience." />
-                    <ProjectCard title="Prominence Bank – Digital Banking Platform" date="2026" place="Bonifacio Global City, Taguig" desc="Managed the project from start to finish, keeping teams aligned, running sprints, and making sure the platform shipped on time and within scope." />
-
+                  
                     <AnimatePresence>
                       {showMoreExp && (
                         <motion.div
@@ -392,6 +392,7 @@ export default function HomeClient() {
                           exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3, ease: "easeOut" }}
                           style={{ overflow: "hidden" }}
                         >
+                          <ProjectCard title="Prominence Bank – Digital Banking Platform" date="2026" place="Bonifacio Global City, Taguig" desc="Managed the project from start to finish, keeping teams aligned, running sprints, and making sure the platform shipped on time and within scope." />
                           <ProjectCard title="InnerX – AI-Based Emotional Analytics" date="2025" place="Bonifacio Global City, Taguig" desc="Took the project from early concept to working prototype, staying on top of timelines, deliverables, and keeping everything moving in the right direction." />
                         </motion.div>
                       )}
