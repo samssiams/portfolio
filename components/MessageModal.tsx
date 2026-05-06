@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FileText, Paperclip, X } from "lucide-react";
 
 interface MessageModalProps {
   isOpen: boolean;
@@ -11,24 +12,159 @@ interface MessageModalProps {
 
 const inputStyle = {
   width: "100%",
-  padding: "8px 12px",
-  borderRadius: "10px",
-  background: "rgba(15, 18, 25, 0.55)",
-  border: "1px solid rgba(255,255,255,0.12)",
+  background: "transparent",
+  border: "none",
   color: "white",
   fontSize: "14px",
   outline: "none",
-  transition: "border 200ms ease",
+  letterSpacing: "0.2px",
+};
+
+const fieldShellStyle = {
+  display: "flex",
+  alignItems: "center",
+  gap: "10px",
+  width: "100%",
+  padding: "11px 12px",
+  borderRadius: "14px",
+  background: "linear-gradient(180deg, rgba(15,18,25,0.78), rgba(15,18,25,0.52))",
+  border: "1px solid rgba(255,255,255,0.12)",
+  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
+  transition: "border 200ms ease, background 200ms ease, box-shadow 200ms ease",
+};
+
+const MAX_ATTACHMENT_SIZE = 5 * 1024 * 1024;
+const ALLOWED_ATTACHMENT_TYPES = [
+  "application/pdf",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "text/plain",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
+const ALLOWED_ATTACHMENT_EXTENSIONS = [".pdf", ".jpg", ".jpeg", ".png", ".webp", ".txt", ".doc", ".docx"];
+
+const formatFileSize = (size: number) => {
+  if (size < 1024 * 1024) return `${Math.max(1, Math.round(size / 1024))} KB`;
+  return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+};
+
+const fields = ["name", "email", "subject", "message"] as const;
+type FieldName = (typeof fields)[number];
+type FormErrors = Partial<Record<FieldName, string>>;
+
+const fieldLabels: Record<FieldName, string> = {
+  name: "Name",
+  email: "Email",
+  subject: "Subject",
+  message: "Message",
 };
 
 export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModalProps) {
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [focused, setFocused] = useState<string | null>(null);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [formError, setFormError] = useState("");
+  const [attachments, setAttachments] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const getFieldShellStyle = (field: FieldName) => ({
+    ...fieldShellStyle,
+    border: errors[field]
+      ? "1px solid rgba(255,100,100,0.55)"
+      : focused === field
+        ? "1px solid rgba(129,230,217,0.5)"
+        : "1px solid rgba(255,255,255,0.12)",
+    background: focused === field
+      ? "linear-gradient(180deg, rgba(18,24,31,0.9), rgba(16,22,29,0.72))"
+      : fieldShellStyle.background,
+    boxShadow: focused === field
+      ? "inset 0 1px 0 rgba(255,255,255,0.05), 0 0 0 3px rgba(129,230,217,0.06)"
+      : fieldShellStyle.boxShadow,
+  });
+
+  const validateForm = (values: Record<FieldName, string>) => {
+    const nextErrors: FormErrors = {};
+    const missingFields = fields.filter((field) => !values[field].trim());
+
+    missingFields.forEach((field) => {
+      nextErrors[field] = "Required";
+    });
+
+    if (values.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) {
+      nextErrors.email = "Invalid email";
+      setFormError("Enter a valid email address.");
+    } else if (missingFields.length === fields.length) {
+      setFormError("Please fill out all fields.");
+    } else if (missingFields.length === 1) {
+      setFormError(`Please fill out the ${fieldLabels[missingFields[0]].toLowerCase()} field.`);
+    } else if (missingFields.length > 1) {
+      setFormError("Please complete the highlighted fields.");
+    } else {
+      setFormError("");
+    }
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  const clearFieldError = (field: FieldName) => {
+    setErrors((current) => {
+      if (!current[field]) return current;
+      const { [field]: _removed, ...rest } = current;
+      if (Object.keys(rest).length === 0) {
+        setFormError("");
+      }
+      return rest;
+    });
+  };
+
+  const handleClose = () => {
+    setErrors({});
+    setFormError("");
+    setShowSuccess(false);
+    setLoading(false);
+    setFocused(null);
+    setAttachments([]);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+    onClose();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = Array.from(event.target.files || []);
+    const validFiles = selectedFiles.filter((file) => {
+      const extension = file.name.slice(file.name.lastIndexOf(".")).toLowerCase();
+      return (
+        file.size > 0 &&
+        file.size <= MAX_ATTACHMENT_SIZE &&
+        ALLOWED_ATTACHMENT_TYPES.includes(file.type) &&
+        ALLOWED_ATTACHMENT_EXTENSIONS.includes(extension)
+      );
+    });
+
+    if (validFiles.length !== selectedFiles.length) {
+      setFormError("Only real PDF, image, text, or Word files up to 5 MB are allowed.");
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+
+    setAttachments(validFiles);
+  };
+
+  const removeAttachment = (fileName: string) => {
+    setAttachments((current) => current.filter((file) => file.name !== fileName));
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
 
     const form = e.currentTarget;
     const formData = new FormData(form);
@@ -37,27 +173,53 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
     const subject = formData.get("subject")?.toString() || "";
     const message = formData.get("message")?.toString() || "";
 
+    if (!validateForm({ name, email, subject, message })) {
+      return;
+    }
+
+    setLoading(true);
+
+    attachments.forEach((file) => {
+      formData.append("attachments", file);
+    });
+
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
-        body: JSON.stringify({ name, email, subject, message }),
-        headers: { "Content-Type": "application/json" },
+        body: formData,
       });
 
       if (res.ok) {
         form.reset();
+        setErrors({});
+        setFormError("");
+        setAttachments([]);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
         setShowSuccess(true);
         onSuccess?.();
         setTimeout(() => {
           setShowSuccess(false);
-          onClose();
+          handleClose();
         }, 3000);
       } else {
-        alert("Error sending message. Try again later.");
+        let errorMessage = "Error sending message. Try again later.";
+
+        try {
+          const data = await res.json();
+          if (typeof data.error === "string") {
+            errorMessage = data.error;
+          }
+        } catch {
+          // Keep the fallback message when the server does not return JSON.
+        }
+
+        setFormError(errorMessage);
       }
     } catch (err) {
       console.error(err);
-      alert("Something went wrong.");
+      setFormError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -72,7 +234,6 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose}
         >
           <motion.div
             className="relative rounded-2xl shadow-xl p-5 sm:p-6 max-w-sm w-full"
@@ -100,7 +261,7 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                 </p>
               </div>
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 className="flex items-center justify-center w-7 h-7 rounded-full cursor-pointer ml-2 mt-1 shrink-0 group"
               >
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
@@ -161,39 +322,124 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                 </motion.p>
               </motion.div>
             ) : (
-              <form className="space-y-3" onSubmit={handleSubmit}>
+              <form className="space-y-3" onSubmit={handleSubmit} noValidate>
+                <AnimatePresence>
+                  {formError && (
+                    <motion.p
+                      id="message-form-error"
+                      className="rounded-lg px-3 py-2 text-[12px] tracking-[0.25px]"
+                      style={{
+                        color: "#FF8A8A",
+                        background: "rgba(255,100,100,0.08)",
+                        border: "1px solid rgba(255,100,100,0.22)",
+                      }}
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.18, ease: "easeOut" }}
+                    >
+                      {formError}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
                 {(["name", "email", "subject"] as const).map((field) => (
-                  <input
-                    key={field}
-                    name={field}
-                    type={field === "email" ? "email" : "text"}
-                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                    required
-                    onFocus={() => setFocused(field)}
+                  <div key={field} style={getFieldShellStyle(field)}>
+                    <input
+                      name={field}
+                      type={field === "email" ? "email" : "text"}
+                      placeholder={fieldLabels[field]}
+                      onFocus={() => setFocused(field)}
+                      onBlur={() => setFocused(null)}
+                      onChange={() => clearFieldError(field)}
+                      aria-invalid={Boolean(errors[field])}
+                      aria-describedby={formError ? "message-form-error" : undefined}
+                      style={inputStyle}
+                    />
+                  </div>
+                ))}
+                <div style={{ ...getFieldShellStyle("message"), alignItems: "flex-start" }}>
+                  <textarea
+                    name="message"
+                    placeholder="Message"
+                    rows={3}
+                    onFocus={() => setFocused("message")}
                     onBlur={() => setFocused(null)}
+                    onChange={() => clearFieldError("message")}
+                    aria-invalid={Boolean(errors.message)}
+                    aria-describedby={formError ? "message-form-error" : undefined}
                     style={{
                       ...inputStyle,
-                      border: focused === field
-                        ? "1px solid rgba(129,230,217,0.5)"
-                        : "1px solid rgba(255,255,255,0.12)",
+                      resize: "none",
                     }}
                   />
-                ))}
-                <textarea
-                  name="message"
-                  placeholder="Message"
-                  rows={3}
-                  required
-                  onFocus={() => setFocused("message")}
-                  onBlur={() => setFocused(null)}
-                  style={{
-                    ...inputStyle,
-                    resize: "none",
-                    border: focused === "message"
-                      ? "1px solid rgba(129,230,217,0.5)"
-                      : "1px solid rgba(255,255,255,0.12)",
-                  }}
-                />
+                </div>
+
+                <div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept={ALLOWED_ATTACHMENT_EXTENSIONS.join(",")}
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] tracking-[0.25px] transition-all duration-200"
+                    style={{
+                      background: "rgba(129,230,217,0.055)",
+                      border: "1px dashed rgba(129,230,217,0.24)",
+                      color: "rgba(255,255,255,0.72)",
+                    }}
+                  >
+                    <span className="flex items-center gap-2">
+                      <Paperclip size={15} strokeWidth={1.9} style={{ color: "#81E6D9" }} />
+                      <span>{attachments.length > 0 ? "Add or replace files" : "Attach files"}</span>
+                    </span>
+                  </button>
+
+                  <AnimatePresence>
+                    {attachments.length > 0 && (
+                      <motion.div
+                        className="mt-2 flex flex-col gap-1.5"
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        transition={{ duration: 0.18, ease: "easeOut" }}
+                      >
+                        {attachments.map((file) => (
+                          <div
+                            key={`${file.name}-${file.size}`}
+                            className="flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-[12px]"
+                            style={{
+                              background: "rgba(15,18,25,0.52)",
+                              border: "1px solid rgba(255,255,255,0.1)",
+                              color: "rgba(255,255,255,0.72)",
+                            }}
+                          >
+                            <span className="flex min-w-0 items-center gap-2">
+                              <FileText size={14} strokeWidth={1.8} className="shrink-0" style={{ color: "#81E6D9" }} />
+                              <span className="truncate">{file.name}</span>
+                              <span className="shrink-0" style={{ color: "rgba(255,255,255,0.32)" }}>
+                                {formatFileSize(file.size)}
+                              </span>
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => removeAttachment(file.name)}
+                              className="flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors duration-200"
+                              style={{ color: "rgba(255,255,255,0.48)" }}
+                              aria-label={`Remove ${file.name}`}
+                            >
+                              <X size={13} strokeWidth={2} />
+                            </button>
+                          </div>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
 
                 <button
                   type="submit"
