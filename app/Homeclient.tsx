@@ -381,7 +381,7 @@ export default function HomeClient() {
                     <ExperienceLink href="https://www.freelancer.com/project-management" label="Freelancer" />
                   </p>
                   <div className="ml-1 mt-3 flex flex-col gap-3">
-                    <ProjectCard title="Cross-Platform E-Commerce – Body Oil, Multimedia Art & Jewelry" date="Apr 2026 – May 2026" place="Bonifacio Global City, Taguig" desc="Managed a Shopify-Etsy integration project, defining delivery phases and milestones, keeping client communications aligned throughout the progress." />
+                    <ProjectCard title="Kreative Arts – Cross-Platform E-Commerce" date="Apr 2026 – May 2026" place="Bonifacio Global City, Taguig" desc="Managed a Shopify-Etsy integration project, defining delivery phases and milestones, keeping client communications aligned throughout the progress." />
                     <ProjectCard title="Co-Pilot — Tamkeen Partnership Program" date="2026" place="Bonifacio Global City, Taguig" desc="Worked closely with program leads and teams to keep the partnership on track, handles coordination and making sure key milestones were met." />
                     <ProjectCard title="Noticer – Mobile Version Implementation" date="2026" place="Bonifacio Global City, Taguig" desc="Led the mobile adaptation of Noticer, coordinating cross-functional teams to translate the web platform into a responsive mobile experience." />
                   
