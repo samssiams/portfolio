@@ -364,9 +364,7 @@ export default function HomeClient() {
               <p className="text-gray-300 text-[14px] sm:text-[16px] mt-3 leading-relaxed">
                 <span className="pl-6 inline-block">I am</span>{" "}
                 a <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">developer</span> and{" "}
-                <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">project manager</span> with a strong track record in
-                delivering efficient, user-focused solutions. I excel at coordinating teams, streamlining workflows, and bridging the gap
-                between creative vision and technical execution. Alongside my technical expertise, I&apos;m a{" "}
+                <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">project manager</span> who builds polished, user-first web experiences while keeping teams aligned and delivery on track. I&apos;m also a{" "}
                 <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">photographer</span> who enjoys capturing stories and moments through my camera.
               </p>
             </div>
