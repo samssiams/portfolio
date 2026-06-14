@@ -54,8 +54,8 @@ body {
 
 .project-card:hover .project-dot-inner {
   transform: scale(1.6);
-  background-color: #81E6D9;
-  box-shadow: 0 0 6px #81E6D9;
+  background-color: #ffffff;
+  box-shadow: 0 0 6px rgba(255,255,255,0.06);
 }
 
 .project-dot-inner {
@@ -78,6 +78,7 @@ body {
 
 .cert-card:hover .project-dot-inner {
   transform: scale(1.6);
-  background-color: #81E6D9;
-  box-shadow: 0 0 6px #81E6D9;
+  background-color: #ffffff;
+  box-shadow: 0 0 6px rgba(255,255,255,0.08);
 }
+

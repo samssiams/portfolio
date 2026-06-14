@@ -30,12 +30,12 @@ function getTodayString() {
 const canHover = typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
 
 const glassButtonStyle = {
-  background: "rgba(129,230,217,0.08)",
-  backdropFilter: "blur(24px)",
-  WebkitBackdropFilter: "blur(24px)",
-  border: "1px solid rgba(129,230,217,0.3)",
-  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
-  color: "#81E6D9",
+  background: "rgba(255,255,255,0.04)",
+  backdropFilter: "blur(12px)",
+  WebkitBackdropFilter: "blur(12px)",
+  border: "1px solid rgba(255,255,255,0.08)",
+  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03)",
+  color: "rgba(255,255,255,0.95)",
 };
 
 function ProjectCard({ title, date, place, desc }: { title: string; date?: string; place: string; desc: string }) {
@@ -129,6 +129,35 @@ function CertCard({ label, href }: { label: string; href: string }) {
   );
 }
 
+function TimelineItem({ title, subtitle, desc, place }: { title: string; subtitle?: string; desc?: string; place?: string }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      className="flex gap-3 sm:gap-4 cursor-default"
+      onMouseEnter={() => { if (canHover) setHovered(true); }}
+      onMouseLeave={() => { if (canHover) setHovered(false); }}
+    >
+      <div className="flex flex-col items-center pt-[6px]">
+        <div
+          className="w-[6px] h-[6px] rounded-full shrink-0 transition-all duration-300"
+          style={{ background: hovered ? "#81E6D9" : "white", boxShadow: hovered ? "0 0 8px rgba(129,230,217,0.8)" : "none" }}
+        />
+        <div className="w-px bg-gray-700 flex-1 mt-1" />
+      </div>
+      <div className="flex flex-col gap-[2px] pb-3">
+        <p className="text-[14px] sm:text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200" style={{ color: hovered ? "white" : "rgb(209,213,219)" }}>{title}</p>
+        {subtitle && (
+          <p className="text-[12px] sm:text-[13px] tracking-[0.3px] flex items-center gap-1" style={{ color: "rgba(255,255,255,0.6)" }}>
+            <MapPin size={11} className="shrink-0" />
+            {subtitle}{place ? ` · ${place}` : ""}
+          </p>
+        )}
+        {desc && <p className="text-[13px] sm:text-[15px] leading-relaxed mt-1" style={{ color: "rgba(255,255,255,0.6)" }}>{desc}</p>}
+      </div>
+    </div>
+  );
+}
+
 function ExperienceLink({ href, label }: { href: string; label: string }) {
   const [hovered, setHovered] = useState(false);
   return (
@@ -160,6 +189,7 @@ function ExperienceLink({ href, label }: { href: string; label: string }) {
 export default function HomeClient() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showMoreExp, setShowMoreExp] = useState(false);
+  const [showMoreCerts, setShowMoreCerts] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "warning" | "error" } | null>(null);
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [msgHovered, setMsgHovered] = useState(false);
@@ -309,7 +339,7 @@ export default function HomeClient() {
                 </div>
                 <h2 className="text-white text-[26px] font-bold leading-tight mt-4">Samuel Cruz</h2>
                 <p className="text-gray-300 mt-2 text-[14px] flex items-center justify-center gap-1.5">
-                  <MapPin size={14} strokeWidth={2} className="shrink-0" /> Bataan, Philippines
+                  <MapPin size={14} strokeWidth={2} className="relative top-[-1px] shrink-0" /> Bataan, Philippines
                 </p>
                 <p className="text-gray-300 mt-1 text-[14px]">Full Stack Developer <span className="text-white">|</span> Project Manager</p>
                 <div className="flex flex-wrap justify-center gap-2 mt-4 text-[14px] font-semibold text-[#81E6D9] tracking-[0.38px]">
@@ -321,7 +351,7 @@ export default function HomeClient() {
                     <Linkedin size={16} style={{ position: "relative", top: "-1px" }} />
                     <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
-                  <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                  <a href="/Cruz_CV.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                     <FileUser size={16} style={{ position: "relative", top: "-1px" }} />
                     <span className="relative group">Resume<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
@@ -345,7 +375,7 @@ export default function HomeClient() {
                       <Linkedin size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                     </a>
-                    <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                    <a href="/Cruz_CV.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
                       <FileUser size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Resume<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                     </a>
@@ -379,9 +409,9 @@ export default function HomeClient() {
                     <ExperienceLink href="https://www.freelancer.com/project-management" label="Freelancer" />
                   </p>
                   <div className="ml-1 mt-3 flex flex-col gap-3">
-                    <ProjectCard title="Kreative Arts – Cross-Platform E-Commerce" date="2026" place="Bonifacio Global City, Taguig" desc="Managed a Shopify-Etsy integration project, defining delivery phases and milestones, keeping client communications aligned throughout the progress." />
-                    <ProjectCard title="Co-Pilot — Tamkeen Partnership Program" date="2026" place="Bonifacio Global City, Taguig" desc="Worked closely with program leads and teams to keep the partnership on track, handles coordination and making sure key milestones were met." />
-                    <ProjectCard title="Noticer – Mobile Version Implementation" date="2026" place="Bonifacio Global City, Taguig" desc="Led the mobile adaptation of Noticer, coordinating cross-functional teams to translate the web platform into a responsive mobile experience." />
+                    <ProjectCard title="Kreative Arts – Cross-Platform E-Commerce" date="2026" place="Bataan, Philippines" desc="Managed a Shopify-Etsy integration project, defining delivery phases and milestones, keeping client communications aligned throughout the progress." />
+                    <ProjectCard title="Co-Pilot — Tamkeen Partnership Program" date="2026" place="Bataan, Philippines" desc="Worked closely with program leads and teams to keep the partnership on track, handles coordination and making sure key milestones were met." />
+                    <ProjectCard title="Noticer – Mobile Version Implementation" date="2026" place="Bataan, Philippines" desc="Led the mobile adaptation of Noticer, coordinating cross-functional teams to translate the web platform into a responsive mobile experience." />
                   
                     <AnimatePresence>
                       {showMoreExp && (
@@ -390,13 +420,13 @@ export default function HomeClient() {
                           exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3, ease: "easeOut" }}
                           style={{ overflow: "hidden" }}
                         >
-                          <ProjectCard title="Prominence Bank – Digital Banking Platform" date="2026" place="Bonifacio Global City, Taguig" desc="Managed the project from start to finish, keeping teams aligned, running sprints, and making sure the platform shipped on time and within scope." />
-                          <ProjectCard title="InnerX – AI-Based Emotional Analytics" date="2025" place="Bonifacio Global City, Taguig" desc="Took the project from early concept to working prototype, staying on top of timelines, deliverables, and keeping everything moving in the right direction." />
+                          <ProjectCard title="Prominence Bank – Digital Banking Platform" date="2026" place="Bataan, Philippines" desc="Managed the project from start to finish, keeping teams aligned, running sprints, and making sure the platform shipped on time and within scope." />
+                          <ProjectCard title="InnerX – AI-Based Emotional Analytics" date="2025" place="Bataan, Philippines" desc="Took the project from early concept to working prototype, staying on top of timelines, deliverables, and keeping everything moving in the right direction." />
                         </motion.div>
                       )}
                     </AnimatePresence>
 
-                    <div className="flex gap-3 sm:gap-4">
+                    <div className="flex gap-3 sm:gap-2">
                       <div className="flex flex-col items-center pt-[6px]">
                         <div className="w-[6px] h-[6px] rounded-full shrink-0" style={{ background: "transparent" }} />
                       </div>
@@ -420,8 +450,8 @@ export default function HomeClient() {
                     <ExperienceLink href="https://kynatech.ph/" label="Kynatech Co." />
                   </p>
                   <div className="ml-1 mt-3 flex flex-col gap-3">
-                    <ProjectCard title="Full Stack Web Development" place="Bonifacio Global City, Taguig" desc="Built a Next.js app with Supabase, Prisma, and NextAuth covering auth, timesheet, and payroll via REST APIs." />
-                    <ProjectCard title="Project Management" place="Bonifacio Global City, Taguig" desc="Ensured on-time delivery through progress monitoring, task verification, and Agile & Waterfall methodologies." />
+                    <ProjectCard title="Full Stack Web Development" place="Bataan, Philippines" desc="Built a Next.js app with Supabase, Prisma, and NextAuth covering auth, timesheet, and payroll via REST APIs." />
+                    <ProjectCard title="Project Management" place="Bataan, Philippines" desc="Ensured on-time delivery through progress monitoring, task verification, and Agile & Waterfall methodologies." />
                   </div>
                 </div>
               </div>
@@ -430,15 +460,43 @@ export default function HomeClient() {
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Bio</h3>
               <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 space-y-2">
-                <p><span className="font-bold tracking-[0.38px] mr-4">2021</span>Graduated Senior High &mdash; With High Honors</p>
-                <p><span className="font-bold tracking-[0.38px] mr-4">2024</span>Digital Credentials &amp; Certifications</p>
+                <p><span className="font-bold tracking-[0.38px] mr-4">2024</span>Certifications</p>
                 <div className="ml-1 mt-3 flex flex-col gap-3">
                   <CertCard label="IC3 Digital Literacy" href="/IC3 GS6 Level 1.pdf" />
                   <CertCard label="Microsoft Office Specialist Associate (Microsoft 365)" href="/Microsoft Office Specialist  Associate.pdf" />
                   <CertCard label="Information Technology Specialist in Network Security" href="/Network Security.pdf" />
-                  <CertCard label="Information Technology Specialist in Networking" href="/Networking.pdf" />
+                  <AnimatePresence>
+                    {showMoreCerts && (
+                      <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3, ease: "easeOut" }} style={{ overflow: "hidden" }}>
+                        <CertCard label="Information Technology Specialist in Networking" href="/Networking.pdf" />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                    <div className="flex gap-3 sm:gap-2">
+                      <div className="flex flex-col items-center pt-[6px]">
+                        <div className="w-[6px] h-[6px] rounded-full shrink-0" style={{ background: "transparent" }} />
+                      </div>
+                      <button
+                        onClick={() => setShowMoreCerts((prev) => !prev)}
+                        className="flex items-center gap-1.5 cursor-pointer w-fit"
+                        style={{ color: "#81E6D9", fontSize: "13px", letterSpacing: "0.3px", background: "none", border: "none", padding: 0, marginTop: "-8px" }}
+                      >
+                        <motion.span animate={{ rotate: showMoreCerts ? 180 : 0 }} transition={{ duration: 0.25, ease: "easeOut" }} style={{ display: "flex", alignItems: "center" }}>
+                          <ChevronDown size={14} />
+                        </motion.span>
+                        <span>{showMoreCerts ? "Show less" : "View more"}</span>
+                      </button>
+                  </div>
                 </div>
-                <p className="mt-2"><span className="font-bold tracking-[0.38px] mr-4">2025</span>Graduated B.S. Computer Science &mdash; Latin Honors</p>
+
+                <div className="mt-4">
+                  <p><span className="font-bold tracking-[0.38px] mr-4">2025</span>Milestones</p>
+                  <div className="ml-1 mt-3 flex flex-col gap-3">
+                    <TimelineItem title="Graduated B.S. Computer Science — Latin Honors" />
+                    <TimelineItem title="Technical Project Manager" subtitle="Bonifacio Global City, Taguig" desc="Led cross-functional teams, coordinated sprints, and ensured timely delivery of product milestones." />
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -471,7 +529,11 @@ export default function HomeClient() {
                     onMouseEnter={() => { if (canHover) setHoveredSection(key); }}
                     onMouseLeave={() => { if (canHover) setHoveredSection(null); }}
                     className="flex items-center justify-center gap-1.5 font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-all duration-300"
-                    style={glassButtonStyle}
+                    style={{
+                      background: "rgba(129,230,217,0.08)",
+                      border: "1px solid rgba(129,230,217,0.18)",
+                      color: "#81E6D9",
+                    }}
                   >
                     <span>{label}</span>
                     <motion.span
@@ -502,7 +564,11 @@ export default function HomeClient() {
                   onMouseEnter={() => { if (canHover) setMsgHovered(true); }}
                   onMouseLeave={() => { if (canHover) setMsgHovered(false); }}
                   className="flex items-center justify-center gap-2 font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300 cursor-pointer"
-                  style={glassButtonStyle}
+                  style={{
+                    background: "rgba(129,230,217,0.08)",
+                    border: "1px solid rgba(129,230,217,0.18)",
+                    color: "#81E6D9",
+                  }}
                 >
                   <motion.span
                     animate={msgHovered ? { rotate: -15, scale: 1.2 } : { rotate: 0, scale: 1 }}

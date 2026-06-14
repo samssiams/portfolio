@@ -75,13 +75,13 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
     border: errors[field]
       ? "1px solid rgba(255,100,100,0.55)"
       : focused === field
-        ? "1px solid rgba(129,230,217,0.5)"
+        ? "1px solid rgba(255,255,255,0.5)"
         : "1px solid rgba(255,255,255,0.12)",
     background: focused === field
       ? "linear-gradient(180deg, rgba(18,24,31,0.9), rgba(16,22,29,0.72))"
       : fieldShellStyle.background,
     boxShadow: focused === field
-      ? "inset 0 1px 0 rgba(255,255,255,0.05), 0 0 0 3px rgba(129,230,217,0.06)"
+      ? "inset 0 1px 0 rgba(255,255,255,0.05), 0 0 0 3px rgba(255,255,255,0.02)"
       : fieldShellStyle.boxShadow,
   });
 
@@ -283,7 +283,7 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                 <div className="relative flex items-center justify-center">
                   <motion.div
                     className="absolute rounded-full"
-                    style={{ border: "1px solid rgba(129,230,217,0.3)", width: 72, height: 72 }}
+                    style={{ border: "1px solid rgba(255,255,255,0.08)", width: 72, height: 72 }}
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1.4, opacity: 0 }}
                     transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut" }}
@@ -293,8 +293,8 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                     style={{
                       width: 64,
                       height: 64,
-                      background: "rgba(129,230,217,0.06)",
-                      border: "1px solid rgba(129,230,217,0.3)",
+                      background: "rgba(255,255,255,0.03)",
+                      border: "1px solid rgba(255,255,255,0.08)",
                     }}
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -304,7 +304,7 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                       initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
                       <motion.path
                         d="M6 14.5L11.5 20L22 9"
-                        stroke="#81E6D9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                        stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                         initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
                         transition={{ duration: 0.5, delay: 0.35, ease: "easeOut" }}
                       />
@@ -388,13 +388,13 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                     onClick={() => fileInputRef.current?.click()}
                     className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] tracking-[0.25px] transition-all duration-200"
                     style={{
-                      background: "rgba(129,230,217,0.055)",
-                      border: "1px dashed rgba(129,230,217,0.24)",
+                      background: "rgba(255,255,255,0.02)",
+                      border: "1px dashed rgba(255,255,255,0.06)",
                       color: "rgba(255,255,255,0.72)",
                     }}
                   >
                     <span className="flex items-center gap-2">
-                      <Paperclip size={15} strokeWidth={1.9} style={{ color: "#81E6D9" }} />
+                      <Paperclip size={15} strokeWidth={1.9} style={{ color: "#ffffff" }} />
                       <span>{attachments.length > 0 ? "Add or replace files" : "Attach files"}</span>
                     </span>
                   </button>
@@ -419,7 +419,7 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                             }}
                           >
                             <span className="flex min-w-0 items-center gap-2">
-                              <FileText size={14} strokeWidth={1.8} className="shrink-0" style={{ color: "#81E6D9" }} />
+                              <FileText size={14} strokeWidth={1.8} className="shrink-0" style={{ color: "#ffffff" }} />
                               <span className="truncate">{file.name}</span>
                               <span className="shrink-0" style={{ color: "rgba(255,255,255,0.32)" }}>
                                 {formatFileSize(file.size)}
@@ -446,21 +446,21 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                   disabled={loading}
                   className="w-full font-semibold px-4 py-2.5 rounded-xl tracking-[0.3px] transition-all duration-300 cursor-pointer"
                   style={{
-                    background: loading ? "rgba(129,230,217,0.05)" : "rgba(129,230,217,0.08)",
-                    border: "1px solid rgba(129,230,217,0.3)",
-                    color: loading ? "rgba(129,230,217,0.4)" : "#81E6D9",
+                    background: loading ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    color: loading ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.95)",
                     cursor: loading ? "not-allowed" : "pointer",
                   }}
                   onMouseEnter={e => {
                     if (!loading) {
-                      (e.currentTarget as HTMLElement).style.background = "rgba(129,230,217,0.15)";
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(129,230,217,0.5)";
+                      (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
+                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.12)";
                     }
                   }}
                   onMouseLeave={e => {
                     if (!loading) {
-                      (e.currentTarget as HTMLElement).style.background = "rgba(129,230,217,0.08)";
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(129,230,217,0.3)";
+                      (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.04)";
+                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.08)";
                     }
                   }}
                 >

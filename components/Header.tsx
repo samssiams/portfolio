@@ -124,41 +124,64 @@ const Header = () => {
               className="fixed left-4 right-4 z-[49] md:hidden rounded-2xl overflow-hidden"
               style={{
                 top: scrolled ? "68px" : "60px",
-                background: "rgba(22, 26, 35, 0.95)",
-                backdropFilter: "blur(24px)",
-                WebkitBackdropFilter: "blur(24px)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                background: "linear-gradient(180deg, rgba(18,22,28,0.96), rgba(16,19,24,0.96))",
+                backdropFilter: "blur(18px)",
+                WebkitBackdropFilter: "blur(18px)",
+                border: "1px solid rgba(255,255,255,0.06)",
+                boxShadow: "0 8px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02)",
               }}
               initial={{ opacity: 0, y: -8, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.97 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
             >
-              <nav className="flex flex-col py-2">
-                {navLinks.map(({ label, href }, i) => {
-                  const isActive = pathname === href;
-                  return (
-                    <motion.span
-                      key={href}
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      onClick={() => handleNavClick(href)}
-                      className="px-6 py-3 text-[15px] font-semibold tracking-[0.38px] cursor-pointer flex items-center justify-between"
-                      style={{
-                        color: isActive ? "#81E6D9" : "rgba(255,255,255,0.85)",
-                        borderBottom: i < navLinks.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none",
-                      }}
-                    >
-                      {label}
-                      {isActive && (
-                        <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#81E6D9" }} />
-                      )}
-                    </motion.span>
-                  );
-                })}
-              </nav>
+              <div className="relative">
+                <button
+                  onClick={() => setMenuOpen(false)}
+                  aria-label="Close menu"
+                  className="absolute -top-3 -right-3 z-50 bg-transparent p-2 rounded-full text-white/90 hover:text-white"
+                >
+                  <X size={18} />
+                </button>
+
+                <div className="px-5 pt-6 pb-3 border-b border-white/4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Image src="/Rectangle 93.svg" alt="Logo" width={28} height={28} priority />
+                      <span className="text-white font-semibold">Samssiams</span>
+                    </div>
+                  </div>
+                </div>
+
+                <nav className="flex flex-col py-2">
+                  {navLinks.map(({ label, href }, i) => {
+                    const isActive = pathname === href;
+                    return (
+                      <motion.button
+                        key={href}
+                        initial={{ opacity: 0, x: -6 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.04 }}
+                        onClick={() => handleNavClick(href)}
+                        className="w-full text-left px-6 py-3 flex items-center justify-between"
+                        style={{
+                          color: isActive ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.9)",
+                          borderBottom: i < navLinks.length - 1 ? "1px solid rgba(255,255,255,0.03)" : "none",
+                        }}
+                      >
+                        <span className="font-semibold text-[15px]">{label}</span>
+                        <span className="ml-3">
+                          {isActive ? (
+                            <span className="w-2 h-2 rounded-full" style={{ background: 'rgba(255,255,255,0.9)' }} />
+                          ) : (
+                            <span className="w-2 h-2 rounded-full bg-transparent" />
+                          )}
+                        </span>
+                      </motion.button>
+                    );
+                  })}
+                </nav>
+              </div>
             </motion.div>
           </>
         )}

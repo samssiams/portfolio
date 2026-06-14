@@ -71,7 +71,7 @@ export default function Modal({
             onClick={onClose}
           >
             <motion.div
-              className="relative max-w-md w-full shadow-xl"
+              className="relative max-w-md w-full shadow-xl flex flex-col"
               style={{
                 background: "rgba(26, 30, 40, 0.65)",
                 backdropFilter: "blur(24px)",
@@ -97,11 +97,8 @@ export default function Modal({
                 }}
               />
 
-              <div
-                className="modal-scroll overflow-y-auto p-5 sm:p-6 pb-8"
-                style={{ maxHeight: "75vh", borderRadius: "16px" }}
-              >
-                {/* Title + Year + Close */}
+              {/* Title + Year + Close */}
+              <div className="px-5 sm:px-6 pt-5">
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <h2 className="text-white text-[18px] sm:text-xl font-bold">{title}</h2>
@@ -116,7 +113,12 @@ export default function Modal({
                     </svg>
                   </button>
                 </div>
+              </div>
 
+              <div
+                className="modal-scroll overflow-y-auto p-5 sm:p-6 pb-8"
+                style={{ flex: 1, minHeight: 0, borderRadius: "0 0 16px 16px" }}
+              >
                 {/* Image */}
                 {image && (
                   <div
