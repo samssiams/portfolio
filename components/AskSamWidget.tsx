@@ -232,12 +232,13 @@ export default function AskSamWidget() {
     if (!preferredVoice) return;
 
     const sentences = spokenText.match(/[^.!?]+[.!?]+|[^.!?]+$/g) ?? [spokenText];
+    const isMobile = window.matchMedia("(max-width: 639px)").matches;
 
     sentences.forEach((sentence, index) => {
       const isLastSentence = index === sentences.length - 1;
       const utterance = new SpeechSynthesisUtterance(sentence.trim());
       utterance.voice = preferredVoice;
-      utterance.rate = isLastSentence ? 1.35 : 1.5;
+      utterance.rate = isMobile ? 0.9 : isLastSentence ? 1.35 : 1.5;
       utterance.pitch = isLastSentence ? 1 : 1.02;
       utterance.volume = 0.9;
       utterance.onstart = () => setIsSpeaking(true);
