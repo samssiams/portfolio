@@ -58,6 +58,15 @@ const MEETING_URL = "https://calendar.app.google/Jem61HmcE8Mn2iUX9";
 const GREETING_SPOKEN_STORAGE_KEY = "isabel-greeting-spoken";
 const FEMALE_VOICE_NAMES =
   /female|samantha|zira|aria|jenny|serena|susan|victoria|karen|moira|tessa|fiona|veena|joana|salli|kimberly|ivy|kendra|emma|amy|olivia|sonia|libby|natasha|clara|neerja|heera|ava|allison|google us english/i;
+const MOBILE_SPEECH_RATE = 0.1;
+
+function isPhoneOrTablet() {
+  const userAgent = navigator.userAgent;
+  const isMobileUserAgent = /Android|iPhone|iPad|iPod|Mobile/i.test(userAgent);
+  const isIPadInDesktopMode = /Macintosh/i.test(userAgent) && navigator.maxTouchPoints > 1;
+
+  return isMobileUserAgent || isIPadInDesktopMode;
+}
 
 // Shared glass style — matches Banner.tsx / ProjectModal.tsx exactly
 const glassPanel = {
@@ -232,13 +241,17 @@ export default function AskSamWidget() {
     if (!preferredVoice) return;
 
     const sentences = spokenText.match(/[^.!?]+[.!?]+|[^.!?]+$/g) ?? [spokenText];
-    const isMobile = window.matchMedia("(max-width: 639px)").matches;
+    const useMobileSpeechRate = isPhoneOrTablet();
 
     sentences.forEach((sentence, index) => {
       const isLastSentence = index === sentences.length - 1;
       const utterance = new SpeechSynthesisUtterance(sentence.trim());
       utterance.voice = preferredVoice;
-      utterance.rate = isMobile ? 0.9 : isLastSentence ? 1.35 : 1.5;
+      utterance.rate = useMobileSpeechRate
+        ? MOBILE_SPEECH_RATE
+        : isLastSentence
+          ? 1.35
+          : 1.5;
       utterance.pitch = isLastSentence ? 1 : 1.02;
       utterance.volume = 0.9;
       utterance.onstart = () => setIsSpeaking(true);
