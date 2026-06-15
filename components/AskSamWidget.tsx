@@ -55,6 +55,7 @@ const RESUME_TOKEN = "[RESUME_LINK]";
 const RESUME_URL = "/Cruz_CV.pdf";
 const MEETING_TOKEN = "[MEETING_LINK]";
 const MEETING_URL = "https://calendar.app.google/Jem61HmcE8Mn2iUX9";
+const GREETING_SPOKEN_STORAGE_KEY = "isabel-greeting-spoken";
 const FEMALE_VOICE_NAMES =
   /female|samantha|zira|aria|jenny|serena|susan|victoria|karen|moira|tessa|fiona|veena|joana|salli|kimberly|ivy|kendra|emma|amy|olivia|sonia|libby|natasha|clara|neerja|heera|ava|allison|google us english/i;
 
@@ -148,9 +149,15 @@ export default function AskSamWidget() {
 
   useEffect(() => {
     if (isOpen && hasFemaleVoice && isVoiceEnabled && !greetingSpokenRef.current) {
+      if (localStorage.getItem(GREETING_SPOKEN_STORAGE_KEY) === "true") {
+        greetingSpokenRef.current = true;
+        return;
+      }
+
       greetingSpokenRef.current = true;
       greetingTimeoutRef.current = setTimeout(() => {
         greetingTimeoutRef.current = null;
+        localStorage.setItem(GREETING_SPOKEN_STORAGE_KEY, "true");
         speakReply(pageContent.greeting);
       }, 1500);
     }
