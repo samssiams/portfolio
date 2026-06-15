@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import MessageModal from "../components/MessageModal";
+import AskSamWidget from "../components/AskSamWidget";
 
 const MAX_MESSAGES = 3;
 const STORAGE_KEY = "msg_data";
@@ -585,6 +586,7 @@ export default function HomeClient() {
         </AnimatePresence>
 
         <MessageModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSuccess={handleMessageSent} />
+        <AskSamWidget />
         <Footer />
       </div>
     </div>

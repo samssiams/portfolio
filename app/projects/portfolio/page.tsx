@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Banner from "@/components/Banner";
 import Footer from "@/components/Footer";
 import Modal from "@/components/ProjectModal";
+import AskSamWidget from "@/components/AskSamWidget";
 
 interface Project {
   title: string;
@@ -171,6 +172,14 @@ export default function PortfolioPage() {
     if (canHover) setHoveredIndex(null);
   };
 
+  const askIsabelAboutProject = (projectTitle: string) => {
+    window.dispatchEvent(
+      new CustomEvent("ask-isabel-about-project", {
+        detail: { question: `Tell me more about Sam's work on ${projectTitle}.` },
+      })
+    );
+  };
+
   return (
     <div
       className="min-h-screen font-chakra flex flex-col items-center relative"
@@ -279,6 +288,11 @@ export default function PortfolioPage() {
                     className="mt-5"
                     onMouseEnter={() => handleMouseEnter(index)}
                     onMouseLeave={handleMouseLeave}
+                    onClick={(event) => {
+                      if (event.shiftKey) {
+                        askIsabelAboutProject(project.title);
+                      }
+                    }}
                   >
                     <div className="flex items-start gap-3">
                       <div className="flex-1">
@@ -327,7 +341,11 @@ export default function PortfolioPage() {
                       {/* Framed Image */}
                       <div
                         className="relative cursor-pointer group w-full sm:w-[250px] h-[180px] sm:h-[150px] rounded-[10px] overflow-hidden"
-                        onClick={() => setSelectedProject(project)}
+                        onClick={(event) => {
+                          if (!event.shiftKey) {
+                            setSelectedProject(project);
+                          }
+                        }}
                         style={{
                           background: "rgba(22,26,35,0.95)",
                           border: "1px solid rgba(255,255,255,0.12)",
@@ -413,6 +431,7 @@ export default function PortfolioPage() {
           website={selectedProject?.website || ""}
           apk={selectedProject?.apk || ""}
         />
+        <AskSamWidget />
       </div>
     </div>
   );
