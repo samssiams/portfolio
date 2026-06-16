@@ -337,7 +337,7 @@ export default function AskSamWidget() {
               onChange={(e) => setInput(e.target.value)}
               placeholder={inputPlaceholder}
               disabled={isSpamCoolingDown}
-              className="min-w-0 flex-1 rounded-full px-3.5 py-2 text-xs text-white outline-none transition-all duration-200 placeholder:text-neutral-500 disabled:cursor-not-allowed disabled:text-white/45 disabled:placeholder:text-[#FFD978]/75 sm:px-4 sm:text-sm"
+              className="min-w-0 flex-1 rounded-full px-3.5 py-2 text-[16px] text-white outline-none transition-all duration-200 placeholder:text-neutral-500 disabled:cursor-not-allowed disabled:text-white/45 disabled:placeholder:text-[#FFD978]/75 sm:px-4 sm:text-sm"
               style={{
                 background: isSpamCoolingDown
                   ? "rgba(255,217,120,0.055)"

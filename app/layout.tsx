@@ -177,6 +177,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//github.com" />
       </head>
       <body
+        suppressHydrationWarning
         className={`${chakraPetch.variable} ${geistSans.variable} ${geistMono.variable} antialiased bg-[#1a1e28]`}
       >
         <InkCursor />
