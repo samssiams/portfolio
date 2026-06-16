@@ -291,7 +291,7 @@ export default function PortfolioPage() {
             className="w-full"
           >
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-10">
-              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Portfolio</h3>
+              <h1 className="text-white text-[18px] sm:text-[20px] font-bold">Portfolio Projects</h1>
 
               {displayedProjects.map((project, index) => {
                 const isHovered = hoveredIndex === index;
@@ -372,7 +372,7 @@ export default function PortfolioPage() {
                         <div className="absolute inset-[7px] rounded-[6px] overflow-hidden">
                           <Image
                             src={project.image}
-                            alt={`${project.title} Preview`}
+                            alt={`${project.title} project preview by Samuel Cruz`}
                             fill
                             loading="lazy"
                             sizes="(min-width: 640px) 250px, 100vw"

@@ -142,7 +142,7 @@ export default function PhotographyPage() {
             className="w-full mt-10 flex-grow"
           >
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 flex flex-col gap-8">
-              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Photography</h3>
+              <h1 className="text-white text-[18px] sm:text-[20px] font-bold">Photography</h1>
 
               {/* Section Buttons */}
               <div className="flex justify-center gap-8 mt-2">
@@ -183,7 +183,7 @@ export default function PhotographyPage() {
                           {!loadedImages[photo.src] && <Skeleton className="absolute inset-0" />}
                           <Image
                             src={photo.src}
-                            alt={`Photo ${index + 1}`}
+                            alt={`${photo.cc} in ${photo.location}`}
                             fill
                             loading="lazy"
                             sizes="(min-width: 640px) 260px, 100vw"

@@ -145,6 +145,22 @@ export function useAskSamChat(pageLabel: PageLabel) {
   }, [isOpen]);
 
   useEffect(() => {
+    if (isOpen) return;
+
+    if (greetingTimeoutRef.current) {
+      clearTimeout(greetingTimeoutRef.current);
+      greetingTimeoutRef.current = null;
+    }
+    if (speechPauseTimeoutRef.current) {
+      clearTimeout(speechPauseTimeoutRef.current);
+      speechPauseTimeoutRef.current = null;
+    }
+    window.speechSynthesis?.cancel();
+    setIsSpeaking(false);
+    setIsSpeechActive(false);
+  }, [isOpen]);
+
+  useEffect(() => {
     if (pageLabel !== "Portfolio" || !isOpen || portfolioTipShownRef.current) return;
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
@@ -253,11 +269,19 @@ export function useAskSamChat(pageLabel: PageLabel) {
       speechPauseTimeoutRef.current = null;
     }
 
+    function finishSpeaking() {
+      if (speechPauseTimeoutRef.current) {
+        clearTimeout(speechPauseTimeoutRef.current);
+        speechPauseTimeoutRef.current = null;
+      }
+      setIsSpeaking(false);
+      setIsSpeechActive(false);
+    }
+
     function speakSentence(index: number) {
       const sentence = sentences[index];
       if (!sentence) {
-        setIsSpeaking(false);
-        setIsSpeechActive(false);
+        finishSpeaking();
         return;
       }
 
@@ -268,11 +292,10 @@ export function useAskSamChat(pageLabel: PageLabel) {
       utterance.pitch = 1;
       utterance.volume = 0.9;
       utterance.onstart = () => setIsSpeaking(true);
-      utterance.onerror = () => setIsSpeaking(false);
+      utterance.onerror = finishSpeaking;
       utterance.onend = () => {
         if (isLastSentence) {
-          setIsSpeaking(false);
-          setIsSpeechActive(false);
+          finishSpeaking();
           return;
         }
 

@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s | Samssiams",
   },
   description:
-    "Developer and Technical Project Manager delivering efficient, user-focused solutions. I coordinate teams, manage workflows, and capture stories through photography.",
+    "Samuel Cruz is a full stack developer and technical project manager focused on reliable web products, delivery coordination, and photography-driven visual storytelling.",
   keywords: [
     "Samssiams",
     "Samuel Cruz",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     siteName: "Samssiams",
     title: "Samssiams - Full Stack Developer & Technical Project Manager",
     description:
-      "Developer and Technical Project Manager delivering efficient, user-focused solutions. I coordinate teams, manage workflows, and capture stories through photography.",
+      "Samuel Cruz is a full stack developer and technical project manager focused on reliable web products, delivery coordination, and photography-driven visual storytelling.",
     images: [
       {
         url: "/og-image.png",
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Samssiams - Full Stack Developer & Technical Project Manager",
     description:
-      "Developer and Technical Project Manager delivering efficient, user-focused solutions. I coordinate teams, manage workflows, and capture stories through photography.",
+      "Samuel Cruz is a full stack developer and technical project manager focused on reliable web products, delivery coordination, and photography-driven visual storytelling.",
     images: ["/og-image.png"],
     creator: "@samssiams",
   },
@@ -125,7 +125,7 @@ const jsonLd = {
   image: `${BASE_URL}/profile.png`,
   jobTitle: ["Full Stack Developer", "Project Manager", "Photographer"],
   description:
-    "Samssiams is Samuel Cruz — a Full Stack Developer, Project Manager, and Photographer based in Bataan, Philippines.",
+    "Samssiams is Samuel Cruz, a full stack developer and technical project manager in Bataan, Philippines, focused on reliable web products, delivery coordination, and photography.",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Bataan",
