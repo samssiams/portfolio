@@ -172,10 +172,24 @@ export default function PortfolioPage() {
     if (canHover) setHoveredIndex(null);
   };
 
-  const askIsabelAboutProject = (projectTitle: string) => {
+  const askIsabelAboutProject = (project: Project) => {
+    const projectDetails = [
+      `Project: ${project.title}`,
+      `Year: ${project.year}`,
+      project.role ? `Role: ${project.role}` : null,
+      project.stacks.length > 0 ? `Stacks: ${project.stacks.join(", ")}` : null,
+      `Description: ${project.description}`,
+      project.contributions && project.contributions.length > 0
+        ? `Key contributions: ${project.contributions.join("; ")}`
+        : null,
+    ].filter(Boolean);
+
     window.dispatchEvent(
       new CustomEvent("ask-isabel-about-project", {
-        detail: { question: `Tell me more about Sam's work on ${projectTitle}.` },
+        detail: {
+          question: `Tell me more about Sam's work on ${project.title}. Include the most relevant tech stack and key contributions when useful.\n\n${projectDetails.join("\n")}`,
+          displayText: `Let me know about this project: ${project.title}`,
+        },
       })
     );
   };
@@ -290,7 +304,7 @@ export default function PortfolioPage() {
                     onMouseLeave={handleMouseLeave}
                     onClick={(event) => {
                       if (event.shiftKey) {
-                        askIsabelAboutProject(project.title);
+                        askIsabelAboutProject(project);
                       }
                     }}
                   >

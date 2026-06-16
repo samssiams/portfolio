@@ -11,12 +11,22 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 10;
 const requestLog = new Map<string, number[]>();
-const RESUME_REPLY =
-  "Absolutely. Sam's resume is ready here: [RESUME_LINK]";
-const MEETING_REPLY =
-  "Absolutely. You can book a meeting with Sam here: [MEETING_LINK]";
+const RESUME_REPLIES = [
+  "Absolutely. Sam's resume is ready here: [RESUME_LINK]",
+  "Of course. You can download Sam's resume here: [RESUME_LINK]",
+  "Sure thing. I've attached Sam's resume for you here: [RESUME_LINK]",
+];
+const MEETING_REPLIES = [
+  "Absolutely. You can book a meeting with Sam here: [MEETING_LINK]",
+  "Of course. You can choose a time to meet with Sam here: [MEETING_LINK]",
+  "Sure thing. You can schedule a meeting with Sam through this link: [MEETING_LINK]",
+];
 const PAGE_LABELS = ["Home", "Portfolio", "Photography"] as const;
 type PageLabel = (typeof PAGE_LABELS)[number];
+
+function getRandomReply(replies: string[]) {
+  return replies[Math.floor(Math.random() * replies.length)] ?? replies[0];
+}
 
 function isPageLabel(value: unknown): value is PageLabel {
   return PAGE_LABELS.includes(value as PageLabel);
@@ -106,11 +116,11 @@ export async function POST(req: NextRequest) {
     const safeCurrentPage: PageLabel = isPageLabel(currentPage) ? currentPage : "Home";
 
     if (isResumeRequest(latestMessage.content)) {
-      return NextResponse.json({ reply: RESUME_REPLY });
+      return NextResponse.json({ reply: getRandomReply(RESUME_REPLIES) });
     }
 
     if (isMeetingRequest(latestMessage.content)) {
-      return NextResponse.json({ reply: MEETING_REPLY });
+      return NextResponse.json({ reply: getRandomReply(MEETING_REPLIES) });
     }
 
     const chat = ai.chats.create({
@@ -132,7 +142,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("Chat API error:", err);
     return NextResponse.json(
-      { error: "Isabel is busy, please try again shortly." },
+      { error: "I'm having trouble reaching my response service right now. Please try again in a moment." },
       { status: 503 }
     );
   }

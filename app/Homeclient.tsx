@@ -39,6 +39,12 @@ const glassButtonStyle = {
   color: "rgba(255,255,255,0.95)",
 };
 
+const mediaButtonStyle = {
+  background: "rgba(129,230,217,0.08)",
+  border: "1px solid rgba(129,230,217,0.18)",
+  color: "#81E6D9",
+} as const;
+
 function ProjectCard({ title, date, place, desc }: { title: string; date?: string; place: string; desc: string }) {
   const [hovered, setHovered] = useState(false);
   return (
@@ -530,11 +536,7 @@ export default function HomeClient() {
                     onMouseEnter={() => { if (canHover) setHoveredSection(key); }}
                     onMouseLeave={() => { if (canHover) setHoveredSection(null); }}
                     className="flex items-center justify-center gap-1.5 font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-all duration-300"
-                    style={{
-                      background: "rgba(129,230,217,0.08)",
-                      border: "1px solid rgba(129,230,217,0.18)",
-                      color: "#81E6D9",
-                    }}
+                    style={mediaButtonStyle}
                   >
                     <span>{label}</span>
                     <motion.span

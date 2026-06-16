@@ -1,49 +1,13 @@
 // components/AskSamWidget.tsx
 "use client";
 
-import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { routes } from "@/routers/router";
-
-type Message = {
-  role: "user" | "assistant";
-  content: string;
-};
-
-type PageLabel = "Home" | "Portfolio" | "Photography";
-
-const PAGE_CONTENT: Record<
-  PageLabel,
-  { greeting: string; suggestions: string[] }
-> = {
-  Home: {
-    greeting:
-      "Hi! I'm Isabel. Ask me anything about Sam's experience, projects, skills, or availability.",
-    suggestions: [
-      "What projects has he worked on?",
-      "Is he available for freelance work?",
-      "May I schedule a meeting with him?",
-    ],
-  },
-  Portfolio: {
-    greeting:
-      "Hi! I'm Isabel. I can tell you more about the projects you're exploring or Sam's role in building them.",
-    suggestions: [
-      "Which project best shows Sam's skills?",
-      "What technologies does Sam work with?",
-      "What was Sam's role in these projects?",
-    ],
-  },
-  Photography: {
-    greeting:
-      "Hi! I'm Isabel. I can tell you more about Sam's photography and the work you're viewing.",
-    suggestions: [
-      "What kind of photography does Sam shoot?",
-      "Tell me about Sam's creative background.",
-      "How can I contact Sam for photography?",
-    ],
-  },
-};
+import { Dot, CloseIcon, MutedIcon, SendIcon, SparkleIcon, VolumeIcon } from "./ask-sam/icons";
+import { MessageContent } from "./ask-sam/MessageContent";
+import { glassInset, glassPanel, tealButtonStyle } from "./ask-sam/styles";
+import type { PageLabel } from "./ask-sam/types";
+import { useAskSamChat } from "./ask-sam/useAskSamChat";
 
 function getPageLabel(pathname: string): PageLabel {
   if (pathname === routes.projectsPortfolio) return "Portfolio";
@@ -51,374 +15,39 @@ function getPageLabel(pathname: string): PageLabel {
   return "Home";
 }
 
-const RESUME_TOKEN = "[RESUME_LINK]";
-const RESUME_URL = "/Cruz_CV.pdf";
-const MEETING_TOKEN = "[MEETING_LINK]";
-const MEETING_URL = "https://calendar.app.google/Jem61HmcE8Mn2iUX9";
-const GREETING_SPOKEN_STORAGE_KEY = "isabel-greeting-spoken";
-const FEMALE_VOICE_NAMES =
-  /female|samantha|zira|aria|jenny|serena|susan|victoria|karen|moira|tessa|fiona|veena|joana|salli|kimberly|ivy|kendra|emma|amy|olivia|sonia|libby|natasha|clara|neerja|heera|ava|allison|google us english/i;
-const MOBILE_SPEECH_RATE = 0.1;
-
-function isPhoneOrTablet() {
-  const userAgent = navigator.userAgent;
-  const isMobileUserAgent = /Android|iPhone|iPad|iPod|Mobile/i.test(userAgent);
-  const isIPadInDesktopMode = /Macintosh/i.test(userAgent) && navigator.maxTouchPoints > 1;
-
-  return isMobileUserAgent || isIPadInDesktopMode;
-}
-
-// Shared glass style — matches Banner.tsx / ProjectModal.tsx exactly
-const glassPanel = {
-  background: "rgba(26, 30, 40, 0.82)",
-  backdropFilter: "blur(24px)",
-  WebkitBackdropFilter: "blur(24px)",
-  border: "1px solid rgba(255,255,255,0.18)",
-  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
-} as const;
-
-// Slightly denser variant for inset elements (assistant bubbles, input bar)
-const glassInset = {
-  background: "rgba(22, 26, 35, 0.95)",
-  backdropFilter: "blur(24px)",
-  WebkitBackdropFilter: "blur(24px)",
-  border: "1px solid rgba(255,255,255,0.12)",
-  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
-} as const;
-
-const tealButtonStyle = {
-  background: "rgba(129,230,217,0.08)",
-  backdropFilter: "blur(24px)",
-  WebkitBackdropFilter: "blur(24px)",
-  border: "1px solid rgba(129,230,217,0.3)",
-  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
-  color: "#81E6D9",
-} as const;
-
 export default function AskSamWidget() {
   const pathname = usePathname();
   const pageLabel = getPageLabel(pathname);
-  const pageContent = PAGE_CONTENT[pageLabel];
-  const initialMessage: Message = {
-    role: "assistant",
-    content: pageContent.greeting,
-  };
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([initialMessage]);
-  const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [spamWarning, setSpamWarning] = useState<string | null>(null);
-  const [portfolioTip, setPortfolioTip] = useState<string | null>(null);
-  const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [hasFemaleVoice, setHasFemaleVoice] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const conversationRef = useRef<Message[]>([initialMessage]);
-  const messageQueueRef = useRef<string[]>([]);
-  const isProcessingRef = useRef(false);
-  const pendingCountRef = useRef(0);
-  const warningTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const greetingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const isVoiceEnabledRef = useRef(true);
-  const femaleVoiceRef = useRef<SpeechSynthesisVoice | null>(null);
-  const greetingSpokenRef = useRef(false);
-  const portfolioTipShownRef = useRef(false);
-
-  useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, isLoading]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        if (greetingTimeoutRef.current) {
-          clearTimeout(greetingTimeoutRef.current);
-          greetingTimeoutRef.current = null;
-        }
-        window.speechSynthesis?.cancel();
-        setIsSpeaking(false);
-        greetingSpokenRef.current = true;
-        setIsOpen(false);
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (pageLabel !== "Portfolio" || !isOpen || portfolioTipShownRef.current) return;
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-
-    portfolioTipShownRef.current = true;
-    setPortfolioTip("Tip: Hold Shift and click a project to ask Isabel about it.");
-  }, [isOpen, pageLabel]);
-
-  useEffect(() => {
-    if (isOpen && hasFemaleVoice && isVoiceEnabled && !greetingSpokenRef.current) {
-      if (localStorage.getItem(GREETING_SPOKEN_STORAGE_KEY) === "true") {
-        greetingSpokenRef.current = true;
-        return;
-      }
-
-      greetingSpokenRef.current = true;
-      greetingTimeoutRef.current = setTimeout(() => {
-        greetingTimeoutRef.current = null;
-        localStorage.setItem(GREETING_SPOKEN_STORAGE_KEY, "true");
-        speakReply(pageContent.greeting);
-      }, 1500);
-    }
-
-    return () => {
-      if (greetingTimeoutRef.current) {
-        clearTimeout(greetingTimeoutRef.current);
-        greetingTimeoutRef.current = null;
-      }
-    };
-  }, [hasFemaleVoice, isOpen, isVoiceEnabled, pageContent.greeting]);
-
-  useEffect(() => {
-    if (!("speechSynthesis" in window)) return;
-
-    function loadFemaleVoice() {
-      const femaleVoice =
-        window.speechSynthesis
-          .getVoices()
-          .find(
-            (voice) =>
-              voice.lang.toLowerCase().startsWith("en") && FEMALE_VOICE_NAMES.test(voice.name)
-          ) ?? null;
-
-      femaleVoiceRef.current = femaleVoice;
-      setHasFemaleVoice(Boolean(femaleVoice));
-    }
-
-    loadFemaleVoice();
-    window.speechSynthesis.addEventListener("voiceschanged", loadFemaleVoice);
-    return () => window.speechSynthesis.removeEventListener("voiceschanged", loadFemaleVoice);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (warningTimeoutRef.current) {
-        clearTimeout(warningTimeoutRef.current);
-      }
-      if (greetingTimeoutRef.current) {
-        clearTimeout(greetingTimeoutRef.current);
-      }
-      window.speechSynthesis?.cancel();
-    };
-  }, []);
-
-  function stopSpeaking() {
-    window.speechSynthesis?.cancel();
-    setIsSpeaking(false);
-  }
-
-  function pauseSpeaking() {
-    window.speechSynthesis?.pause();
-    setIsSpeaking(false);
-  }
-
-  function resumeSpeaking() {
-    window.speechSynthesis?.resume();
-    setIsSpeaking(window.speechSynthesis?.speaking ?? false);
-  }
-
-  function speakReply(content: string) {
-    if (!isVoiceEnabledRef.current || !("speechSynthesis" in window)) return;
-
-    const spokenText = content
-      .replace(RESUME_TOKEN, "")
-      .replace(MEETING_TOKEN, "")
-      .replace(/\s+/g, " ")
-      .trim();
-    if (!spokenText) return;
-
-    const preferredVoice = femaleVoiceRef.current;
-    if (!preferredVoice) return;
-
-    const sentences = spokenText.match(/[^.!?]+[.!?]+|[^.!?]+$/g) ?? [spokenText];
-    const useMobileSpeechRate = isPhoneOrTablet();
-
-    sentences.forEach((sentence, index) => {
-      const isLastSentence = index === sentences.length - 1;
-      const utterance = new SpeechSynthesisUtterance(sentence.trim());
-      utterance.voice = preferredVoice;
-      utterance.rate = useMobileSpeechRate
-        ? MOBILE_SPEECH_RATE
-        : isLastSentence
-          ? 1.35
-          : 1.5;
-      utterance.pitch = isLastSentence ? 1 : 1.02;
-      utterance.volume = 0.9;
-      utterance.onstart = () => setIsSpeaking(true);
-      utterance.onerror = () => setIsSpeaking(false);
-
-      if (isLastSentence) {
-        utterance.onend = () => setIsSpeaking(false);
-      }
-
-      window.speechSynthesis.speak(utterance);
-    });
-  }
-
-  function toggleVoice() {
-    if (!hasFemaleVoice) {
-      showVoiceWarning();
-      return;
-    }
-
-    const nextValue = !isVoiceEnabledRef.current;
-    isVoiceEnabledRef.current = nextValue;
-    setIsVoiceEnabled(nextValue);
-
-    if (nextValue) {
-      resumeSpeaking();
-    } else {
-      if (greetingTimeoutRef.current) {
-        clearTimeout(greetingTimeoutRef.current);
-        greetingTimeoutRef.current = null;
-      }
-      pauseSpeaking();
-    }
-  }
-
-  function showVoiceWarning() {
-    setSpamWarning("A female English voice is not available on this device.");
-
-    if (warningTimeoutRef.current) {
-      clearTimeout(warningTimeoutRef.current);
-    }
-
-    warningTimeoutRef.current = setTimeout(() => {
-      setSpamWarning(null);
-    }, 3500);
-  }
-
-  function showSpamWarning() {
-    setSpamWarning("Please wait for Isabel to answer before sending another message.");
-
-    if (warningTimeoutRef.current) {
-      clearTimeout(warningTimeoutRef.current);
-    }
-
-    warningTimeoutRef.current = setTimeout(() => {
-      setSpamWarning(null);
-    }, 3500);
-  }
-
-  async function processMessageQueue() {
-    if (isProcessingRef.current) return;
-
-    const nextMessage = messageQueueRef.current.shift();
-    if (!nextMessage) return;
-
-    isProcessingRef.current = true;
-    setIsLoading(true);
-
-    const userMessage: Message = { role: "user", content: nextMessage };
-    const requestMessages = [...conversationRef.current, userMessage];
-
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: requestMessages, currentPage: pageLabel }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Request failed");
-      }
-
-      const assistantMessage: Message = {
-        role: "assistant",
-        content: data.reply || "Hmm, I didn't get a response. Try again?",
-      };
-      conversationRef.current = [...requestMessages, assistantMessage];
-      setMessages((prev) => [...prev, assistantMessage]);
-      speakReply(assistantMessage.content);
-    } catch (err) {
-      const assistantMessage: Message = {
-        role: "assistant",
-        content: "Isabel is busy, please try again shortly.",
-      };
-      conversationRef.current = [...requestMessages, assistantMessage];
-      setMessages((prev) => [...prev, assistantMessage]);
-      speakReply(assistantMessage.content);
-    } finally {
-      pendingCountRef.current -= 1;
-      isProcessingRef.current = false;
-
-      if (messageQueueRef.current.length > 0) {
-        void processMessageQueue();
-      } else {
-        setIsLoading(false);
-      }
-    }
-  }
-
-  function sendMessage(text: string) {
-    const trimmedText = text.trim();
-    if (!trimmedText) return;
-
-    if (pendingCountRef.current >= 2) {
-      showSpamWarning();
-      return;
-    }
-
-    greetingSpokenRef.current = true;
-    if (greetingTimeoutRef.current) {
-      clearTimeout(greetingTimeoutRef.current);
-      greetingTimeoutRef.current = null;
-    }
-    pendingCountRef.current += 1;
-    messageQueueRef.current.push(trimmedText);
-    setMessages((prev) => [...prev, { role: "user", content: trimmedText }]);
-    setInput("");
-    void processMessageQueue();
-  }
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    sendMessage(input);
-  }
-
-  useEffect(() => {
-    function handleProjectQuestion(event: Event) {
-      const question = (event as CustomEvent<{ question?: string }>).detail?.question;
-      if (!question) return;
-
-      setPortfolioTip(null);
-      setIsOpen(true);
-      sendMessage(question);
-    }
-
-    window.addEventListener("ask-isabel-about-project", handleProjectQuestion);
-    return () => window.removeEventListener("ask-isabel-about-project", handleProjectQuestion);
-  });
+  const {
+    pageContent,
+    isOpen,
+    messages,
+    input,
+    setInput,
+    isLoading,
+    spamWarning,
+    portfolioTip,
+    isVoiceEnabled,
+    isSpeaking,
+    isSpeechActive,
+    hasFemaleVoice,
+    isShiftPressed,
+    scrollRef,
+    inputRef,
+    inputPlaceholder,
+    isSpamCoolingDown,
+    handleSubmit,
+    sendMessage,
+    toggleChat,
+    toggleVoice,
+  } = useAskSamChat(pageLabel);
+  const assistantStatus = isSpeechActive ? "Speaking" : isLoading ? "Thinking" : "Online";
 
   return (
     <>
       {/* Floating toggle button */}
       <button
-        onClick={() =>
-          setIsOpen((prev) => {
-            if (prev) {
-              if (greetingTimeoutRef.current) {
-                clearTimeout(greetingTimeoutRef.current);
-                greetingTimeoutRef.current = null;
-              }
-              greetingSpokenRef.current = true;
-              stopSpeaking();
-            }
-            return !prev;
-          })
-        }
+        onClick={toggleChat}
         aria-label={isOpen ? "Close chat" : "Open chat with Isabel"}
         aria-expanded={isOpen}
         className="fixed bottom-4 right-4 z-50 isolate flex h-12 w-12 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full border-0 font-chakra font-semibold tracking-[0.3px] text-[#81E6D9] transition-transform duration-300 hover:scale-105 active:scale-95 sm:bottom-6 sm:right-6 sm:h-auto sm:w-auto sm:px-5 sm:py-3 sm:text-sm"
@@ -494,22 +123,74 @@ export default function AskSamWidget() {
             style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}
           >
             <div
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full sm:h-9 sm:w-9"
+              className={`relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full transition-all duration-100 sm:h-9 sm:w-9 ${
+                isSpeaking
+                  ? "shadow-[0_0_18px_rgba(129,230,217,0.42)]"
+                  : isLoading
+                    ? "shadow-[0_0_14px_rgba(255,217,120,0.22)]"
+                    : ""
+              }`}
               style={{
-                background: "rgba(129,230,217,0.08)",
-                border: "1px solid rgba(129,230,217,0.3)",
-                color: "#81E6D9",
+                background: isSpeaking
+                  ? "rgba(129,230,217,0.14)"
+                  : isLoading
+                    ? "rgba(255,217,120,0.08)"
+                    : "rgba(129,230,217,0.08)",
+                border: isSpeaking
+                  ? "1px solid rgba(129,230,217,0.58)"
+                  : isLoading
+                    ? "1px solid rgba(255,217,120,0.28)"
+                    : "1px solid rgba(129,230,217,0.3)",
+                color: isLoading && !isSpeaking ? "#FFD978" : "#81E6D9",
               }}
             >
-              <SparkleIcon />
+              <span
+                aria-hidden="true"
+                className={`absolute inset-0 rounded-full ${
+                  isSpeaking
+                    ? "animate-[pulse_420ms_ease-in-out_infinite] bg-[#81E6D9]/18"
+                    : isLoading
+                      ? "animate-pulse bg-[#FFD978]/10"
+                      : ""
+                }`}
+              />
+              <span
+                className={`relative z-10 transition-transform duration-100 ${
+                  isSpeaking ? "scale-110" : isLoading ? "rotate-45 scale-95" : ""
+                }`}
+              >
+                <SparkleIcon />
+              </span>
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold text-white tracking-[0.3px]">Isabel</p>
               <p className="hidden text-xs sm:block" style={{ color: "rgba(255,255,255,0.6)" }}>
-                Personal AI assistant for Sam
+                Personal AI assistant -{" "}
+                <span
+                  className={`transition-colors duration-200 ${
+                    isSpeechActive
+                      ? "animate-pulse text-[#81E6D9]"
+                      : isLoading
+                        ? "animate-pulse text-[#FFD978]"
+                        : "text-[#81E6D9]"
+                  }`}
+                >
+                  {assistantStatus}
+                </span>
               </p>
               <p className="text-[11px] sm:hidden" style={{ color: "rgba(255,255,255,0.6)" }}>
-                Personal AI assistant for Sam
+                Personal AI assistant -{" "}
+                <span
+                  className={`transition-colors duration-200 ${
+                    isSpeechActive
+                      ? "animate-pulse text-[#81E6D9]"
+                      : isLoading
+                        ? "animate-pulse text-[#FFD978]"
+                        : "text-[#81E6D9]"
+                  }`}
+                >
+                  {assistantStatus}
+                </span>
               </p>
             </div>
             <button
@@ -534,7 +215,7 @@ export default function AskSamWidget() {
                 background: isVoiceEnabled ? "rgba(129,230,217,0.08)" : "rgba(255,255,255,0.03)",
               }}
             >
-              {isVoiceEnabled ? <VolumeIcon speaking={isSpeaking} /> : <MutedIcon />}
+              {isVoiceEnabled ? <VolumeIcon /> : <MutedIcon />}
             </button>
           </div>
 
@@ -650,19 +331,34 @@ export default function AskSamWidget() {
             style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
           >
             <input
+              ref={inputRef}
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask something..."
-              className="min-w-0 flex-1 rounded-full px-3.5 py-2 text-xs text-white outline-none placeholder:text-neutral-500 sm:px-4 sm:text-sm"
+              placeholder={inputPlaceholder}
+              disabled={isSpamCoolingDown}
+              className="min-w-0 flex-1 rounded-full px-3.5 py-2 text-xs text-white outline-none transition-all duration-200 placeholder:text-neutral-500 disabled:cursor-not-allowed disabled:text-white/45 disabled:placeholder:text-[#FFD978]/75 sm:px-4 sm:text-sm"
               style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.12)",
+                background: isSpamCoolingDown
+                  ? "rgba(255,217,120,0.055)"
+                  : isShiftPressed
+                    ? "rgba(129,230,217,0.08)"
+                    : "rgba(255,255,255,0.04)",
+                border: isSpamCoolingDown
+                  ? "1px solid rgba(255,217,120,0.28)"
+                  : isShiftPressed
+                  ? "1px solid rgba(129,230,217,0.55)"
+                  : "1px solid rgba(255,255,255,0.12)",
+                boxShadow: isSpamCoolingDown
+                  ? "none"
+                  : isShiftPressed
+                    ? "0 0 18px rgba(129,230,217,0.28)"
+                    : "none",
               }}
             />
             <button
               type="submit"
-              disabled={!input.trim()}
+              disabled={isSpamCoolingDown || !input.trim()}
               aria-label="Send message"
               className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-all duration-200 disabled:opacity-40 md:hover:border-[#81E6D9] md:hover:bg-[rgba(129,230,217,0.18)] md:hover:text-[#b8fff6] md:hover:shadow-[0_0_14px_rgba(129,230,217,0.32)]"
               style={tealButtonStyle}
@@ -673,165 +369,5 @@ export default function AskSamWidget() {
         </div>
       )}
     </>
-  );
-}
-
-function MessageContent({ message }: { message: Message }) {
-  if (message.role !== "assistant") {
-    return <>{message.content}</>;
-  }
-
-  const hasResumeLink = message.content.includes(RESUME_TOKEN);
-  const hasMeetingLink = message.content.includes(MEETING_TOKEN);
-
-  if (!hasResumeLink && !hasMeetingLink) {
-    return <>{message.content}</>;
-  }
-
-  const text = message.content
-    .replace(RESUME_TOKEN, "")
-    .replace(MEETING_TOKEN, "")
-    .trim();
-
-  return (
-    <div className="space-y-3">
-      {text && <p>{text}</p>}
-      <div className="flex flex-wrap gap-2">
-        {hasResumeLink && (
-          <a
-            href={RESUME_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold tracking-[0.3px] transition-all duration-200"
-            style={tealButtonStyle}
-          >
-            <DownloadIcon />
-            Download resume
-          </a>
-        )}
-        {hasMeetingLink && (
-          <a
-            href={MEETING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold tracking-[0.3px] transition-all duration-200"
-            style={tealButtonStyle}
-          >
-            <CalendarIcon />
-            Book a meeting
-          </a>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function Dot({ delay }: { delay: string }) {
-  return (
-    <span
-      className="h-1.5 w-1.5 animate-bounce rounded-full"
-      style={{ background: "#81E6D9", animationDelay: delay }}
-    />
-  );
-}
-
-function SparkleIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-function CloseIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M18 6L6 18M6 6L18 18"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function SendIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function VolumeIcon({ speaking }: { speaking: boolean }) {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M11 5L6.5 9H3V15H6.5L11 19V5Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M15 9C16.3 10.5 16.3 13.5 15 15M18 6C21.5 9.5 21.5 14.5 18 18"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        className={speaking ? "animate-pulse" : ""}
-      />
-    </svg>
-  );
-}
-
-function MutedIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M11 5L6.5 9H3V15H6.5L11 19V5ZM16 9L21 14M21 9L16 14"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function DownloadIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M12 3V15M12 15L7 10M12 15L17 10M5 21H19"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function CalendarIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M8 2V6M16 2V6M4 10H20M6 4H18C19.1 4 20 4.9 20 6V20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20V6C4 4.9 4.9 4 6 4Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }
