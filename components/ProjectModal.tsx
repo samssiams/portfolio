@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SquareArrowOutUpRight, Download, Briefcase } from "lucide-react";
+import { SquareArrowOutUpRight, Download, Briefcase, X } from "lucide-react";
 
 const tealScrollbar = `
   .modal-scroll::-webkit-scrollbar {
@@ -71,14 +71,14 @@ export default function Modal({
             onClick={onClose}
           >
             <motion.div
-              className="relative max-w-md w-full shadow-xl flex flex-col"
+              className="relative w-full max-w-md sm:max-w-lg shadow-xl flex flex-col"
               style={{
-                background: "rgba(26, 30, 40, 0.65)",
+                background: "rgba(18, 21, 30, 0.88)",
                 backdropFilter: "blur(24px)",
                 WebkitBackdropFilter: "blur(24px)",
                 border: "1px solid rgba(255,255,255,0.18)",
                 borderRadius: "16px",
-                maxHeight: "75vh",
+                height: "min(76vh, 660px)",
                 overflow: "hidden",
               }}
               initial={{ scale: 0.9, opacity: 0, y: 30 }}
@@ -97,41 +97,46 @@ export default function Modal({
                 }}
               />
 
-              {/* Title + Year + Close */}
-              <div className="px-5 sm:px-6 pt-5">
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h2 className="text-white text-[18px] sm:text-xl font-bold">{title}</h2>
-                    <p className="text-[12px] sm:text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>{year}</p>
-                  </div>
-                  <button
-                    onClick={onClose}
-                    className="flex items-center justify-center w-7 h-7 rounded-full cursor-pointer mt-1 shrink-0 group"
-                  >
-                    <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-                      <path d="M1 1L13 13M13 1L1 13" stroke="rgba(156,163,175,1)" strokeWidth="1.5" strokeLinecap="round" className="transition-all duration-200 group-hover:stroke-white"/>
-                    </svg>
-                  </button>
+              <button
+                onClick={onClose}
+                className="absolute right-4 top-4 z-20 flex items-center justify-center w-8 h-8 rounded-full cursor-pointer shrink-0 text-gray-300 transition-all duration-200 hover:text-white hover:bg-white/10"
+                style={{
+                  background: "rgba(12,15,22,0.62)",
+                  border: "1px solid rgba(255,255,255,0.14)",
+                  backdropFilter: "blur(14px)",
+                  WebkitBackdropFilter: "blur(14px)",
+                }}
+                aria-label="Close project details"
+              >
+                <X size={15} strokeWidth={1.8} />
+              </button>
+
+              {image && (
+                <div className="relative h-[210px] sm:h-[250px] shrink-0 overflow-hidden">
+                  <img
+                    src={image}
+                    alt={title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div
+                    className="pointer-events-none absolute inset-0"
+                    style={{
+                      background:
+                        "linear-gradient(to bottom, rgba(10,12,18,0.02) 0%, rgba(10,12,18,0.08) 58%, rgba(18,21,30,0.36) 100%)",
+                    }}
+                  />
                 </div>
-              </div>
+              )}
 
               <div
                 className="modal-scroll overflow-y-auto p-5 sm:p-6 pb-8"
                 style={{ flex: 1, minHeight: 0, borderRadius: "0 0 16px 16px" }}
               >
-                {/* Image */}
-                {image && (
-                  <div
-                    className="mb-4 rounded-lg overflow-hidden"
-                    style={{ border: "1px solid rgba(255,255,255,0.08)" }}
-                  >
-                    <img
-                      src={image}
-                      alt={title}
-                      className="w-full h-auto max-h-[220px] sm:max-h-[300px] object-contain rounded-lg"
-                    />
-                  </div>
-                )}
+                <div className="mb-4 pr-2">
+                  <h2 className="text-white text-[23px] sm:text-[26px] font-bold leading-tight">
+                    {title}
+                  </h2>
+                </div>
 
                 {/* Role OR Stacks */}
                 {!hasStacks && role ? (

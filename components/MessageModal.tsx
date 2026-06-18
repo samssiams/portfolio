@@ -262,11 +262,14 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
               </div>
               <button
                 onClick={handleClose}
-                className="flex items-center justify-center w-7 h-7 rounded-full cursor-pointer ml-2 mt-1 shrink-0 group"
+                className="flex items-center justify-center w-8 h-8 rounded-full cursor-pointer ml-2 mt-1 shrink-0 text-gray-400 transition-all duration-200 hover:text-white hover:bg-white/10"
+                style={{
+                  background: "rgba(255,255,255,0.045)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                }}
+                aria-label="Close message form"
               >
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-                  <path d="M1 1L13 13M13 1L1 13" stroke="rgba(156,163,175,1)" strokeWidth="1.5" strokeLinecap="round" className="transition-all duration-200 group-hover:stroke-white"/>
-                </svg>
+                <X size={15} strokeWidth={1.8} />
               </button>
             </div>
 
@@ -428,8 +431,12 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                             <button
                               type="button"
                               onClick={() => removeAttachment(file.name)}
-                              className="flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors duration-200"
-                              style={{ color: "rgba(255,255,255,0.48)" }}
+                              className="flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-full transition-all duration-200 hover:bg-white/10 hover:text-white"
+                              style={{
+                                color: "rgba(255,255,255,0.56)",
+                                background: "rgba(255,255,255,0.04)",
+                                border: "1px solid rgba(255,255,255,0.1)",
+                              }}
                               aria-label={`Remove ${file.name}`}
                             >
                               <X size={13} strokeWidth={2} />

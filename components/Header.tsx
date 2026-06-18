@@ -111,7 +111,11 @@ const Header = () => {
           </Link>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="text-white p-1 cursor-pointer"
+            className={`flex h-9 w-9 items-center justify-center rounded-full text-white cursor-pointer transition-all duration-200 ${
+              menuOpen
+                ? "bg-white/10 border border-white/15"
+                : "border border-transparent"
+            }`}
             aria-label="Toggle menu"
             aria-expanded={menuOpen}
           >
