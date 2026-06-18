@@ -10,6 +10,10 @@ export function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+export function formatTextForSpeech(text: string) {
+  return text.replace(/\bsamssiams\.work@gmail\.com\b/gi, "samshams dot work at gmail dot com");
+}
+
 export function isLikelyUnclearMessage(message: string) {
   const compactMessage = message.toLowerCase().replace(/[^a-z0-9]/g, "");
   if (compactMessage.length < 8) return false;

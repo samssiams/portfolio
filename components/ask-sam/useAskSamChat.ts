@@ -11,10 +11,32 @@ import {
   RESUME_TOKEN,
   SENTENCE_PAUSE_MS,
   SPAM_COOLDOWN_MS,
-  UNCLEAR_MESSAGE_REPLY,
+  UNCLEAR_MESSAGE_REPLIES,
 } from "./constants";
 import type { Message, PageLabel, QueuedMessage } from "./types";
-import { isLikelyUnclearMessage, wait } from "./speech-utils";
+import { formatTextForSpeech, isLikelyUnclearMessage, wait } from "./speech-utils";
+
+const RESPONSE_FALLBACKS = [
+  "Hmm, I didn't get a response. Try asking again?",
+  "I didn't get a clear response that time. Could you try once more?",
+  "Something came back empty on my side. Send that again for me?",
+];
+
+const SERVICE_ERROR_REPLIES = [
+  "I'm having trouble reaching my response service right now. Please try again in a moment.",
+  "I can't reach my response service at the moment. Give it a little bit and try again.",
+  "My response service is being quiet right now. Please try again shortly.",
+];
+
+const VOICE_WARNING_REPLIES = [
+  "A female English voice is not available on this device.",
+  "I couldn't find a female English voice on this device.",
+  "Voice playback needs a female English voice, and this device doesn't seem to have one available.",
+];
+
+function getRandomReply(replies: string[]) {
+  return replies[Math.floor(Math.random() * replies.length)] ?? replies[0];
+}
 
 export function useAskSamChat(pageLabel: PageLabel) {
   const pageContent = PAGE_CONTENT[pageLabel];
@@ -252,9 +274,9 @@ export function useAskSamChat(pageLabel: PageLabel) {
   function speakReply(content: string) {
     if (!isVoiceEnabledRef.current || !("speechSynthesis" in window)) return;
 
-    const spokenText = content
-      .replace(RESUME_TOKEN, "")
-      .replace(MEETING_TOKEN, "")
+    const spokenText = formatTextForSpeech(
+      content.replace(RESUME_TOKEN, "").replace(MEETING_TOKEN, "")
+    )
       .replace(/\s+/g, " ")
       .trim();
     if (!spokenText) return;
@@ -334,7 +356,7 @@ export function useAskSamChat(pageLabel: PageLabel) {
   }
 
   function showVoiceWarning() {
-    setSpamWarning("A female English voice is not available on this device.");
+    setSpamWarning(getRandomReply(VOICE_WARNING_REPLIES));
 
     if (warningTimeoutRef.current) {
       clearTimeout(warningTimeoutRef.current);
@@ -389,7 +411,7 @@ export function useAskSamChat(pageLabel: PageLabel) {
 
         const assistantMessage: Message = {
           role: "assistant",
-          content: UNCLEAR_MESSAGE_REPLY,
+          content: getRandomReply(UNCLEAR_MESSAGE_REPLIES),
         };
         conversationRef.current = [...visibleMessages, assistantMessage];
         setMessages((prev) => [...prev, assistantMessage]);
@@ -409,9 +431,15 @@ export function useAskSamChat(pageLabel: PageLabel) {
         throw new Error(data.error || "Request failed");
       }
 
+      if (data.silent) {
+        await wait(Math.max(0, MIN_RESPONSE_DELAY_MS - (Date.now() - startedAt)));
+        conversationRef.current = visibleMessages;
+        return;
+      }
+
       const assistantMessage: Message = {
         role: "assistant",
-        content: data.reply || "Hmm, I didn't get a response. Try again?",
+        content: data.reply || getRandomReply(RESPONSE_FALLBACKS),
       };
       await wait(Math.max(0, MIN_RESPONSE_DELAY_MS - (Date.now() - startedAt)));
       conversationRef.current = [...visibleMessages, assistantMessage];
@@ -420,8 +448,7 @@ export function useAskSamChat(pageLabel: PageLabel) {
     } catch (err) {
       const assistantMessage: Message = {
         role: "assistant",
-        content:
-          "I'm having trouble reaching my response service right now. Please try again in a moment.",
+        content: getRandomReply(SERVICE_ERROR_REPLIES),
       };
       await wait(Math.max(0, MIN_RESPONSE_DELAY_MS - (Date.now() - startedAt)));
       conversationRef.current = [...visibleMessages, assistantMessage];
