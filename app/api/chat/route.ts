@@ -35,8 +35,8 @@ const ISABEL_DEFAULT_REPLIES = [
   "I'm Isabel. Sam created me to help answer questions about his work, projects, and availability.",
 ];
 const INAPPROPRIATE_BOUNDARY_REPLIES = [
-  "I can't help with bad language, sexual, or 18+ topics here. Please keep the chat respectful and related to Sam, his work, or the portfolio. If this continues, I won't reply to those messages until the topic changes.",
-  "Let's keep this space respectful. I can't respond to profanity, perverted requests, or 18+ topics here. Ask me about Sam's work, projects, skills, or availability instead.",
+  "I can't help with unprofessional request or response. Please keep the chat respectful and related to Sam, his work, or the portfolio. If this continues, I won't reply to those messages until the topic changes.",
+  "I'm here to keep the conversation professional and focused on Sam's portfolio. Please ask about his work, projects, skills, or availability instead.",
   "I can't continue with that kind of message here. Please switch to a respectful topic about Sam or the portfolio; repeated inappropriate messages won't receive a reply.",
 ];
 const PAGE_LABELS = ["Home", "Portfolio", "Photography"] as const;
