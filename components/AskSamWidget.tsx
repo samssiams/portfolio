@@ -2,21 +2,12 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useCallback, useRef } from "react";
 import { routes } from "@/routers/router";
 import { Dot, CloseIcon, MutedIcon, SendIcon, SparkleIcon, VolumeIcon } from "./ask-sam/icons";
 import { MessageContent } from "./ask-sam/MessageContent";
 import { glassInset, glassPanel, tealButtonStyle } from "./ask-sam/styles";
 import type { PageLabel } from "./ask-sam/types";
 import { useAskSamChat } from "./ask-sam/useAskSamChat";
-
-type AudioContextConstructor = typeof AudioContext;
-
-declare global {
-  interface Window {
-    webkitAudioContext?: AudioContextConstructor;
-  }
-}
 
 function getPageLabel(pathname: string): PageLabel {
   if (pathname === routes.projectsPortfolio) return "Portfolio";
@@ -27,7 +18,6 @@ function getPageLabel(pathname: string): PageLabel {
 export default function AskSamWidget() {
   const pathname = usePathname();
   const pageLabel = getPageLabel(pathname);
-  const hoverSoundCooldownRef = useRef(0);
   const {
     pageContent,
     isOpen,
@@ -52,82 +42,12 @@ export default function AskSamWidget() {
     toggleVoice,
   } = useAskSamChat(pageLabel);
   const assistantStatus = isSpeechActive ? "Speaking" : isLoading ? "Thinking" : "Online";
-  const playHoverSound = useCallback(() => {
-    if (typeof window === "undefined") return;
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-
-    const now = window.performance.now();
-    if (now - hoverSoundCooldownRef.current < 700) return;
-    hoverSoundCooldownRef.current = now;
-
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return;
-
-    try {
-      const context = new AudioContext();
-      const start = context.currentTime;
-      const masterGain = context.createGain();
-      const shimmerFilter = context.createBiquadFilter();
-      const chimeDelay = context.createDelay();
-      const feedbackGain = context.createGain();
-
-      shimmerFilter.type = "bandpass";
-      shimmerFilter.frequency.setValueAtTime(2450, start);
-      shimmerFilter.Q.setValueAtTime(2.1, start);
-
-      masterGain.gain.setValueAtTime(0.0001, start);
-      masterGain.gain.exponentialRampToValueAtTime(0.074, start + 0.045);
-      masterGain.gain.exponentialRampToValueAtTime(0.0001, start + 0.82);
-
-      chimeDelay.delayTime.setValueAtTime(0.055, start);
-      feedbackGain.gain.setValueAtTime(0.18, start);
-
-      shimmerFilter.connect(masterGain);
-      shimmerFilter.connect(chimeDelay);
-      chimeDelay.connect(feedbackGain);
-      feedbackGain.connect(chimeDelay);
-      chimeDelay.connect(masterGain);
-      masterGain.connect(context.destination);
-
-      const notes = [1175, 1568, 2093];
-      const lastChime = notes.reduce<OscillatorNode | null>((last, frequency, index) => {
-        const chime = context.createOscillator();
-        const chimeGain = context.createGain();
-        const toneStart = start + index * 0.055;
-        const duration = 0.42 + index * 0.08;
-
-        chime.type = index === 1 ? "triangle" : "sine";
-        chime.frequency.setValueAtTime(frequency, toneStart);
-        chime.frequency.exponentialRampToValueAtTime(frequency * 0.985, toneStart + duration);
-
-        chimeGain.gain.setValueAtTime(0.0001, toneStart);
-        chimeGain.gain.exponentialRampToValueAtTime(0.5 - index * 0.09, toneStart + 0.035);
-        chimeGain.gain.exponentialRampToValueAtTime(0.0001, toneStart + duration);
-
-        chime.connect(chimeGain);
-        chimeGain.connect(shimmerFilter);
-        chime.start(toneStart);
-        chime.stop(toneStart + duration);
-
-        return chime;
-      }, null);
-
-      lastChime?.addEventListener("ended", () => {
-        context.close().catch(() => undefined);
-      });
-    } catch {
-      // Some browsers block AudioContext creation until after a click.
-    }
-  }, []);
 
   return (
     <>
       {/* Floating toggle button */}
       <button
         onClick={toggleChat}
-        onMouseEnter={() => {
-          if (!isOpen) playHoverSound();
-        }}
         aria-label={isOpen ? "Close chat" : "Open chat with Isabel"}
         aria-expanded={isOpen}
         className="group fixed bottom-4 right-4 z-50 isolate flex h-12 w-12 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full border-0 font-chakra font-semibold tracking-[0.3px] text-[#81E6D9] sm:bottom-6 sm:right-6 sm:h-auto sm:w-auto sm:px-5 sm:py-3 sm:text-sm"
