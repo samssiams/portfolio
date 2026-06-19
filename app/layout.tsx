@@ -1,7 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Chakra_Petch } from "next/font/google";
+import { Geist, Geist_Mono, Chakra_Petch } from "next/font/google";
+import LenisScrollProvider from "@/providers/lenis-provider";
 import InkCursor from "@/components/InkCursor";
 import "./globals.css";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 const chakraPetch = Chakra_Petch({
   variable: "--font-chakra-petch",
@@ -167,7 +178,7 @@ export default function RootLayout({
       </head>
       <body
         suppressHydrationWarning
-        className={`${chakraPetch.variable} antialiased bg-[#1a1e28]`}
+        className={`${chakraPetch.variable} ${geistSans.variable} ${geistMono.variable} antialiased bg-[#1a1e28]`}
       >
         <InkCursor />
         {/* <main> satisfies the landmark accessibility requirement */}

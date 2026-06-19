@@ -271,7 +271,7 @@ export default function HomeClient() {
       style={{ backgroundColor: "#1a1e28" }}
     >
       <div
-        className="mobile-hide-decoration fixed inset-0 pointer-events-none"
+        className="fixed inset-0 pointer-events-none"
         style={{
           zIndex: 2, opacity: 0.18,
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
@@ -279,7 +279,7 @@ export default function HomeClient() {
         }}
       />
       <div
-        className="mobile-gradient-decoration fixed inset-0 pointer-events-none"
+        className="fixed inset-0 pointer-events-none"
         style={{
           zIndex: 1,
           background: `
@@ -291,7 +291,7 @@ export default function HomeClient() {
         }}
       />
       <div
-        className="mobile-dot-decoration fixed inset-0 pointer-events-none"
+        className="fixed inset-0 pointer-events-none"
         style={{
           zIndex: 0,
           backgroundImage: "radial-gradient(circle, rgba(129,230,217,0.09) 1px, transparent 1px)",
@@ -300,7 +300,7 @@ export default function HomeClient() {
           WebkitMaskImage: "radial-gradient(ellipse 90% 90% at 50% 40%, black 40%, transparent 100%)",
         }}
       />
-      <div className="mobile-hide-decoration fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+      <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
         <div style={{ position: "absolute", top: "10%", left: "50%", transform: "translateX(-50%)", width: "600px", height: "300px", background: "radial-gradient(ellipse, rgba(129,230,217,0.035) 0%, transparent 70%)", filter: "blur(40px)" }} />
         <div style={{ position: "absolute", bottom: "20%", left: "20%", width: "400px", height: "400px", background: "radial-gradient(ellipse, rgba(100,120,200,0.025) 0%, transparent 70%)", filter: "blur(60px)" }} />
       </div>
