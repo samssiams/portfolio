@@ -370,7 +370,7 @@ export default function PortfolioPage() {
                             src={project.image}
                             alt={`${project.title} project preview by Samuel Cruz`}
                             fill
-                            loading="lazy"
+                            priority={index === 0}
                             sizes="(min-width: 640px) 250px, 100vw"
                             className="object-cover"
                           />

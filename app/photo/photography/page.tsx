@@ -185,7 +185,7 @@ export default function PhotographyPage() {
                             src={photo.src}
                             alt={`${photo.cc} in ${photo.location}`}
                             fill
-                            loading="lazy"
+                            priority={index === 0}
                             sizes="(min-width: 640px) 260px, 100vw"
                             className={`object-cover transition-opacity duration-500 ${loadedImages[photo.src] ? "opacity-100" : "opacity-0"}`}
                             onLoad={() => handleImageLoad(photo.src)}

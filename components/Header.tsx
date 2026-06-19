@@ -24,7 +24,7 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -93,7 +93,7 @@ const Header = () => {
 
       {/* Mobile Header */}
       <header
-        className={`fixed left-0 right-0 z-[49] transition-all duration-300 md:hidden
+        className={`mobile-glass fixed left-0 right-0 z-[49] transition-all duration-300 md:hidden
           ${scrolled
             ? "top-3 mx-4 rounded-2xl bg-[#1a1e28]/85 backdrop-blur-md border border-white/10"
             : "top-0 bg-[#1a1e28]/90 backdrop-blur-sm border-b border-white/5"

@@ -1,18 +1,20 @@
 "use client";
 
 import { useEffect } from "react";
-import { gsap } from "gsap";
-
 export default function InkCursor() {
   useEffect(() => {
-    const cursor = document.getElementById("cursor")!; // non-null assertion
+    const cursor = document.getElementById("cursor");
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!cursor || !finePointer.matches || reducedMotion.matches) return;
+    const cursorElement = cursor;
 
     const amount = 20;
     const sineDots = Math.floor(amount * 0.3);
     const width = 26;
     const idleTimeout = 150;
 
-    let lastFrame = 0;
+    let frameID = 0;
     const mousePosition = { x: 0, y: 0 };
     const dots: Dot[] = [];
     let timeoutID: ReturnType<typeof setTimeout>;
@@ -38,8 +40,9 @@ export default function InkCursor() {
         this.range = width / 2 - (width / 2) * this.scale + 2;
         this.limit = width * 0.75 * this.scale;
         this.element = document.createElement("span");
-        gsap.set(this.element, { scale: this.scale });
-        cursor.appendChild(this.element);
+        this.element.style.transform = `scale(${this.scale})`;
+        this.element.style.willChange = "transform";
+        cursorElement.appendChild(this.element);
       }
 
       lock() {
@@ -51,13 +54,13 @@ export default function InkCursor() {
 
       draw() {
         if (!idle || this.index <= sineDots) {
-          gsap.set(this.element, { x: this.x, y: this.y });
+          this.element.style.transform = `translate3d(${this.x}px, ${this.y}px, 0) scale(${this.scale})`;
         } else {
           this.angleX += this.anglespeed;
           this.angleY += this.anglespeed;
           this.y = this.lockY + Math.sin(this.angleY) * this.range;
           this.x = this.lockX + Math.sin(this.angleX) * this.range;
-          gsap.set(this.element, { x: this.x, y: this.y });
+          this.element.style.transform = `translate3d(${this.x}px, ${this.y}px, 0) scale(${this.scale})`;
         }
       }
     }
@@ -87,8 +90,7 @@ export default function InkCursor() {
       resetIdleTimer();
     };
 
-    const render = (timestamp: number) => {
-      const delta = timestamp - lastFrame;
+    const render = () => {
       let x = mousePosition.x;
       let y = mousePosition.y;
 
@@ -106,17 +108,19 @@ export default function InkCursor() {
         }
       });
 
-      lastFrame = timestamp;
-      requestAnimationFrame(render);
+      frameID = requestAnimationFrame(render);
     };
 
     buildDots();
     window.addEventListener("mousemove", onMouseMove);
     startIdleTimer();
-    requestAnimationFrame(render);
+    frameID = requestAnimationFrame(render);
 
     return () => {
+      cancelAnimationFrame(frameID);
+      clearTimeout(timeoutID);
       window.removeEventListener("mousemove", onMouseMove);
+      cursorElement.replaceChildren();
     };
   }, []);
 

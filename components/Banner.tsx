@@ -5,7 +5,7 @@ export default function Banner() {
     <div className="w-full mt-16 sm:mt-20">
       <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31">
         <div
-          className="rounded-xl py-3 text-center"
+          className="mobile-glass rounded-xl py-3 text-center"
           style={{
             background: "rgba(26, 30, 40, 0.82)",
             backdropFilter: "blur(24px)",
