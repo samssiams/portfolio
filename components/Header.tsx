@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -22,9 +22,26 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoHovered, setLogoHovered] = useState(false);
 
+  useLayoutEffect(() => {
+    const previousScrollRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+
+    const resetScroll = () => window.scrollTo(0, 0);
+    resetScroll();
+    const frameId = window.requestAnimationFrame(resetScroll);
+    window.addEventListener("pageshow", resetScroll);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.removeEventListener("pageshow", resetScroll);
+      window.history.scrollRestoration = previousScrollRestoration;
+    };
+  }, [pathname]);
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
