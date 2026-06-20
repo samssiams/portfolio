@@ -2,7 +2,8 @@
 
 import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, Paperclip, X } from "lucide-react";
+import { Paperclip, X } from "lucide-react";
+import AnimatedTealEdge from "./AnimatedTealEdge";
 
 interface MessageModalProps {
   isOpen: boolean;
@@ -34,6 +35,8 @@ const fieldShellStyle = {
 };
 
 const MAX_ATTACHMENT_SIZE = 5 * 1024 * 1024;
+const MAX_ATTACHMENTS = 3;
+const MAX_MESSAGE_WORDS = 110;
 const ALLOWED_ATTACHMENT_TYPES = [
   "application/pdf",
   "image/jpeg",
@@ -45,9 +48,12 @@ const ALLOWED_ATTACHMENT_TYPES = [
 ];
 const ALLOWED_ATTACHMENT_EXTENSIONS = [".pdf", ".jpg", ".jpeg", ".png", ".webp", ".txt", ".doc", ".docx"];
 
-const formatFileSize = (size: number) => {
-  if (size < 1024 * 1024) return `${Math.max(1, Math.round(size / 1024))} KB`;
-  return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+const countWords = (value: string) => value.trim().match(/\S+/g)?.length ?? 0;
+
+const limitWords = (value: string) => {
+  const matches = [...value.matchAll(/\S+/g)];
+  const firstExtraWord = matches[MAX_MESSAGE_WORDS];
+  return firstExtraWord?.index === undefined ? value : value.slice(0, firstExtraWord.index).trimEnd();
 };
 
 const fields = ["name", "email", "subject", "message"] as const;
@@ -67,8 +73,32 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
   const [focused, setFocused] = useState<string | null>(null);
   const [errors, setErrors] = useState<FormErrors>({});
   const [formError, setFormError] = useState("");
+  const [attachmentToast, setAttachmentToast] = useState("");
   const [attachments, setAttachments] = useState<File[]>([]);
+  const [messageLimitWarning, setMessageLimitWarning] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const messageValueRef = useRef("");
+  const attachmentToastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const messageLimitTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showAttachmentToast = (message: string) => {
+    setAttachmentToast(message);
+    if (attachmentToastTimeoutRef.current) {
+      clearTimeout(attachmentToastTimeoutRef.current);
+    }
+    attachmentToastTimeoutRef.current = setTimeout(() => setAttachmentToast(""), 3000);
+  };
+
+  const showMessageLimitWarning = () => {
+    setMessageLimitWarning(true);
+    if (messageLimitTimeoutRef.current) {
+      clearTimeout(messageLimitTimeoutRef.current);
+    }
+    messageLimitTimeoutRef.current = setTimeout(() => {
+      setMessageLimitWarning(false);
+      messageLimitTimeoutRef.current = null;
+    }, 3000);
+  };
 
   const getFieldShellStyle = (field: FieldName) => ({
     ...fieldShellStyle,
@@ -127,6 +157,17 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
     setShowSuccess(false);
     setLoading(false);
     setFocused(null);
+    messageValueRef.current = "";
+    setMessageLimitWarning(false);
+    if (messageLimitTimeoutRef.current) {
+      clearTimeout(messageLimitTimeoutRef.current);
+      messageLimitTimeoutRef.current = null;
+    }
+    setAttachmentToast("");
+    if (attachmentToastTimeoutRef.current) {
+      clearTimeout(attachmentToastTimeoutRef.current);
+      attachmentToastTimeoutRef.current = null;
+    }
     setAttachments([]);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -136,6 +177,16 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(event.target.files || []);
+
+    if (selectedFiles.length > MAX_ATTACHMENTS) {
+      showAttachmentToast(`You can only attach ${MAX_ATTACHMENTS} files.`);
+      setAttachments([]);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+      return;
+    }
+
     const validFiles = selectedFiles.filter((file) => {
       const extension = file.name.slice(file.name.lastIndexOf(".")).toLowerCase();
       return (
@@ -156,11 +207,31 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
     setAttachments(validFiles);
   };
 
-  const removeAttachment = (fileName: string) => {
-    setAttachments((current) => current.filter((file) => file.name !== fileName));
+  const clearAttachments = () => {
+    setAttachments([]);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
+  };
+
+  const handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const nextValue = event.currentTarget.value;
+    const previousValue = messageValueRef.current;
+    const limitedValue = limitWords(nextValue);
+    const addsAfterLimit =
+      countWords(previousValue) >= MAX_MESSAGE_WORDS && nextValue.length > previousValue.length;
+
+    if (addsAfterLimit) {
+      event.currentTarget.value = previousValue;
+      showMessageLimitWarning();
+    } else if (limitedValue !== nextValue) {
+      event.currentTarget.value = limitedValue;
+      messageValueRef.current = limitedValue;
+      showMessageLimitWarning();
+    } else {
+      messageValueRef.current = nextValue;
+    }
+    clearFieldError("message");
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -193,6 +264,8 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
         form.reset();
         setErrors({});
         setFormError("");
+        setMessageLimitWarning(false);
+        messageValueRef.current = "";
         setAttachments([]);
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
@@ -360,24 +433,45 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                     />
                   </div>
                 ))}
-                <div style={{ ...getFieldShellStyle("message"), alignItems: "flex-start" }}>
-                  <textarea
-                    name="message"
-                    placeholder="Message"
-                    rows={3}
-                    onFocus={() => setFocused("message")}
-                    onBlur={() => setFocused(null)}
-                    onChange={() => clearFieldError("message")}
-                    aria-invalid={Boolean(errors.message)}
-                    aria-describedby={formError ? "message-form-error" : undefined}
-                    style={{
-                      ...inputStyle,
-                      resize: "none",
-                    }}
-                  />
+                <div>
+                  <div style={{ ...getFieldShellStyle("message"), alignItems: "flex-start" }}>
+                    <textarea
+                      name="message"
+                      placeholder="Message"
+                      rows={3}
+                      className="[scrollbar-color:rgba(129,230,217,0.35)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-button]:hidden [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#81E6D9]/30 [&::-webkit-scrollbar-thumb:hover]:bg-[#81E6D9]/50"
+                      onFocus={() => setFocused("message")}
+                      onBlur={() => setFocused(null)}
+                      onChange={handleMessageChange}
+                      aria-invalid={Boolean(errors.message)}
+                      aria-describedby={
+                        [formError && "message-form-error", messageLimitWarning && "message-limit-warning"]
+                          .filter(Boolean)
+                          .join(" ") || undefined
+                      }
+                      style={{
+                        ...inputStyle,
+                        resize: "none",
+                      }}
+                    />
+                  </div>
+                  <AnimatePresence>
+                    {messageLimitWarning && (
+                      <motion.p
+                        id="message-limit-warning"
+                        role="status"
+                        className="overflow-hidden px-2 text-[11px] text-[#FFC850]"
+                        initial={{ height: 0, marginTop: 0, opacity: 0 }}
+                        animate={{ height: "auto", marginTop: 6, opacity: 1 }}
+                        exit={{ height: 0, marginTop: 0, opacity: 0 }}
+                      >
+                        You&apos;ve reached the {MAX_MESSAGE_WORDS}-word limit.
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
                 </div>
 
-                <div>
+                <div className="relative flex gap-2">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -389,89 +483,60 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] tracking-[0.25px] transition-all duration-200"
+                    className="flex min-w-0 flex-1 cursor-pointer items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] tracking-[0.25px] transition-all duration-200"
                     style={{
-                      background: "rgba(129,230,217,0.055)",
-                      border: "1px dashed rgba(129,230,217,0.24)",
-                      color: "rgba(255,255,255,0.72)",
+                      background: attachmentToast ? "rgba(255,200,80,0.1)" : "rgba(129,230,217,0.055)",
+                      border: attachmentToast
+                        ? "1px solid rgba(255,200,80,0.4)"
+                        : "1px dashed rgba(129,230,217,0.24)",
+                      color: attachmentToast ? "#FFC850" : "rgba(255,255,255,0.72)",
                     }}
                   >
-                    <span className="flex items-center gap-2">
-                      <Paperclip size={15} strokeWidth={1.9} style={{ color: "#81E6D9" }} />
-                      <span>{attachments.length > 0 ? "Add or replace files" : "Attach files"}</span>
+                    <span className="flex min-w-0 items-center gap-2">
+                      <Paperclip
+                        size={15}
+                        strokeWidth={1.9}
+                        style={{ color: attachmentToast ? "#FFC850" : "#81E6D9" }}
+                      />
+                      <span className="truncate">
+                        {attachmentToast ||
+                          (attachments.length === 1
+                            ? attachments[0].name
+                            : attachments.length > 1
+                              ? `${attachments.length} files attached`
+                              : "Attach files")}
+                      </span>
                     </span>
                   </button>
 
-                  <AnimatePresence>
-                    {attachments.length > 0 && (
-                      <motion.div
-                        className="mt-2 flex flex-col gap-1.5"
-                        initial={{ opacity: 0, y: -4 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -4 }}
-                        transition={{ duration: 0.18, ease: "easeOut" }}
-                      >
-                        {attachments.map((file) => (
-                          <div
-                            key={`${file.name}-${file.size}`}
-                            className="flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-[12px]"
-                            style={{
-                              background: "rgba(15,18,25,0.52)",
-                              border: "1px solid rgba(255,255,255,0.1)",
-                              color: "rgba(255,255,255,0.72)",
-                            }}
-                          >
-                            <span className="flex min-w-0 items-center gap-2">
-                              <FileText size={14} strokeWidth={1.8} className="shrink-0" style={{ color: "#81E6D9" }} />
-                              <span className="truncate">{file.name}</span>
-                              <span className="shrink-0" style={{ color: "rgba(255,255,255,0.32)" }}>
-                                {formatFileSize(file.size)}
-                              </span>
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => removeAttachment(file.name)}
-                              className="flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-full transition-all duration-200 hover:bg-white/10 hover:text-white"
-                              style={{
-                                color: "rgba(255,255,255,0.56)",
-                                background: "rgba(255,255,255,0.04)",
-                                border: "1px solid rgba(255,255,255,0.1)",
-                              }}
-                              aria-label={`Remove ${file.name}`}
-                            >
-                              <X size={13} strokeWidth={2} />
-                            </button>
-                          </div>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  {attachments.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={clearAttachments}
+                      className="flex w-[42px] shrink-0 cursor-pointer items-center justify-center rounded-xl text-white/60 transition-all duration-200 hover:bg-white/10 hover:text-white"
+                      style={{
+                        background: "rgba(255,255,255,0.04)",
+                        border: "1px solid rgba(255,255,255,0.12)",
+                      }}
+                      aria-label="Remove all attachments"
+                    >
+                      <X size={15} strokeWidth={2} />
+                    </button>
+                  )}
                 </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full font-semibold px-4 py-2.5 rounded-xl tracking-[0.3px] transition-all duration-300 cursor-pointer"
+                  className="group relative isolate w-full overflow-hidden rounded-xl border-0 px-4 py-2.5 font-semibold tracking-[0.3px] transition-all duration-300"
                   style={{
-                    background: loading ? "rgba(129,230,217,0.05)" : "rgba(129,230,217,0.08)",
-                    border: "1px solid rgba(129,230,217,0.3)",
                     color: loading ? "rgba(129,230,217,0.4)" : "#81E6D9",
                     cursor: loading ? "not-allowed" : "pointer",
-                  }}
-                  onMouseEnter={e => {
-                    if (!loading) {
-                      (e.currentTarget as HTMLElement).style.background = "rgba(129,230,217,0.15)";
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(129,230,217,0.5)";
-                    }
-                  }}
-                  onMouseLeave={e => {
-                    if (!loading) {
-                      (e.currentTarget as HTMLElement).style.background = "rgba(129,230,217,0.08)";
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(129,230,217,0.3)";
-                    }
+                    opacity: loading ? 0.65 : 1,
                   }}
                 >
-                  {loading ? "Sending..." : "Send"}
+                  <AnimatedTealEdge />
+                  <span className="relative z-10">{loading ? "Sending..." : "Send"}</span>
                 </button>
               </form>
             )}

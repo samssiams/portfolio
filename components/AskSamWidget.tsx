@@ -165,7 +165,11 @@ export default function AskSamWidget() {
               />
               <span
                 className={`relative z-10 transition-transform duration-100 ${
-                  isSpeaking ? "scale-110" : isLoading ? "rotate-45 scale-95" : ""
+                  isSpeaking
+                    ? "scale-110"
+                    : isLoading
+                      ? "animate-[spin_1.4s_linear_infinite] scale-95 motion-reduce:animate-pulse"
+                      : ""
                 }`}
               >
                 <SparkleIcon />

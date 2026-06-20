@@ -3,6 +3,8 @@ import nodemailer from "nodemailer";
 export const runtime = "nodejs";
 
 const MAX_ATTACHMENT_SIZE = 5 * 1024 * 1024;
+const MAX_ATTACHMENTS = 3;
+const MAX_MESSAGE_WORDS = 110;
 const ALLOWED_ATTACHMENT_TYPES = new Set([
   "application/pdf",
   "image/jpeg",
@@ -26,6 +28,10 @@ function escapeHtml(value: string) {
 function getFileExtension(fileName: string) {
   const dotIndex = fileName.lastIndexOf(".");
   return dotIndex >= 0 ? fileName.slice(dotIndex).toLowerCase() : "";
+}
+
+function countWords(value: string) {
+  return value.trim().match(/\S+/g)?.length ?? 0;
 }
 
 function hasSignature(bytes: Uint8Array, signature: number[]) {
@@ -188,6 +194,13 @@ export async function POST(req: Request) {
         .getAll("attachments")
         .filter((value): value is File => value instanceof File && value.size > 0);
 
+      if (uploadedFiles.length > MAX_ATTACHMENTS) {
+        return new Response(
+          JSON.stringify({ success: false, error: `You can attach up to ${MAX_ATTACHMENTS} files only.` }),
+          { status: 400 }
+        );
+      }
+
       for (const file of uploadedFiles) {
         const bytes = new Uint8Array(await file.arrayBuffer());
 
@@ -209,7 +222,14 @@ export async function POST(req: Request) {
       name = body.name || "";
       email = body.email || "";
       subject = body.subject || "";
-      message = body.message || "";
+      message = typeof body.message === "string" ? body.message : "";
+    }
+
+    if (countWords(message) > MAX_MESSAGE_WORDS) {
+      return new Response(
+        JSON.stringify({ success: false, error: `Message must be ${MAX_MESSAGE_WORDS} words or fewer.` }),
+        { status: 400 }
+      );
     }
 
     console.log("Incoming request data:", {

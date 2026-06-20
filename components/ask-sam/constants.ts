@@ -9,7 +9,8 @@ export const FEMALE_VOICE_NAMES =
   /female|samantha|zira|aria|jenny|serena|susan|victoria|karen|moira|tessa|fiona|veena|joana|salli|kimberly|ivy|kendra|emma|amy|olivia|sonia|libby|natasha|clara|neerja|heera|ava|allison|google us english/i;
 export const NATURAL_SPEECH_RATE = 1.18;
 export const SENTENCE_PAUSE_MS = 180;
-export const MIN_RESPONSE_DELAY_MS = 900;
+export const MIN_NATURAL_RESPONSE_DELAY_MS = 2_000;
+export const MAX_NATURAL_RESPONSE_DELAY_MS = 3_000;
 export const SPAM_COOLDOWN_MS = 10_000;
 export const UNCLEAR_MESSAGE_REPLIES = [
   "I didn't quite catch that. Could you rephrase your question about Sam's work, projects, or availability?",

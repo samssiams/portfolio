@@ -5,6 +5,7 @@ import Image from "next/image";
 import Header from "../components/Header";
 import Banner from "../components/Banner";
 import Footer from "../components/Footer";
+import AnimatedTealEdge from "../components/AnimatedTealEdge";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
@@ -38,8 +39,6 @@ function getTodayString() {
 const canHover = typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
 
 const mediaButtonStyle = {
-  background: "rgba(129,230,217,0.08)",
-  border: "1px solid rgba(129,230,217,0.18)",
   color: "#81E6D9",
 } as const;
 
@@ -533,13 +532,15 @@ export default function HomeClient() {
                     href={href}
                     onMouseEnter={() => { if (canHover) setHoveredSection(key); }}
                     onMouseLeave={() => { if (canHover) setHoveredSection(null); }}
-                    className="flex items-center justify-center gap-1.5 font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-all duration-300"
+                    className="group relative isolate flex items-center justify-center gap-1.5 overflow-hidden rounded-xl border-0 px-5 py-2 font-semibold tracking-[0.38px] transition-all duration-300"
                     style={mediaButtonStyle}
                   >
-                    <span>{label}</span>
+                    <AnimatedTealEdge animated={false} />
+                    <span className="relative z-10">{label}</span>
                     <motion.span
                       animate={hoveredSection === key ? { x: 2, y: -2 } : { x: 0, y: 0 }}
                       transition={{ duration: 0.2, ease: "easeOut" }}
+                      className="relative z-10"
                       style={{ display: "flex", alignItems: "center" }}
                     >
                       <ArrowUpRight size={16} />
@@ -564,21 +565,18 @@ export default function HomeClient() {
                   onClick={handleOpenModal}
                   onMouseEnter={() => { if (canHover) setMsgHovered(true); }}
                   onMouseLeave={() => { if (canHover) setMsgHovered(false); }}
-                  className="flex items-center justify-center gap-2 font-semibold px-5 py-2 rounded-xl tracking-[0.38px] transition-colors duration-300 cursor-pointer"
-                  style={{
-                    background: "rgba(129,230,217,0.08)",
-                    border: "1px solid rgba(129,230,217,0.18)",
-                    color: "#81E6D9",
-                  }}
+                  className="group relative isolate flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl border-0 px-5 py-2 font-semibold tracking-[0.38px] text-[#81E6D9] transition-colors duration-300"
                 >
+                  <AnimatedTealEdge animated={false} />
                   <motion.span
                     animate={msgHovered ? { rotate: -15, scale: 1.2 } : { rotate: 0, scale: 1 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="relative z-10"
                     style={{ display: "flex", alignItems: "center" }}
                   >
                     <Mail size={16} />
                   </motion.span>
-                  <span>Send me a message here</span>
+                  <span className="relative z-10">Send me a message here</span>
                 </button>
               </div>
             </div>

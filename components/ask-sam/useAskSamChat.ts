@@ -5,8 +5,9 @@ import {
   GREETING_REFRESH_COUNT_STORAGE_KEY,
   GREETING_REFRESH_RESET_COUNT,
   GREETING_SPOKEN_STORAGE_KEY,
+  MAX_NATURAL_RESPONSE_DELAY_MS,
   MEETING_TOKEN,
-  MIN_RESPONSE_DELAY_MS,
+  MIN_NATURAL_RESPONSE_DELAY_MS,
   NATURAL_SPEECH_RATE,
   RESUME_TOKEN,
   SENTENCE_PAUSE_MS,
@@ -36,6 +37,19 @@ const VOICE_WARNING_REPLIES = [
 
 function getRandomReply(replies: string[]) {
   return replies[Math.floor(Math.random() * replies.length)] ?? replies[0];
+}
+
+function getNaturalResponseDelay() {
+  return Math.floor(
+    MIN_NATURAL_RESPONSE_DELAY_MS +
+      Math.random() * (MAX_NATURAL_RESPONSE_DELAY_MS - MIN_NATURAL_RESPONSE_DELAY_MS + 1)
+  );
+}
+
+function isImmediateActionRequest(message: string) {
+  return /\b(resume|résumé|cv|curriculum vitae|meet|meeting|appointment|schedule|book|call|interview|consultation|calendar)\b/i.test(
+    message
+  );
 }
 
 export function useAskSamChat(pageLabel: PageLabel) {
@@ -404,10 +418,13 @@ export function useAskSamChat(pageLabel: PageLabel) {
     const visibleMessages = [...conversationRef.current, visibleUserMessage];
     const requestMessages = [...conversationRef.current, requestUserMessage];
     const startedAt = Date.now();
+    const minimumResponseDelay = isImmediateActionRequest(nextMessage.displayText)
+      ? 0
+      : getNaturalResponseDelay();
 
     try {
       if (isLikelyUnclearMessage(nextMessage.displayText)) {
-        await wait(MIN_RESPONSE_DELAY_MS);
+        await wait(minimumResponseDelay);
 
         const assistantMessage: Message = {
           role: "assistant",
@@ -432,7 +449,7 @@ export function useAskSamChat(pageLabel: PageLabel) {
       }
 
       if (data.silent) {
-        await wait(Math.max(0, MIN_RESPONSE_DELAY_MS - (Date.now() - startedAt)));
+        await wait(Math.max(0, minimumResponseDelay - (Date.now() - startedAt)));
         conversationRef.current = visibleMessages;
         return;
       }
@@ -441,7 +458,7 @@ export function useAskSamChat(pageLabel: PageLabel) {
         role: "assistant",
         content: data.reply || getRandomReply(RESPONSE_FALLBACKS),
       };
-      await wait(Math.max(0, MIN_RESPONSE_DELAY_MS - (Date.now() - startedAt)));
+      await wait(Math.max(0, minimumResponseDelay - (Date.now() - startedAt)));
       conversationRef.current = [...visibleMessages, assistantMessage];
       setMessages((prev) => [...prev, assistantMessage]);
       speakReply(assistantMessage.content);
@@ -450,7 +467,7 @@ export function useAskSamChat(pageLabel: PageLabel) {
         role: "assistant",
         content: getRandomReply(SERVICE_ERROR_REPLIES),
       };
-      await wait(Math.max(0, MIN_RESPONSE_DELAY_MS - (Date.now() - startedAt)));
+      await wait(Math.max(0, minimumResponseDelay - (Date.now() - startedAt)));
       conversationRef.current = [...visibleMessages, assistantMessage];
       setMessages((prev) => [...prev, assistantMessage]);
       speakReply(assistantMessage.content);
