@@ -9,6 +9,7 @@ import {
   MEETING_TOKEN,
   MIN_NATURAL_RESPONSE_DELAY_MS,
   NATURAL_SPEECH_RATE,
+  NATURAL_VOICE_NAMES,
   RESUME_TOKEN,
   SENTENCE_PAUSE_MS,
   SPAM_COOLDOWN_MS,
@@ -231,16 +232,23 @@ export function useAskSamChat(pageLabel: PageLabel) {
     if (!("speechSynthesis" in window)) return;
 
     function loadFemaleVoice() {
-      const femaleVoice =
-        window.speechSynthesis
-          .getVoices()
-          .find(
-            (voice) =>
-              voice.lang.toLowerCase().startsWith("en") && FEMALE_VOICE_NAMES.test(voice.name)
-          ) ?? null;
+      const voices = window.speechSynthesis
+        .getVoices()
+        .filter(
+          (voice) =>
+            voice.lang.toLowerCase().startsWith("en") && FEMALE_VOICE_NAMES.test(voice.name)
+        )
+        .sort((a, b) => {
+          const score = (voice: SpeechSynthesisVoice) =>
+            (NATURAL_VOICE_NAMES.test(voice.name) ? 100 : 0) +
+            (/microsoft|google|apple/i.test(voice.name) ? 20 : 0) +
+            (voice.localService ? 5 : 0);
 
-      femaleVoiceRef.current = femaleVoice;
-      setHasFemaleVoice(Boolean(femaleVoice));
+          return score(b) - score(a);
+        });
+
+      femaleVoiceRef.current = voices[0] ?? null;
+      setHasFemaleVoice(Boolean(voices[0]));
     }
 
     loadFemaleVoice();
@@ -256,9 +264,7 @@ export function useAskSamChat(pageLabel: PageLabel) {
       if (greetingTimeoutRef.current) {
         clearTimeout(greetingTimeoutRef.current);
       }
-      if (speechPauseTimeoutRef.current) {
-        clearTimeout(speechPauseTimeoutRef.current);
-      }
+      if (speechPauseTimeoutRef.current) clearTimeout(speechPauseTimeoutRef.current);
       window.speechSynthesis?.cancel();
     };
   }, []);
@@ -306,10 +312,6 @@ export function useAskSamChat(pageLabel: PageLabel) {
     }
 
     function finishSpeaking() {
-      if (speechPauseTimeoutRef.current) {
-        clearTimeout(speechPauseTimeoutRef.current);
-        speechPauseTimeoutRef.current = null;
-      }
       setIsSpeaking(false);
       setIsSpeechActive(false);
     }
@@ -321,7 +323,6 @@ export function useAskSamChat(pageLabel: PageLabel) {
         return;
       }
 
-      const isLastSentence = index === sentences.length - 1;
       const utterance = new SpeechSynthesisUtterance(sentence.trim());
       utterance.voice = preferredVoice;
       utterance.rate = NATURAL_SPEECH_RATE;
@@ -330,7 +331,7 @@ export function useAskSamChat(pageLabel: PageLabel) {
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onerror = finishSpeaking;
       utterance.onend = () => {
-        if (isLastSentence) {
+        if (index === sentences.length - 1) {
           finishSpeaking();
           return;
         }
@@ -341,7 +342,6 @@ export function useAskSamChat(pageLabel: PageLabel) {
           speakSentence(index + 1);
         }, SENTENCE_PAUSE_MS);
       };
-
       window.speechSynthesis.speak(utterance);
     }
 
