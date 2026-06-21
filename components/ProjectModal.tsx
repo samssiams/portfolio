@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { SquareArrowOutUpRight, Download, Briefcase, X } from "lucide-react";
 
@@ -36,7 +37,6 @@ export default function Modal({
   isOpen,
   onClose,
   title,
-  year,
   stacks,
   role,
   contributions,
@@ -47,6 +47,11 @@ export default function Modal({
   apk,
 }: ModalProps) {
   const hasStacks = stacks && stacks.length > 0;
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    setImageLoaded(false);
+  }, [image]);
 
   useEffect(() => {
     if (isOpen) {
@@ -113,10 +118,26 @@ export default function Modal({
 
               {image && (
                 <div className="relative h-[210px] sm:h-[250px] shrink-0 overflow-hidden">
-                  <img
+                  {!imageLoaded && (
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 animate-pulse"
+                      style={{
+                        background:
+                          "linear-gradient(110deg, rgba(255,255,255,0.035) 20%, rgba(129,230,217,0.12) 45%, rgba(255,255,255,0.035) 70%)",
+                        backgroundSize: "200% 100%",
+                      }}
+                    />
+                  )}
+                  <Image
                     src={image}
                     alt={title}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(min-width: 640px) 384px, 100vw"
+                    onLoad={() => setImageLoaded(true)}
+                    className={`object-cover transition-opacity duration-300 ${
+                      imageLoaded ? "opacity-100" : "opacity-0"
+                    }`}
                   />
                   <div
                     className="pointer-events-none absolute inset-0"

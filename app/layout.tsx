@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Chakra_Petch } from "next/font/google";
-import LenisScrollProvider from "@/providers/lenis-provider";
 import InkCursor from "@/components/InkCursor";
 import "./globals.css";
 

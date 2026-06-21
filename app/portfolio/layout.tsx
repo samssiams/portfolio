@@ -7,11 +7,11 @@ export const metadata: Metadata = {
   description:
     "Selected projects by Samuel Cruz, including technical project management, full-stack development, digital banking, mobile adaptation, AI analytics, and web systems.",
   alternates: {
-    canonical: "/projects/portfolio",
+    canonical: "/portfolio",
   },
   openGraph: {
     type: "website",
-    url: `${BASE_URL}/projects/portfolio`,
+    url: `${BASE_URL}/portfolio`,
     siteName: "Samssiams",
     title: "Samssiams Portfolio Projects",
     description:
@@ -38,7 +38,7 @@ const projectsJsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
   name: "Samssiams Portfolio Projects",
-  url: `${BASE_URL}/projects/portfolio`,
+  url: `${BASE_URL}/portfolio`,
   description:
     "A portfolio of selected project management and development work by Samuel Cruz.",
   mainEntity: {

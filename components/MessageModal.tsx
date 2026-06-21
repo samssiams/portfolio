@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Paperclip, X } from "lucide-react";
 import AnimatedTealEdge from "./AnimatedTealEdge";
+import { CloseIcon } from "./ask-sam/icons";
 
 interface MessageModalProps {
   isOpen: boolean;
@@ -143,7 +144,8 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
   const clearFieldError = (field: FieldName) => {
     setErrors((current) => {
       if (!current[field]) return current;
-      const { [field]: _removed, ...rest } = current;
+      const rest = { ...current };
+      delete rest[field];
       if (Object.keys(rest).length === 0) {
         setFormError("");
       }
@@ -334,15 +336,16 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                 </p>
               </div>
               <button
+                type="button"
                 onClick={handleClose}
-                className="flex items-center justify-center w-8 h-8 rounded-full cursor-pointer ml-2 mt-1 shrink-0 text-gray-400 transition-all duration-200 hover:text-white hover:bg-white/10"
+                className="flex w-8 h-8 items-center justify-center p-0 rounded-full cursor-pointer ml-2 mt-1 shrink-0 text-gray-400 transition-all duration-200 hover:text-white hover:bg-white/10"
                 style={{
                   background: "rgba(255,255,255,0.045)",
                   border: "1px solid rgba(255,255,255,0.12)",
                 }}
                 aria-label="Close message form"
               >
-                <X size={15} strokeWidth={1.8} />
+                <CloseIcon />
               </button>
             </div>
 
@@ -520,7 +523,11 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                       }}
                       aria-label="Remove all attachments"
                     >
-                      <X size={15} strokeWidth={2} />
+                        <X
+                          size={50}
+                          strokeWidth={2}
+                          style={{ transform: "translateY(10px, -10px)" }}
+                        />
                     </button>
                   )}
                 </div>

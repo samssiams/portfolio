@@ -16,7 +16,7 @@ import {
   UNCLEAR_MESSAGE_REPLIES,
 } from "./constants";
 import type { Message, PageLabel, QueuedMessage } from "./types";
-import { formatTextForSpeech, isLikelyUnclearMessage, wait } from "./speech-utils";
+import { formatTextForSpeech, isLikelyUnclearMessage, splitSpeechSentences, wait } from "./speech-utils";
 
 const RESPONSE_FALLBACKS = [
   "Hmm, I didn't get a response. Try asking again?",
@@ -304,7 +304,7 @@ export function useAskSamChat(pageLabel: PageLabel) {
     const preferredVoice = femaleVoiceRef.current;
     if (!preferredVoice) return;
 
-    const sentences = spokenText.match(/[^.!?]+[.!?]+|[^.!?]+$/g) ?? [spokenText];
+    const sentences = splitSpeechSentences(spokenText);
     setIsSpeechActive(true);
     if (speechPauseTimeoutRef.current) {
       clearTimeout(speechPauseTimeoutRef.current);
@@ -462,7 +462,7 @@ export function useAskSamChat(pageLabel: PageLabel) {
       conversationRef.current = [...visibleMessages, assistantMessage];
       setMessages((prev) => [...prev, assistantMessage]);
       speakReply(assistantMessage.content);
-    } catch (err) {
+    } catch {
       const assistantMessage: Message = {
         role: "assistant",
         content: getRandomReply(SERVICE_ERROR_REPLIES),

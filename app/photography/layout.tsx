@@ -7,11 +7,11 @@ export const metadata: Metadata = {
   description:
     "Photography by Samuel Cruz featuring nature, macro, places, and animal photos captured around Bataan, Philippines.",
   alternates: {
-    canonical: "/photo/photography",
+    canonical: "/photography",
   },
   openGraph: {
     type: "website",
-    url: `${BASE_URL}/photo/photography`,
+    url: `${BASE_URL}/photography`,
     siteName: "Samssiams",
     title: "Samssiams Photography",
     description:
@@ -38,7 +38,7 @@ const photosJsonLd = {
   "@context": "https://schema.org",
   "@type": "ImageGallery",
   name: "Samssiams Photography",
-  url: `${BASE_URL}/photo/photography`,
+  url: `${BASE_URL}/photography`,
   creator: {
     "@type": "Person",
     name: "Samuel Cruz",

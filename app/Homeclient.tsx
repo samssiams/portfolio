@@ -6,15 +6,12 @@ import Header from "../components/Header";
 import Banner from "../components/Banner";
 import Footer from "../components/Footer";
 import AnimatedTealEdge from "../components/AnimatedTealEdge";
+import DeferredAskSamWidget from "../components/DeferredAskSamWidget";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
 
 const MessageModal = dynamic(() => import("../components/MessageModal"), {
-  ssr: false,
-});
-
-const AskSamWidget = dynamic(() => import("../components/AskSamWidget"), {
   ssr: false,
 });
 
@@ -242,7 +239,7 @@ export default function HomeClient() {
   const mediaSections = [
     {
       label: "Projects",
-      href: "/projects/portfolio",
+      href: "/portfolio",
       key: "portfolio",
       images: [
         { src: "/protecture1.png", alt: "Protecture" },
@@ -253,7 +250,7 @@ export default function HomeClient() {
     },
     {
       label: "Photography",
-      href: "/photo/photography",
+      href: "/photography",
       key: "photography",
       images: [
         { src: "/catp1.jpg", alt: "Photo 1" },
@@ -329,12 +326,7 @@ export default function HomeClient() {
           )}
         </AnimatePresence>
 
-        <AnimatePresence>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-            className="w-full mt-10"
-          >
+        <div className="w-full mt-10">
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31">
               {/* Mobile header */}
               <div className="flex flex-col items-center sm:hidden text-center mb-6">
@@ -521,7 +513,15 @@ export default function HomeClient() {
                       }}
                     >
                       <div className="absolute inset-[6px] rounded-[6px] overflow-hidden">
-                        <Image src={img.src} alt={img.alt} fill loading="lazy" sizes="(min-width: 640px) 350px, 50vw" className="object-cover" />
+                        <Image
+                          src={img.src}
+                          alt={img.alt}
+                          fill
+                          loading="lazy"
+                          quality={55}
+                          sizes="(min-width: 640px) 350px, 44vw"
+                          className="object-cover"
+                        />
                       </div>
                     </div>
                   ))}
@@ -580,13 +580,12 @@ export default function HomeClient() {
                 </button>
               </div>
             </div>
-          </motion.div>
-        </AnimatePresence>
+        </div>
 
         {isModalOpen && (
           <MessageModal isOpen onClose={() => setIsModalOpen(false)} onSuccess={handleMessageSent} />
         )}
-        <AskSamWidget />
+        <DeferredAskSamWidget />
         <Footer />
       </div>
     </div>

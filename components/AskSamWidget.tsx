@@ -10,8 +10,8 @@ import type { PageLabel } from "./ask-sam/types";
 import { useAskSamChat } from "./ask-sam/useAskSamChat";
 
 function getPageLabel(pathname: string): PageLabel {
-  if (pathname === routes.projectsPortfolio) return "Portfolio";
-  if (pathname === routes.photoPhotography) return "Photography";
+  if (pathname === routes.portfolio) return "Portfolio";
+  if (pathname === routes.photography) return "Photography";
   return "Home";
 }
 

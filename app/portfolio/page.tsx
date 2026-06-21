@@ -27,6 +27,7 @@ export default function PortfolioPage() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [showAll, setShowAll] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
+  const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 
   const visibleProjects: Project[] = [
     {
@@ -287,7 +288,7 @@ export default function PortfolioPage() {
             className="w-full"
           >
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-10">
-              <h1 className="text-white text-[18px] sm:text-[20px] font-bold">Portfolio Projects</h1>
+              <h1 className="text-white text-[18px] sm:text-[20px] font-bold">Portfolio</h1>
 
               {displayedProjects.map((project, index) => {
                 const isHovered = hoveredIndex === index;
@@ -366,13 +367,29 @@ export default function PortfolioPage() {
                       >
                         {/* Inset image */}
                         <div className="absolute inset-[7px] rounded-[6px] overflow-hidden">
+                          {!loadedImages[project.image] && (
+                            <div
+                              aria-hidden="true"
+                              className="absolute inset-0 animate-pulse"
+                              style={{
+                                background:
+                                  "linear-gradient(110deg, rgba(255,255,255,0.035) 20%, rgba(129,230,217,0.12) 45%, rgba(255,255,255,0.035) 70%)",
+                                backgroundSize: "200% 100%",
+                              }}
+                            />
+                          )}
                           <Image
                             src={project.image}
                             alt={`${project.title} project preview by Samuel Cruz`}
                             fill
                             priority={index === 0}
                             sizes="(min-width: 640px) 250px, 100vw"
-                            className="object-cover"
+                            onLoad={() =>
+                              setLoadedImages((current) => ({ ...current, [project.image]: true }))
+                            }
+                            className={`object-cover transition-opacity duration-300 ${
+                              loadedImages[project.image] ? "opacity-100" : "opacity-0"
+                            }`}
                           />
                         </div>
 

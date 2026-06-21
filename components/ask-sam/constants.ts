@@ -8,7 +8,7 @@ export const GREETING_REFRESH_RESET_COUNT = 5;
 export const FEMALE_VOICE_NAMES =
   /aria|ava|clara|emma|fiona|jenny|joanna|joana|karen|libby|moira|natasha|olivia|salli|samantha|serena|sonia|susan|tessa|victoria|zira/i;
 export const NATURAL_VOICE_NAMES = /natural|neural|online/i;
-export const NATURAL_SPEECH_RATE = 1.03;
+export const NATURAL_SPEECH_RATE = 1.08;
 export const SENTENCE_PAUSE_MS = 100;
 export const MIN_NATURAL_RESPONSE_DELAY_MS = 2_000;
 export const MAX_NATURAL_RESPONSE_DELAY_MS = 3_000;
