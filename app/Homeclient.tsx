@@ -394,11 +394,11 @@ export default function HomeClient() {
             </div>
 
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
-              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Professional Profile</h3>
+              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">About me</h3>
               <p className="text-gray-300 text-[14px] sm:text-[16px] mt-3 leading-relaxed">
-                <span className="pl-6 inline-block">Samuel Cruz is a</span>{" "}
+                <span className="pl-6 inline-block">I am a</span>{" "}
                 <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">developer</span> and{" "}
-                <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">project manager</span> who builds polished, user-first web experiences while keeping teams aligned and delivery on track. He is also a{" "}
+                <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">project manager</span> who builds polished, user-first web experiences while keeping teams aligned and delivery on track. I&apos;m also a{" "}
                 <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">photographer</span> who enjoys capturing stories and moments through my camera.
               </p>
             </div>
