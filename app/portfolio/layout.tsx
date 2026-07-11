@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE_URL = "https://samssiams.vercel.app";
 
 export const metadata: Metadata = {
-  title: "Portfolio Projects - Technical Project Manager & Developer Work",
+  title: "Work & Projects - Technical Project Manager & Developer",
   description:
     "Selected projects by Samuel Cruz, including technical project management, full-stack development, digital banking, mobile adaptation, AI analytics, and web systems.",
   alternates: {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     type: "website",
     url: `${BASE_URL}/portfolio`,
     siteName: "Samssiams",
-    title: "Samssiams Portfolio Projects",
+    title: "Samssiams Work & Projects",
     description:
       "Explore Samuel Cruz's project work across technical project management, full-stack development, AI prototypes, mobile adaptation, and web systems.",
     images: [
@@ -21,13 +21,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Samssiams portfolio projects by Samuel Cruz",
+        alt: "Samssiams duck logo",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Samssiams Portfolio Projects",
+    title: "Samssiams Work & Projects",
     description:
       "Technical project management and full-stack development work by Samuel Cruz.",
     images: ["/og-image.png"],
@@ -37,13 +37,14 @@ export const metadata: Metadata = {
 const projectsJsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: "Samssiams Portfolio Projects",
+  name: "Samssiams Work & Projects",
   url: `${BASE_URL}/portfolio`,
   description:
     "A portfolio of selected project management and development work by Samuel Cruz.",
   mainEntity: {
     "@type": "ItemList",
     itemListElement: [
+      "Upcoming App Bar Project",
       "Tamkeen",
       "Noticer",
       "Prominence Bank",

@@ -6,7 +6,6 @@ import Header from "../components/Header";
 import Banner from "../components/Banner";
 import Footer from "../components/Footer";
 import AnimatedTealEdge from "../components/AnimatedTealEdge";
-import DeferredAskSamWidget from "../components/DeferredAskSamWidget";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
@@ -104,8 +103,8 @@ function CertCard({ label, href }: { label: string; href: string }) {
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap--1 italic font-light tracking-[0.38px] text-[#81E6D9] text-[12px] sm:text-[13px]"
-          style={{ marginLeft: "2px" }}
+          className="inline-flex items-center gap--1 italic font-light tracking-[0.38px] text-[12px] sm:text-[13px] transition-colors duration-200"
+          style={{ marginLeft: "2px", color: linkHovered ? "#81E6D9" : "rgba(255,255,255,0.5)" }}
           onMouseEnter={() => { if (canHover) setLinkHovered(true); }}
           onMouseLeave={() => { if (canHover) setLinkHovered(false); }}
         >
@@ -130,7 +129,7 @@ function CertCard({ label, href }: { label: string; href: string }) {
   );
 }
 
-function TimelineItem({ title, subtitle, desc, place }: { title: string; subtitle?: string; desc?: string; place?: string }) {
+function TimelineItem({ title, date, subtitle, desc, place }: { title: string; date?: string; subtitle?: string; desc?: string; place?: string }) {
   const [hovered, setHovered] = useState(false);
   return (
     <div
@@ -147,10 +146,11 @@ function TimelineItem({ title, subtitle, desc, place }: { title: string; subtitl
       </div>
       <div className="flex flex-col gap-[2px] pb-3">
         <p className="text-[14px] sm:text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200" style={{ color: hovered ? "white" : "rgb(209,213,219)" }}>{title}</p>
-        {subtitle && (
+        {(date || subtitle || place) && (
           <p className="text-[12px] sm:text-[13px] tracking-[0.3px] flex items-center gap-1" style={{ color: "rgba(255,255,255,0.6)" }}>
-            <MapPin size={11} className="shrink-0" />
-            {subtitle}{place ? ` · ${place}` : ""}
+            {date && <span>{date} &middot;</span>}
+            {place && <MapPin size={11} className="shrink-0" />}
+            {place || subtitle}
           </p>
         )}
         {desc && <p className="text-[13px] sm:text-[15px] leading-relaxed mt-1" style={{ color: "rgba(255,255,255,0.6)" }}>{desc}</p>}
@@ -326,7 +326,15 @@ export default function HomeClient() {
           )}
         </AnimatePresence>
 
-        <div className="w-full mt-10">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key="home-content"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="w-full mt-10"
+          >
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31">
               {/* Mobile header */}
               <div className="flex flex-col items-center sm:hidden text-center mb-6">
@@ -386,11 +394,11 @@ export default function HomeClient() {
             </div>
 
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
-              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">About me</h3>
+              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Professional Profile</h3>
               <p className="text-gray-300 text-[14px] sm:text-[16px] mt-3 leading-relaxed">
-                <span className="pl-6 inline-block">I am</span>{" "}
-                a <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">developer</span> and{" "}
-                <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">project manager</span> who builds polished, user-first web experiences while keeping teams aligned and delivery on track. I&apos;m also a{" "}
+                <span className="pl-6 inline-block">Samuel Cruz is a</span>{" "}
+                <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">developer</span> and{" "}
+                <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">project manager</span> who builds polished, user-first web experiences while keeping teams aligned and delivery on track. He is also a{" "}
                 <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">photographer</span> who enjoys capturing stories and moments through my camera.
               </p>
             </div>
@@ -400,14 +408,23 @@ export default function HomeClient() {
               <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 flex flex-col gap-4">
                 <div className="flex flex-col gap-1">
                   <p className="leading-relaxed">
-                    <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2025 &ndash; Present</span>
+                    <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2026</span>
+                    Project Manager &mdash;{" "}
+                    <ExperienceLink href="https://www.app-bar.com/" label="App Bar" />
+                  </p>
+                  <div className="ml-1 mt-3 flex flex-col gap-3">
+                    <ProjectCard title="Upcoming App Bar Project" date="2026" place="Parkwest Avenue, Hong Kong Science Park" desc="Project details will be added once the work is ready to share." />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <p className="leading-relaxed">
+                    <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2025 &ndash; 2026</span>
                     Technical Project Manager &mdash;{" "}
                     <ExperienceLink href="https://www.freelancer.com/project-management" label="Freelancer" />
                   </p>
                   <div className="ml-1 mt-3 flex flex-col gap-3">
-                    <ProjectCard title="Kreative Arts – Cross-Platform E-Commerce" date="2026" place="Bataan, Philippines" desc="Managed a Shopify-Etsy integration project, defining delivery phases and milestones, keeping client communications aligned throughout the progress." />
-                    <ProjectCard title="Co-Pilot — Tamkeen Partnership Program" date="2026" place="Bataan, Philippines" desc="Worked closely with program leads and teams to keep the partnership on track, handles coordination and making sure key milestones were met." />
-                    <ProjectCard title="Noticer – Mobile Version Implementation" date="2026" place="Bataan, Philippines" desc="Led the mobile adaptation of Noticer, coordinating cross-functional teams to translate the web platform into a responsive mobile experience." />
+                    <ProjectCard title="Kreative Arts – Cross-Platform E-Commerce" date="2026" place="Bonifacio Global City, Taguig" desc="Managed a Shopify-Etsy integration project, defining delivery phases and milestones, keeping client communications aligned throughout the progress." />
+                    <ProjectCard title="Co-Pilot — Tamkeen Partnership Program" date="2026" place="Bonifacio Global City, Taguig" desc="Worked closely with program leads and teams to keep the partnership on track, handles coordination and making sure key milestones were met." />
                   
                     <AnimatePresence>
                       {showMoreExp && (
@@ -416,8 +433,20 @@ export default function HomeClient() {
                           exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3, ease: "easeOut" }}
                           style={{ overflow: "hidden" }}
                         >
-                          <ProjectCard title="Prominence Bank – Digital Banking Platform" date="2026" place="Bataan, Philippines" desc="Managed the project from start to finish, keeping teams aligned, running sprints, and making sure the platform shipped on time and within scope." />
-                          <ProjectCard title="InnerX – AI-Based Emotional Analytics" date="2025" place="Bataan, Philippines" desc="Took the project from early concept to working prototype, staying on top of timelines, deliverables, and keeping everything moving in the right direction." />
+                          <ProjectCard title="Noticer – Mobile Version Implementation" date="2026" place="Bonifacio Global City, Taguig" desc="Led the mobile adaptation of Noticer, coordinating cross-functional teams to translate the web platform into a responsive mobile experience." />
+                          <ProjectCard title="Prominence Bank – Digital Banking Platform" date="2026" place="Bonifacio Global City, Taguig" desc="Managed the project from start to finish, keeping teams aligned, running sprints, and making sure the platform shipped on time and within scope." />
+                          <ProjectCard title="InnerX – AI-Based Emotional Analytics" date="2025" place="Bonifacio Global City, Taguig" desc="Took the project from early concept to working prototype, staying on top of timelines, deliverables, and keeping everything moving in the right direction." />
+                          <div className="flex flex-col gap-1 mt-4">
+                            <p className="leading-relaxed">
+                              <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2024</span>
+                              Full-Stack Web Developer Intern &mdash;{" "}
+                              <ExperienceLink href="https://kynatech.ph/" label="Kynatech Co." />
+                            </p>
+                            <div className="ml-1 mt-3 flex flex-col gap-3">
+                              <ProjectCard title="Full Stack Web Development" place="Bonifacio Global City, Taguig" desc="Built a Next.js app with Supabase, Prisma, and NextAuth covering auth, timesheet, and payroll via REST APIs." />
+                              <ProjectCard title="Project Management" place="Bonifacio Global City, Taguig" desc="Ensured on-time delivery through progress monitoring, task verification, and Agile & Waterfall methodologies." />
+                            </div>
+                          </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -439,17 +468,6 @@ export default function HomeClient() {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <p className="leading-relaxed">
-                    <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2024</span>
-                    Full-Stack Web Developer Intern &mdash;{" "}
-                    <ExperienceLink href="https://kynatech.ph/" label="Kynatech Co." />
-                  </p>
-                  <div className="ml-1 mt-3 flex flex-col gap-3">
-                    <ProjectCard title="Full Stack Web Development" place="Bataan, Philippines" desc="Built a Next.js app with Supabase, Prisma, and NextAuth covering auth, timesheet, and payroll via REST APIs." />
-                    <ProjectCard title="Project Management" place="Bataan, Philippines" desc="Ensured on-time delivery through progress monitoring, task verification, and Agile & Waterfall methodologies." />
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -460,10 +478,10 @@ export default function HomeClient() {
                 <div className="ml-1 mt-3 flex flex-col gap-3">
                   <CertCard label="IC3 Digital Literacy" href="/IC3 GS6 Level 1.pdf" />
                   <CertCard label="Microsoft Office Specialist Associate (Microsoft 365)" href="/Microsoft Office Specialist  Associate.pdf" />
-                  <CertCard label="Information Technology Specialist in Network Security" href="/Network Security.pdf" />
                   <AnimatePresence>
                     {showMoreCerts && (
                       <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3, ease: "easeOut" }} style={{ overflow: "hidden" }}>
+                        <CertCard label="Information Technology Specialist in Network Security" href="/Network Security.pdf" />
                         <CertCard label="Information Technology Specialist in Networking" href="/Networking.pdf" />
                       </motion.div>
                     )}
@@ -487,10 +505,15 @@ export default function HomeClient() {
                 </div>
 
                 <div className="mt-4">
-                  <p><span className="font-bold tracking-[0.38px] mr-4">2025</span>Milestones</p>
+                  <p><span className="font-bold tracking-[0.38px] mr-4">2025 &ndash; 2026</span>Career Milestones</p>
                   <div className="ml-1 mt-3 flex flex-col gap-3">
-                    <TimelineItem title="Graduated B.S. Computer Science — Latin Honors" />
-                    <TimelineItem title="Technical Project Manager" subtitle="Bonifacio Global City, Taguig" desc="Led cross-functional teams, coordinated sprints, and ensured timely delivery of product milestones." />
+                    <TimelineItem title="Technical Project Manager" date="2025" place="Bonifacio Global City, Taguig" desc="Led cross-functional teams, coordinated sprints, and ensured timely delivery of product milestones." />
+                    <TimelineItem
+                      title="Project Manager"
+                      date="2026"
+                      place="Parkwest Avenue, Hong Kong Science Park"
+                      desc="Supporting mobile and web delivery through planning, coordination, progress tracking, and clear client communication."
+                    />
                   </div>
                 </div>
               </div>
@@ -580,12 +603,12 @@ export default function HomeClient() {
                 </button>
               </div>
             </div>
-        </div>
+          </motion.div>
+        </AnimatePresence>
 
         {isModalOpen && (
           <MessageModal isOpen onClose={() => setIsModalOpen(false)} onSuccess={handleMessageSent} />
         )}
-        <DeferredAskSamWidget />
         <Footer />
       </div>
     </div>

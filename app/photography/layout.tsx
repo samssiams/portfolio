@@ -21,7 +21,7 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Samssiams photography gallery by Samuel Cruz",
+        alt: "Samssiams duck logo",
       },
     ],
   },

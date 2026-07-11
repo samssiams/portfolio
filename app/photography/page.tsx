@@ -8,7 +8,6 @@ import Banner from "@/components/Banner";
 import Footer from "@/components/Footer";
 import PhotoModal from "@/components/PhotoModal";
 import Skeleton from "@/components/Skeleton";
-import AskSamWidget from "@/components/AskSamWidget";
 
 type Photo = {
   src: string;
@@ -329,7 +328,6 @@ export default function PhotographyPage() {
         currentIndex={currentIndex}
         setCurrentIndex={setCurrentIndex}
       />
-      <AskSamWidget />
     </div>
   );
 }

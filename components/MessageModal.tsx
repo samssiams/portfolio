@@ -4,7 +4,6 @@ import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Paperclip, X } from "lucide-react";
 import AnimatedTealEdge from "./AnimatedTealEdge";
-import { CloseIcon } from "./ask-sam/icons";
 
 interface MessageModalProps {
   isOpen: boolean;
@@ -345,7 +344,7 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                 }}
                 aria-label="Close message form"
               >
-                <CloseIcon />
+                <X size={18} />
               </button>
             </div>
 

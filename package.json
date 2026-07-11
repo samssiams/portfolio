@@ -9,8 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.104.1",
-    "@google/genai": "^2.8.0",
     "@react-three/drei": "^10.7.4",
     "@react-three/fiber": "^9.3.0",
     "class-variance-authority": "^0.7.1",

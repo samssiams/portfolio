@@ -83,7 +83,7 @@ export default function Modal({
                 WebkitBackdropFilter: "blur(24px)",
                 border: "1px solid rgba(255,255,255,0.18)",
                 borderRadius: "16px",
-                height: "min(76vh, 660px)",
+                maxHeight: "min(76vh, 660px)",
                 overflow: "hidden",
               }}
               initial={{ scale: 0.9, opacity: 0, y: 30 }}
