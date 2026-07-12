@@ -556,13 +556,13 @@ export default function HomeClient() {
                 <div className="mt-4">
                   <p><span className="font-bold tracking-[0.38px] mr-4">2025 &ndash; 2026</span>Career Milestones</p>
                   <div className="ml-1 mt-3 flex flex-col gap-3">
-                    <TimelineItem title="Technical Project Manager" date="2025" place="Bonifacio Global City, Taguig" desc="Led cross-functional teams, coordinated sprints, and ensured timely delivery of product milestones." />
                     <TimelineItem
                       title="Project Manager"
                       date="2026"
                       place="Parkwest Avenue, Hong Kong Science Park"
                       desc="Supporting mobile and web delivery through planning, coordination, progress tracking, and clear client communication."
                     />
+                    <TimelineItem title="Technical Project Manager" date="2025" place="Bonifacio Global City, Taguig" desc="Led cross-functional teams, coordinated sprints, and ensured timely delivery of product milestones." />
                   </div>
                 </div>
               </div>
