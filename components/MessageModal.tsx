@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Paperclip, X } from "lucide-react";
 import AnimatedTealEdge from "./AnimatedTealEdge";
+import { SlotText } from "slot-text/react";
 
 interface MessageModalProps {
   isOpen: boolean;
@@ -542,7 +543,17 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                   }}
                 >
                   <AnimatedTealEdge />
-                  <span className="relative z-10">{loading ? "Sending..." : "Send"}</span>
+                  <SlotText
+                    className="relative z-10"
+                    text={loading ? "Sending..." : "Send"}
+                    options={{
+                      direction: loading ? "up" : "down",
+                      stagger: 30,
+                      duration: 260,
+                      bounce: 0.3,
+                      interrupt: false,
+                    }}
+                  />
                 </button>
               </form>
             )}

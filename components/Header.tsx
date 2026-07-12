@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navLinks } from "@/routers/router";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Menu } from "lucide-react";
+import { play, type SoundName } from "cuelume";
 
 const shakeVariants = {
   idle: { rotate: 0 },
@@ -21,6 +22,16 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoHovered, setLogoHovered] = useState(false);
+  const suppressRouteHoverRef = useRef<string | null>(null);
+
+  const handleNavHover = (href: string, sound: SoundName = "tick") => {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    if (suppressRouteHoverRef.current === href && pathname === href) return;
+
+    suppressRouteHoverRef.current = null;
+    play(sound);
+  };
 
   useLayoutEffect(() => {
     const previousScrollRestoration = window.history.scrollRestoration;
@@ -50,6 +61,7 @@ const Header = () => {
   }, [pathname]);
 
   const handleSamePageClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    suppressRouteHoverRef.current = href;
     setMenuOpen(false);
 
     if (pathname === href) {
@@ -62,6 +74,7 @@ const Header = () => {
     <>
       {/* Desktop Header */}
       <header
+        onMouseLeave={() => { suppressRouteHoverRef.current = null; }}
         className={`fixed left-1/2 z-[49] -translate-x-1/2 py-1 transition-all duration-300 hidden md:block w-[800px]
           ${scrolled
             ? "top-4 rounded-2xl bg-[#1a1e28]/75 backdrop-blur-md border border-white/10"
@@ -93,6 +106,7 @@ const Header = () => {
                 <Link
                   key={href}
                   href={href}
+                  onMouseEnter={() => handleNavHover(href)}
                   className="group relative text-white cursor-pointer"
                   onClick={(event) => handleSamePageClick(event, href)}
                   aria-current={isActive ? "page" : undefined}
@@ -128,6 +142,7 @@ const Header = () => {
           </Link>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
+            data-cuelume-hover="toggle"
             className={`flex h-9 w-9 items-center justify-center rounded-full text-white cursor-pointer transition-all duration-200 ${
               menuOpen
                 ? "bg-white/10 border border-white/15"
@@ -179,6 +194,7 @@ const Header = () => {
                     >
                       <Link
                         href={href}
+                        onMouseEnter={() => handleNavHover(href)}
                         onClick={(event) => handleSamePageClick(event, href)}
                         className="px-6 py-3 text-[15px] font-semibold tracking-[0.38px] cursor-pointer flex items-center justify-between"
                         style={{

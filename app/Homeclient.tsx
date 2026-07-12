@@ -6,9 +6,11 @@ import Header from "../components/Header";
 import Banner from "../components/Banner";
 import Footer from "../components/Footer";
 import AnimatedTealEdge from "../components/AnimatedTealEdge";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import { animateSlotText } from "slot-text";
+import { SlotText } from "slot-text/react";
 
 const MessageModal = dynamic(() => import("../components/MessageModal"), {
   ssr: false,
@@ -37,6 +39,32 @@ const canHover = typeof window !== "undefined" && window.matchMedia("(hover: hov
 const mediaButtonStyle = {
   color: "#81E6D9",
 } as const;
+
+function HoverSlotText({ text }: { text: string }) {
+  const textRef = useRef<HTMLSpanElement>(null);
+
+  const animateText = () => {
+    if (!textRef.current) return;
+
+    animateSlotText(textRef.current, text, {
+      direction: "up",
+      stagger: 35,
+      duration: 320,
+      bounce: 0.25,
+      skipUnchanged: false,
+      interrupt: true,
+    });
+  };
+
+  return (
+    <SlotText
+      ref={textRef}
+      text={text}
+      onMouseEnter={animateText}
+      className="cursor-pointer font-semibold text-[#81E6D9] tracking-[0.38px]"
+    />
+  );
+}
 
 function ProjectCard({ title, date, place, desc }: { title: string; date?: string; place: string; desc: string }) {
   const [hovered, setHovered] = useState(false);
@@ -166,6 +194,7 @@ function ExperienceLink({ href, label }: { href: string; label: string }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      data-cuelume-hover="tick"
       onMouseEnter={() => { if (canHover) setHovered(true); }}
       onMouseLeave={() => { if (canHover) setHovered(false); }}
       className="inline-flex items-center font-bold tracking-[0.38px] text-[#81E6D9]"
@@ -347,15 +376,15 @@ export default function HomeClient() {
                 </p>
                 <p className="text-gray-300 mt-1 text-[14px]">Full Stack Developer <span className="text-white">|</span> Project Manager</p>
                 <div className="flex flex-wrap justify-center gap-2 mt-4 text-[14px] font-semibold text-[#81E6D9] tracking-[0.38px]">
-                  <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                  <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
                     <Instagram size={16} style={{ position: "relative", top: "-1px" }} />
                     <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
-                  <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                  <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
                     <Linkedin size={16} style={{ position: "relative", top: "-1px" }} />
                     <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
-                  <a href="/Cruz_CV.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                  <a href="/Cruz_CV.pdf" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
                     <FileUser size={16} style={{ position: "relative", top: "-1px" }} />
                     <span className="relative group">Resume<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
@@ -371,15 +400,15 @@ export default function HomeClient() {
                   </p>
                   <p className="text-gray-300 mt-2 text-[16px]">Full Stack Developer <span className="text-white">|</span> Project Manager</p>
                   <div className="flex flex-wrap gap-6 mt-3 text-[17px] font-semibold text-[#81E6D9] tracking-[0.38px]">
-                    <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                    <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
                       <Instagram size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                     </a>
-                    <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                    <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
                       <Linkedin size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                     </a>
-                    <a href="/Cruz_CV.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+                    <a href="/Cruz_CV.pdf" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
                       <FileUser size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Resume<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                     </a>
@@ -397,9 +426,9 @@ export default function HomeClient() {
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">About me</h3>
               <p className="text-gray-300 text-[14px] sm:text-[16px] mt-3 leading-relaxed">
                 <span className="pl-6 inline-block">I am a</span>{" "}
-                <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">developer</span> and{" "}
-                <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">project manager</span> who builds polished, user-first web experiences while keeping teams aligned and delivery on track. I&apos;m also a{" "}
-                <span className="font-semibold text-[#81E6D9] tracking-[0.38px]">photographer</span> who enjoys capturing stories and moments through my camera.
+                <HoverSlotText text="developer" /> and{" "}
+                <HoverSlotText text="project manager" /> who builds polished, user-first web experiences while keeping teams aligned and delivery on track. I&apos;m also a{" "}
+                <HoverSlotText text="photographer" /> who enjoys capturing stories and moments through my camera.
               </p>
             </div>
 
@@ -457,13 +486,23 @@ export default function HomeClient() {
                       </div>
                       <button
                         onClick={() => setShowMoreExp((prev) => !prev)}
+                        data-cuelume-hover="bloom"
                         className="flex items-center gap-1.5 cursor-pointer w-fit"
                         style={{ color: "#81E6D9", fontSize: "13px", letterSpacing: "0.3px", background: "none", border: "none", padding: 0, marginTop: "-8px" }}
                       >
                         <motion.span animate={{ rotate: showMoreExp ? 180 : 0 }} transition={{ duration: 0.25, ease: "easeOut" }} style={{ display: "flex", alignItems: "center" }}>
                           <ChevronDown size={14} />
                         </motion.span>
-                        <span>{showMoreExp ? "Show less" : "View more"}</span>
+                        <SlotText
+                          text={showMoreExp ? "Show less" : "View more"}
+                          options={{
+                            direction: showMoreExp ? "up" : "down",
+                            stagger: 30,
+                            duration: 260,
+                            bounce: 0.3,
+                            interrupt: false,
+                          }}
+                        />
                       </button>
                     </div>
                   </div>
@@ -493,13 +532,23 @@ export default function HomeClient() {
                       </div>
                       <button
                         onClick={() => setShowMoreCerts((prev) => !prev)}
+                        data-cuelume-hover="bloom"
                         className="flex items-center gap-1.5 cursor-pointer w-fit"
                         style={{ color: "#81E6D9", fontSize: "13px", letterSpacing: "0.3px", background: "none", border: "none", padding: 0, marginTop: "-8px" }}
                       >
                         <motion.span animate={{ rotate: showMoreCerts ? 180 : 0 }} transition={{ duration: 0.25, ease: "easeOut" }} style={{ display: "flex", alignItems: "center" }}>
                           <ChevronDown size={14} />
                         </motion.span>
-                        <span>{showMoreCerts ? "Show less" : "View more"}</span>
+                        <SlotText
+                          text={showMoreCerts ? "Show less" : "View more"}
+                          options={{
+                            direction: showMoreCerts ? "up" : "down",
+                            stagger: 30,
+                            duration: 260,
+                            bounce: 0.3,
+                            interrupt: false,
+                          }}
+                        />
                       </button>
                   </div>
                 </div>
@@ -586,6 +635,7 @@ export default function HomeClient() {
                 {/* Mail icon always visible — animates on hover */}
                 <button
                   onClick={handleOpenModal}
+                  data-cuelume-hover="chime"
                   onMouseEnter={() => { if (canHover) setMsgHovered(true); }}
                   onMouseLeave={() => { if (canHover) setMsgHovered(false); }}
                   className="group relative isolate flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl border-0 px-5 py-2 font-semibold tracking-[0.38px] text-[#81E6D9] transition-colors duration-300"

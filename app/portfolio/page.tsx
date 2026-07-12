@@ -212,6 +212,7 @@ export default function PortfolioPage() {
                           <motion.button
                             key={folder.id}
                             type="button"
+                            data-cuelume-hover="whisper"
                             onClick={() => setSelectedFolderId(folder.id)}
                             onMouseEnter={() => handleMouseEnter(folder.id)}
                             onMouseLeave={handleMouseLeave}

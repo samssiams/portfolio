@@ -146,6 +146,7 @@ export default function PhotographyPage() {
               {/* Section Buttons */}
               <div className="flex justify-center gap-8 mt-2">
                 <button
+                  data-cuelume-hover="toggle"
                   className={`relative group text-[15px] sm:text-[17px] font-medium focus:outline-none cursor-pointer ${view === "photos" ? "text-white" : "text-gray-300"}`}
                   onClick={() => setView("photos")}
                 >
@@ -154,6 +155,7 @@ export default function PhotographyPage() {
                 </button>
 
                 <button
+                  data-cuelume-hover="toggle"
                   className={`relative group text-[15px] sm:text-[17px] font-medium focus:outline-none cursor-pointer ${view === "gallery" ? "text-white" : "text-gray-300"}`}
                   onClick={() => setView("gallery")}
                 >

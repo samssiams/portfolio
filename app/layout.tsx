@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Chakra_Petch } from "next/font/google";
 import InkCursor from "@/components/InkCursor";
+import CuelumeSounds from "@/components/CuelumeSounds";
+import "slot-text/style.css";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -99,7 +101,6 @@ export const metadata: Metadata = {
     apple: "/icon.png",
   },
 
-  // ✅ SEO IMPROVEMENT 1: Added category — helps Google classify your site type
   category: "technology",
 
   verification: {
@@ -135,7 +136,7 @@ const jsonLd = {
     "https://www.linkedin.com/in/samssiams/",
     "https://github.com/samssiams",
   ],
-  // ✅ SEO IMPROVEMENT 2: Added knowsAbout — tells Google your areas of expertise
+
   knowsAbout: [
     "Full Stack Web Development",
     "Project Management",
@@ -144,7 +145,7 @@ const jsonLd = {
     "Photography",
     "Agile Methodology",
   ],
-  // ✅ SEO IMPROVEMENT 3: Added nationality and worksFor — richer Google Knowledge Panel
+
   nationality: {
     "@type": "Country",
     name: "Philippines",
@@ -179,6 +180,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${chakraPetch.variable} ${geistSans.variable} ${geistMono.variable} antialiased bg-[#1a1e28]`}
       >
+        <CuelumeSounds />
         <InkCursor />
         {/* <main> satisfies the landmark accessibility requirement */}
         <main>{children}</main>
