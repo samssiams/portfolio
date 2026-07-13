@@ -44,6 +44,7 @@ function HoverSlotText({ text }: { text: string }) {
   const textRef = useRef<HTMLSpanElement>(null);
 
   const animateText = () => {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     if (!textRef.current) return;
 
     animateSlotText(textRef.current, text, {
@@ -66,7 +67,7 @@ function HoverSlotText({ text }: { text: string }) {
   );
 }
 
-function ProjectCard({ title, date, place, desc }: { title: string; date?: string; place: string; desc: string }) {
+function ExperienceSummary({ title, employmentType, place, desc }: { title: string; employmentType?: string; place: string; desc: string }) {
   const [hovered, setHovered] = useState(false);
   return (
     <div
@@ -90,12 +91,21 @@ function ProjectCard({ title, date, place, desc }: { title: string; date?: strin
           style={{ color: hovered ? "white" : "rgb(209,213,219)" }}
         >
           {title}
+          {employmentType && (
+            <span className="ml-2 text-[11px] sm:text-[12px] font-normal text-white/45">
+              &middot; {employmentType}
+            </span>
+          )}
         </p>
         <p className="text-[12px] sm:text-[13px] tracking-[0.3px] flex items-center gap-1" style={{ color: "rgba(255,255,255,0.6)" }}>
-          {date && <span>{date} &middot;</span>}
-          <MapPin size={11} className="shrink-0" /> {place}
+          <MapPin size={11} className="relative -top-px shrink-0" /> {place}
         </p>
-        <p className="text-[13px] sm:text-[15px] leading-relaxed mt-1" style={{ color: "rgba(255,255,255,0.6)" }}>{desc}</p>
+        <p
+          className="text-[13px] sm:text-[15px] leading-relaxed mt-1 transition-colors duration-200"
+          style={{ color: hovered ? "rgba(255,255,255,0.78)" : "rgba(255,255,255,0.6)" }}
+        >
+          {desc}
+        </p>
       </div>
     </div>
   );
@@ -157,36 +167,6 @@ function CertCard({ label, href }: { label: string; href: string }) {
   );
 }
 
-function TimelineItem({ title, date, subtitle, desc, place }: { title: string; date?: string; subtitle?: string; desc?: string; place?: string }) {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <div
-      className="flex gap-3 sm:gap-4 cursor-default"
-      onMouseEnter={() => { if (canHover) setHovered(true); }}
-      onMouseLeave={() => { if (canHover) setHovered(false); }}
-    >
-      <div className="flex flex-col items-center pt-[6px]">
-        <div
-          className="w-[6px] h-[6px] rounded-full shrink-0 transition-all duration-300"
-          style={{ background: hovered ? "#81E6D9" : "white", boxShadow: hovered ? "0 0 8px rgba(129,230,217,0.8)" : "none" }}
-        />
-        <div className="w-px bg-gray-700 flex-1 mt-1" />
-      </div>
-      <div className="flex flex-col gap-[2px] pb-3">
-        <p className="text-[14px] sm:text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200" style={{ color: hovered ? "white" : "rgb(209,213,219)" }}>{title}</p>
-        {(date || subtitle || place) && (
-          <p className="text-[12px] sm:text-[13px] tracking-[0.3px] flex items-center gap-1" style={{ color: "rgba(255,255,255,0.6)" }}>
-            {date && <span>{date} &middot;</span>}
-            {place && <MapPin size={11} className="shrink-0" />}
-            {place || subtitle}
-          </p>
-        )}
-        {desc && <p className="text-[13px] sm:text-[15px] leading-relaxed mt-1" style={{ color: "rgba(255,255,255,0.6)" }}>{desc}</p>}
-      </div>
-    </div>
-  );
-}
-
 function ExperienceLink({ href, label }: { href: string; label: string }) {
   const [hovered, setHovered] = useState(false);
   return (
@@ -218,7 +198,6 @@ function ExperienceLink({ href, label }: { href: string; label: string }) {
 
 export default function HomeClient() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showMoreExp, setShowMoreExp] = useState(false);
   const [showMoreCerts, setShowMoreCerts] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "warning" | "error" } | null>(null);
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
@@ -372,7 +351,7 @@ export default function HomeClient() {
                 </div>
                 <h2 className="text-white text-[26px] font-bold leading-tight mt-4">Samuel Cruz</h2>
                 <p className="text-gray-300 mt-2 text-[14px] flex items-center justify-center gap-1.5">
-                  <MapPin size={14} strokeWidth={2} className="relative top-[-1px] shrink-0" /> Bataan, Philippines
+                  <MapPin size={14} strokeWidth={2} className="relative -top-[2px] shrink-0" /> Philippines
                 </p>
                 <p className="text-gray-300 mt-1 text-[14px]">Full Stack Developer <span className="text-white">|</span> Project Manager</p>
                 <div className="flex flex-wrap justify-center gap-2 mt-4 text-[14px] font-semibold text-[#81E6D9] tracking-[0.38px]">
@@ -396,7 +375,7 @@ export default function HomeClient() {
                 <div className="flex-1 min-w-0">
                   <h2 className="text-white text-[32px] md:text-[35px] font-bold leading-tight">Samuel Cruz</h2>
                   <p className="text-gray-300 mt-2 text-[16px] flex items-center gap-1.5">
-                    <MapPin size={15} strokeWidth={2} className="relative top-[-1px] shrink-0" /> Bataan, Philippines
+                    <MapPin size={15} strokeWidth={2} className="relative -top-[2px] shrink-0" /> Philippines
                   </p>
                   <p className="text-gray-300 mt-2 text-[16px]">Full Stack Developer <span className="text-white">|</span> Project Manager</p>
                   <div className="flex flex-wrap gap-6 mt-3 text-[17px] font-semibold text-[#81E6D9] tracking-[0.38px]">
@@ -437,83 +416,51 @@ export default function HomeClient() {
               <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 flex flex-col gap-4">
                 <div className="flex flex-col gap-1">
                   <p className="leading-relaxed">
-                    <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2026</span>
-                    Project Manager &mdash;{" "}
+                    <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2026 &ndash; Present</span>
                     <ExperienceLink href="https://www.app-bar.com/" label="App Bar" />
                   </p>
                   <div className="ml-1 mt-3 flex flex-col gap-3">
-                    <ProjectCard title="Upcoming App Bar Project" date="2026" place="Parkwest Avenue, Hong Kong Science Park" desc="Project details will be added once the work is ready to share." />
+                    <ExperienceSummary
+                      title="Project Manager"
+                      employmentType="Full-time"
+                      place="Parkwest Avenue, Hong Kong Science Park"
+                      desc="Coordinate mobile and web delivery across design and engineering, aligning teams, tracking progress, and maintaining clear stakeholder communication."
+                    />
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
                   <p className="leading-relaxed">
                     <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2025 &ndash; 2026</span>
-                    Technical Project Manager &mdash;{" "}
-                    <ExperienceLink href="https://www.freelancer.com/project-management" label="Freelancer" />
+                    <ExperienceLink href="https://www.freelancer.com/" label="Freelancer.com" />
                   </p>
                   <div className="ml-1 mt-3 flex flex-col gap-3">
-                    <ProjectCard title="Kreative Arts – Cross-Platform E-Commerce" date="2026" place="Bonifacio Global City, Taguig" desc="Managed a Shopify-Etsy integration project, defining delivery phases and milestones, keeping client communications aligned throughout the progress." />
-                    <ProjectCard title="Co-Pilot — Tamkeen Partnership Program" date="2026" place="Bonifacio Global City, Taguig" desc="Worked closely with program leads and teams to keep the partnership on track, handles coordination and making sure key milestones were met." />
-                  
-                    <AnimatePresence>
-                      {showMoreExp && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3, ease: "easeOut" }}
-                          style={{ overflow: "hidden" }}
-                        >
-                          <ProjectCard title="Noticer – Mobile Version Implementation" date="2026" place="Bonifacio Global City, Taguig" desc="Led the mobile adaptation of Noticer, coordinating cross-functional teams to translate the web platform into a responsive mobile experience." />
-                          <ProjectCard title="Prominence Bank – Digital Banking Platform" date="2026" place="Bonifacio Global City, Taguig" desc="Managed the project from start to finish, keeping teams aligned, running sprints, and making sure the platform shipped on time and within scope." />
-                          <ProjectCard title="InnerX – AI-Based Emotional Analytics" date="2025" place="Bonifacio Global City, Taguig" desc="Took the project from early concept to working prototype, staying on top of timelines, deliverables, and keeping everything moving in the right direction." />
-                          <div className="flex flex-col gap-1 mt-4">
-                            <p className="leading-relaxed">
-                              <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2024</span>
-                              Full-Stack Web Developer Intern &mdash;{" "}
-                              <ExperienceLink href="https://kynatech.ph/" label="Kynatech Co." />
-                            </p>
-                            <div className="ml-1 mt-3 flex flex-col gap-3">
-                              <ProjectCard title="Full Stack Web Development" place="Bonifacio Global City, Taguig" desc="Built a Next.js app with Supabase, Prisma, and NextAuth covering auth, timesheet, and payroll via REST APIs." />
-                              <ProjectCard title="Project Management" place="Bonifacio Global City, Taguig" desc="Ensured on-time delivery through progress monitoring, task verification, and Agile & Waterfall methodologies." />
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
-                    <div className="flex gap-3 sm:gap-2">
-                      <div className="flex flex-col items-center pt-[6px]">
-                        <div className="w-[6px] h-[6px] rounded-full shrink-0" style={{ background: "transparent" }} />
-                      </div>
-                      <button
-                        onClick={() => setShowMoreExp((prev) => !prev)}
-                        data-cuelume-hover="bloom"
-                        className="flex items-center gap-1.5 cursor-pointer w-fit"
-                        style={{ color: "#81E6D9", fontSize: "13px", letterSpacing: "0.3px", background: "none", border: "none", padding: 0, marginTop: "-8px" }}
-                      >
-                        <motion.span animate={{ rotate: showMoreExp ? 180 : 0 }} transition={{ duration: 0.25, ease: "easeOut" }} style={{ display: "flex", alignItems: "center" }}>
-                          <ChevronDown size={14} />
-                        </motion.span>
-                        <SlotText
-                          text={showMoreExp ? "Show less" : "View more"}
-                          options={{
-                            direction: showMoreExp ? "up" : "down",
-                            stagger: 30,
-                            duration: 260,
-                            bounce: 0.3,
-                            interrupt: false,
-                          }}
-                        />
-                      </button>
-                    </div>
+                    <ExperienceSummary
+                      title="Technical Project Manager"
+                      employmentType="Full-time"
+                      place="Bonifacio Global City, Taguig"
+                      desc="Coordinate client projects, clarify requirements, track progress, and communicate milestones and risks."
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <p className="leading-relaxed">
+                    <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2024</span>
+                    <ExperienceLink href="https://kynatech.ph/" label="Kynatech Co." />
+                  </p>
+                  <div className="ml-1 mt-3 flex flex-col gap-3">
+                    <ExperienceSummary
+                      title="Full-Stack Web Developer Intern"
+                      place="Bonifacio Global City, Taguig"
+                      desc="Built authentication, timesheet, and payroll features while supporting task tracking and delivery."
+                    />
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
-              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Bio</h3>
+              <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Certifications</h3>
               <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 space-y-2">
-                <p><span className="font-bold tracking-[0.38px] mr-4">2024</span>Certifications</p>
                 <div className="ml-1 mt-3 flex flex-col gap-3">
                   <CertCard label="IC3 Digital Literacy" href="/IC3 GS6 Level 1.pdf" />
                   <CertCard label="Microsoft Office Specialist Associate (Microsoft 365)" href="/Microsoft Office Specialist  Associate.pdf" />
@@ -550,19 +497,6 @@ export default function HomeClient() {
                           }}
                         />
                       </button>
-                  </div>
-                </div>
-
-                <div className="mt-4">
-                  <p><span className="font-bold tracking-[0.38px] mr-4">2025 &ndash; 2026</span>Career Milestones</p>
-                  <div className="ml-1 mt-3 flex flex-col gap-3">
-                    <TimelineItem
-                      title="Project Manager"
-                      date="2026"
-                      place="Parkwest Avenue, Hong Kong Science Park"
-                      desc="Supporting mobile and web delivery through planning, coordination, progress tracking, and clear client communication."
-                    />
-                    <TimelineItem title="Technical Project Manager" date="2025" place="Bonifacio Global City, Taguig" desc="Led cross-functional teams, coordinated sprints, and ensured timely delivery of product milestones." />
                   </div>
                 </div>
               </div>

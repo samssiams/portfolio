@@ -2,6 +2,24 @@ import type { Project } from "../types";
 
 export const freelancerProjects: Project[] = [
   {
+    title: "Kreative Arts",
+    year: "2026",
+    stacks: [],
+    role: "Technical Project Manager",
+    contributions: [
+      "Defined the project specifications and delivery phases",
+      "Established clear design milestones for the Shopify store",
+      "Planned the integration with the existing Etsy marketplace",
+    ],
+    shortDescription:
+      "An e-commerce project structured from requirements through design milestones, connecting a new Shopify store with an established Etsy marketplace.",
+    description:
+      "Kreative Arts is an e-commerce project where I defined the specifications, delivery phases, and design milestones for a Shopify store integrated with the brand's existing Etsy marketplace.",
+    image: "/kreative.png",
+    github: "",
+    website: "",
+  },
+  {
     title: "Tamkeen",
     year: "2026",
     stacks: [],

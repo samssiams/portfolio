@@ -26,9 +26,9 @@ export const projectFolders: ProjectFolder[] = [
   },
   {
     id: "freelancer",
-    title: "Freelancer",
+    title: "Freelancer.com",
     eyebrow: "2025 - 2026 · Technical Project Manager",
-    description: "Contracted client projects managed from planning through launch.",
+    description: "Client projects managed as part of the Freelancer.com team.",
     role: "Technical Project Manager leading timelines, scope, and cross-functional delivery.",
     projects: freelancerProjects,
   },

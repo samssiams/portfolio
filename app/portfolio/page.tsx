@@ -52,12 +52,12 @@ export default function PortfolioPage() {
   const highlightWords = (text: string) => {
     const keywords = [
       "Upcoming App Bar Project", "App Bar",
-      "Tamkeen", "Noticer", "Prominence Bank", "InnerX",
+      "Kreative Arts", "Tamkeen", "Noticer", "Prominence Bank", "InnerX",
       "Protecture", "Thrift and Trend", "Precision Arms", "BankITO",
       "Co-Pilot", "Project Manager", "Technical Project Manager",
       "Next.js", "Supabase", "Java", "Firebase", "Android",
       "PHP", "MySQL", "C#", "FGSM",
-      "mobile adaptation", "digital banking", "emotional analytics",
+      "e-commerce", "mobile adaptation", "digital banking", "emotional analytics",
       "placeholder",
       "adversarial encryption", "weblog", "thrift store",
     ];
