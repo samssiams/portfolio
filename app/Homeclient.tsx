@@ -363,7 +363,7 @@ export default function HomeClient() {
                     <Linkedin size={16} style={{ position: "relative", top: "-1px" }} />
                     <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
-                  <a href="/Cruz_CV.pdf" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
+                  <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
                     <FileUser size={16} style={{ position: "relative", top: "-1px" }} />
                     <span className="relative group">Resume<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
@@ -387,7 +387,7 @@ export default function HomeClient() {
                       <Linkedin size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                     </a>
-                    <a href="/Cruz_CV.pdf" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
+                    <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
                       <FileUser size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Resume<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                     </a>
