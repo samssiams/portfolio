@@ -536,6 +536,7 @@ export default function HomeClient() {
                   {/* Arrow always visible — animates upright on hover */}
                   <a
                     href={href}
+                    data-cuelume-hover="tick"
                     onMouseEnter={() => { if (canHover) setHoveredSection(key); }}
                     onMouseLeave={() => { if (canHover) setHoveredSection(null); }}
                     className="group relative isolate flex items-center justify-center gap-1.5 overflow-hidden rounded-xl border-0 px-5 py-2 font-semibold tracking-[0.38px] transition-all duration-300"
@@ -544,8 +545,8 @@ export default function HomeClient() {
                     <AnimatedTealEdge animated={false} />
                     <span className="relative z-10">{label}</span>
                     <motion.span
-                      animate={hoveredSection === key ? { x: 2, y: -2 } : { x: 0, y: 0 }}
-                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      animate={hoveredSection === key ? { x: 4, y: -2, rotate: 18, scale: 1.05 } : { x: 0, y: 0, rotate: 0, scale: 1 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 22 }}
                       className="relative z-10"
                       style={{ display: "flex", alignItems: "center" }}
                     >
@@ -569,7 +570,7 @@ export default function HomeClient() {
                 {/* Mail icon always visible — animates on hover */}
                 <button
                   onClick={handleOpenModal}
-                  data-cuelume-hover="chime"
+                  data-cuelume-hover="tick"
                   onMouseEnter={() => { if (canHover) setMsgHovered(true); }}
                   onMouseLeave={() => { if (canHover) setMsgHovered(false); }}
                   className="group relative isolate flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl border-0 px-5 py-2 font-semibold tracking-[0.38px] text-[#81E6D9] transition-colors duration-300"
