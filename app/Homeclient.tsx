@@ -424,7 +424,7 @@ export default function HomeClient() {
                       title="Project Manager"
                       employmentType="Full-time"
                       place="Parkwest Avenue, Hong Kong Science Park"
-                      desc="Coordinate mobile and web delivery across design and engineering, aligning teams, tracking progress, and maintaining clear stakeholder communication."
+                      desc="Directed cross-functional delivery across mobile and web work, keeping teams aligned and priorities moving."
                     />
                   </div>
                 </div>
