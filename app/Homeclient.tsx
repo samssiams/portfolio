@@ -67,7 +67,7 @@ function HoverSlotText({ text }: { text: string }) {
   );
 }
 
-function ExperienceSummary({ title, employmentType, place, desc }: { title: string; employmentType?: string; place: string; desc: string }) {
+function ExperienceSummary({ title, employmentType, place, workMode, desc }: { title: string; employmentType?: string; place: string; workMode?: string; desc: string }) {
   const [hovered, setHovered] = useState(false);
   return (
     <div
@@ -87,18 +87,28 @@ function ExperienceSummary({ title, employmentType, place, desc }: { title: stri
       </div>
       <div className="flex flex-col gap-[2px] pb-3">
         <p
-          className="text-[14px] sm:text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200"
+          className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-[14px] sm:text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200"
           style={{ color: hovered ? "white" : "rgb(209,213,219)" }}
         >
-          {title}
+          <span>{title}</span>
           {employmentType && (
-            <span className="ml-2 text-[11px] sm:text-[12px] font-normal text-white/45">
-              &middot; {employmentType}
+            <span className="inline-flex items-center gap-2 whitespace-nowrap text-[12px] sm:text-[13px] font-normal text-white/45">
+              <span className="text-white/30" aria-hidden="true">&bull;</span>
+              {employmentType}
             </span>
           )}
         </p>
-        <p className="text-[12px] sm:text-[13px] tracking-[0.3px] flex items-center gap-1" style={{ color: "rgba(255,255,255,0.6)" }}>
-          <MapPin size={11} className="relative -top-px shrink-0" /> {place}
+        <p className="text-[12px] sm:text-[13px] tracking-[0.3px] flex items-start gap-1.5" style={{ color: "rgba(255,255,255,0.6)" }}>
+          <MapPin size={11} className="relative top-[3px] shrink-0" />
+          <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+            <span>{place}</span>
+            {workMode && (
+              <span className="inline-flex items-center gap-2 whitespace-nowrap text-white/50">
+                <span className="text-white/30" aria-hidden="true">&bull;</span>
+                {workMode}
+              </span>
+            )}
+          </span>
         </p>
         <p
           className="text-[13px] sm:text-[15px] leading-relaxed mt-1 transition-colors duration-200"
@@ -168,30 +178,19 @@ function CertCard({ label, href }: { label: string; href: string }) {
 }
 
 function ExperienceLink({ href, label }: { href: string; label: string }) {
-  const [hovered, setHovered] = useState(false);
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
       data-cuelume-hover="tick"
-      onMouseEnter={() => { if (canHover) setHovered(true); }}
-      onMouseLeave={() => { if (canHover) setHovered(false); }}
-      className="inline-flex items-center font-bold tracking-[0.38px] text-[#81E6D9]"
-      style={{ marginLeft: "6px" }}
+      className="group inline-flex items-center gap-1 font-bold tracking-[0.38px] text-[#81E6D9]"
     >
-      <motion.span animate={{ x: hovered ? -2 : 0 }} transition={{ duration: 0.2, ease: "easeOut" }}>
-        {label}
-      </motion.span>
-      <span style={{ width: 22, height: 22, display: "inline-flex", alignItems: "center", overflow: "hidden", marginLeft: hovered ? "1px" : "0px", transition: "margin 0.25s ease" }}>
-        <motion.span
-          animate={hovered ? { x: 0, y: 0, opacity: 1 } : { x: -8, y: 8, opacity: 0 }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
-          style={{ display: "flex", alignItems: "center" }}
-        >
-          <ArrowUpRight size={18} style={{ flexShrink: 0 }} />
-        </motion.span>
-      </span>
+      <span>{label}</span>
+      <ArrowUpRight
+        size={16}
+        className="shrink-0 -translate-x-1 translate-y-1 opacity-0 transition-all duration-200 ease-out group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-60"
+      />
     </a>
   );
 }
@@ -415,8 +414,8 @@ export default function HomeClient() {
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Experiences</h3>
               <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 flex flex-col gap-4">
                 <div className="flex flex-col gap-1">
-                  <p className="leading-relaxed">
-                    <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2026 &ndash; Present</span>
+                  <p className="flex items-baseline gap-2 leading-relaxed">
+                    <span className="font-bold tracking-[0.38px]">2026 &ndash; Present</span>
                     <ExperienceLink href="https://www.app-bar.com/" label="App Bar" />
                   </p>
                   <div className="ml-1 mt-3 flex flex-col gap-3">
@@ -424,13 +423,14 @@ export default function HomeClient() {
                       title="Project Manager"
                       employmentType="Full-time"
                       place="Parkwest Avenue, Hong Kong Science Park"
+                      workMode="Remote"
                       desc="Directed cross-functional delivery across mobile and web work, keeping teams aligned and priorities moving."
                     />
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <p className="leading-relaxed">
-                    <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2025 &ndash; 2026</span>
+                  <p className="flex items-baseline gap-2 leading-relaxed">
+                    <span className="font-bold tracking-[0.38px]">2025 &ndash; 2026</span>
                     <ExperienceLink href="https://www.freelancer.com/" label="Freelancer.com" />
                   </p>
                   <div className="ml-1 mt-3 flex flex-col gap-3">
@@ -438,13 +438,14 @@ export default function HomeClient() {
                       title="Technical Project Manager"
                       employmentType="Full-time"
                       place="Bonifacio Global City, Taguig"
+                      workMode="Onsite"
                       desc="Coordinate client projects, clarify requirements, track progress, and communicate milestones and risks."
                     />
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <p className="leading-relaxed">
-                    <span className="font-bold tracking-[0.38px] mr-2 sm:mr-4">2024</span>
+                  <p className="flex items-baseline gap-2 leading-relaxed">
+                    <span className="font-bold tracking-[0.38px]">2024</span>
                     <ExperienceLink href="https://kynatech.ph/" label="Kynatech Co." />
                   </p>
                   <div className="ml-1 mt-3 flex flex-col gap-3">
