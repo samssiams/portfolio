@@ -1,4 +1,4 @@
-export default function AnimatedTealEdge({ animated = true }: { animated?: boolean }) {
+export default function AnimatedTealEdge({ animated = true, transparentInterior = false }: { animated?: boolean; transparentInterior?: boolean }) {
   if (!animated) {
     return (
       <span
@@ -24,7 +24,7 @@ export default function AnimatedTealEdge({ animated = true }: { animated?: boole
       />
       <span
         aria-hidden="true"
-        className="absolute inset-px -z-10 rounded-[11px] border border-[rgba(129,230,217,0.65)] bg-[rgba(22,26,35,0.96)] shadow-[0_0_8px_rgba(129,230,217,0.35)] backdrop-blur-2xl sm:border-[rgba(129,230,217,0.45)] sm:shadow-none"
+        className={`absolute inset-px -z-10 rounded-[11px] border border-[rgba(129,230,217,0.65)] sm:border-[rgba(129,230,217,0.45)] ${transparentInterior ? "bg-[#161a23] shadow-none" : "bg-[rgba(22,26,35,0.96)] shadow-[0_0_8px_rgba(129,230,217,0.35)] backdrop-blur-2xl sm:shadow-none"}`}
       />
     </>
   );

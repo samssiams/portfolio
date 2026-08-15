@@ -85,9 +85,9 @@ function ExperienceSummary({ title, employmentType, place, workMode, desc }: { t
         />
         <div className="w-px bg-gray-700 flex-1 mt-1" />
       </div>
-      <div className="flex flex-col gap-[2px] pb-3">
+      <div className="flex flex-col pb-3">
         <p
-          className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-[14px] sm:text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200"
+          className="mb-1.5 flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-[14px] sm:text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200"
           style={{ color: hovered ? "white" : "rgb(209,213,219)" }}
         >
           <span>{title}</span>
@@ -111,7 +111,7 @@ function ExperienceSummary({ title, employmentType, place, workMode, desc }: { t
           </span>
         </p>
         <p
-          className="text-[13px] sm:text-[15px] leading-relaxed mt-1 transition-colors duration-200"
+          className="mt-2 text-[13px] sm:text-[15px] leading-relaxed transition-colors duration-200"
           style={{ color: hovered ? "rgba(255,255,255,0.78)" : "rgba(255,255,255,0.6)" }}
         >
           {desc}
@@ -360,7 +360,7 @@ export default function HomeClient() {
                   </a>
                   <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
                     <Linkedin size={16} style={{ position: "relative", top: "-1px" }} />
-                    <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
+                    <span className="relative group">Samcruz<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                   </a>
                   <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
                     <FileUser size={16} style={{ position: "relative", top: "-1px" }} />
@@ -378,13 +378,13 @@ export default function HomeClient() {
                   </p>
                   <p className="text-gray-300 mt-2 text-[16px]">Full Stack Developer <span className="text-white">|</span> Project Manager</p>
                   <div className="flex flex-wrap gap-6 mt-3 text-[17px] font-semibold text-[#81E6D9] tracking-[0.38px]">
-                    <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
-                      <Instagram size={17} style={{ position: "relative", top: "-1.5px" }} />
+                  <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
+                    <Instagram size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                     </a>
-                    <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
-                      <Linkedin size={17} style={{ position: "relative", top: "-1.5px" }} />
-                      <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
+                  <a href="https://www.linkedin.com/in/samssiams/" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
+                    <Linkedin size={17} style={{ position: "relative", top: "-1.5px" }} />
+                      <span className="relative group">Samcruz<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
                     </a>
                     <a href="/CV_Cruz.pdf" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
                       <FileUser size={17} style={{ position: "relative", top: "-1.5px" }} />
@@ -424,7 +424,7 @@ export default function HomeClient() {
                       employmentType="Full-time"
                       place="Parkwest Avenue, Hong Kong Science Park"
                       workMode="Remote"
-                      desc="Directed cross-functional delivery across mobile and web work, keeping teams aligned and priorities moving."
+                      desc="Orchestrated cross-functional work across mobile and web products, aligning teams and advancing priorities."
                     />
                   </div>
                 </div>
@@ -439,7 +439,7 @@ export default function HomeClient() {
                       employmentType="Full-time"
                       place="Bonifacio Global City, Taguig"
                       workMode="Onsite"
-                      desc="Coordinate client projects, clarify requirements, track progress, and communicate milestones and risks."
+                      desc="Managed client projects, defined requirements, drove execution, and communicated milestones and risks."
                     />
                   </div>
                 </div>
@@ -452,7 +452,7 @@ export default function HomeClient() {
                     <ExperienceSummary
                       title="Full-Stack Web Developer Intern"
                       place="Bonifacio Global City, Taguig"
-                      desc="Built authentication, timesheet, and payroll features while supporting task tracking and delivery."
+                      desc="Developed authentication, timesheet, and payroll systems while improving task tracking and operations."
                     />
                   </div>
                 </div>
@@ -464,7 +464,7 @@ export default function HomeClient() {
               <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 space-y-2">
                 <div className="ml-1 mt-3 flex flex-col gap-3">
                   <CertCard label="IC3 Digital Literacy" href="/IC3 GS6 Level 1.pdf" />
-                  <CertCard label="Microsoft Office Specialist Associate (Microsoft 365)" href="/Microsoft Office Specialist  Associate.pdf" />
+                  <CertCard label="Microsoft Office Specialist Associate" href="/Microsoft Office Specialist  Associate.pdf" />
                   <AnimatePresence>
                     {showMoreCerts && (
                       <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3, ease: "easeOut" }} style={{ overflow: "hidden" }}>

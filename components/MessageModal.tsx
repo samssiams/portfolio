@@ -542,7 +542,7 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                     opacity: loading ? 0.65 : 1,
                   }}
                 >
-                  <AnimatedTealEdge />
+                  <AnimatedTealEdge transparentInterior />
                   <SlotText
                     className="relative z-10"
                     text={loading ? "Sending..." : "Send"}

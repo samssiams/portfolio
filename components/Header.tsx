@@ -66,7 +66,7 @@ const Header = () => {
           ${scrolled
             ? "top-4 rounded-2xl bg-[#1a1e28]/75 backdrop-blur-md border border-white/10"
             : "top-0 bg-transparent border-transparent shadow-none"
-          }`}
+          } ${menuOpen ? "overflow-hidden" : ""}`}
       >
         <div className="flex w-full max-w-[800px] items-center justify-between px-6 py-2 text-[20px] font-bold">
           <Link
@@ -111,7 +111,7 @@ const Header = () => {
 
       {/* Mobile Header */}
       <header
-        className={`fixed left-0 right-0 z-[49] transition-all duration-300 md:hidden
+        className={`fixed left-0 right-0 z-[49] transition-[top,background-color,border-color] duration-300 md:hidden
           ${scrolled
             ? "top-3 mx-4 rounded-2xl bg-[#1a1e28]/85 backdrop-blur-md border border-white/10"
             : "top-0 bg-[#1a1e28]/90 backdrop-blur-sm border-b border-white/5"
@@ -141,68 +141,52 @@ const Header = () => {
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.nav
+              className="flex flex-col overflow-hidden border-t border-white/10 py-2"
+              aria-label="Mobile navigation"
+              initial={{ height: 0, opacity: 0, y: -6 }}
+              animate={{ height: "auto", opacity: 1, y: 0 }}
+              transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {navLinks.map(({ label, href }, i) => {
+                const isActive = pathname === href;
+                return (
+                  <motion.div
+                    key={href}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.24, delay: 0.08 + i * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <Link
+                      href={href}
+                      data-cuelume-hover="tick"
+                      onClick={(event) => handleSamePageClick(event, href)}
+                      className="flex items-center justify-between px-5 py-3 text-[15px] font-semibold tracking-[0.38px] cursor-pointer"
+                      style={{
+                        color: isActive ? "#81E6D9" : "rgba(255,255,255,0.85)",
+                        borderBottom: i < navLinks.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                      }}
+                      aria-current={isActive ? "page" : undefined}
+                    >
+                      {label}
+                      {isActive && (
+                        <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#81E6D9" }} />
+                      )}
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </header>
 
-      {/* Mobile Dropdown Menu */}
-      <AnimatePresence>
-        {menuOpen && (
-          <>
-            <motion.div
-              className="fixed inset-0 z-[48] md:hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setMenuOpen(false)}
-            />
-            <motion.div
-              className="fixed left-4 right-4 z-[49] md:hidden rounded-2xl overflow-hidden"
-              style={{
-                top: scrolled ? "68px" : "60px",
-                background: "rgba(22, 26, 35, 0.95)",
-                backdropFilter: "blur(24px)",
-                WebkitBackdropFilter: "blur(24px)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
-              }}
-              initial={{ opacity: 0, y: -8, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.97 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-            >
-              <nav className="flex flex-col py-2" aria-label="Mobile navigation">
-                {navLinks.map(({ label, href }, i) => {
-                  const isActive = pathname === href;
-                  return (
-                    <motion.div
-                      key={href}
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                    >
-                      <Link
-                        href={href}
-                        data-cuelume-hover="tick"
-                        onClick={(event) => handleSamePageClick(event, href)}
-                        className="px-6 py-3 text-[15px] font-semibold tracking-[0.38px] cursor-pointer flex items-center justify-between"
-                        style={{
-                          color: isActive ? "#81E6D9" : "rgba(255,255,255,0.85)",
-                          borderBottom: i < navLinks.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none",
-                        }}
-                        aria-current={isActive ? "page" : undefined}
-                      >
-                        {label}
-                        {isActive && (
-                          <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#81E6D9" }} />
-                        )}
-                      </Link>
-                    </motion.div>
-                  );
-                })}
-              </nav>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      {/* Mobile menu backdrop */}
+      {menuOpen && (
+        <div className="fixed inset-0 z-[48] md:hidden" onClick={() => setMenuOpen(false)} />
+      )}
     </>
   );
 };

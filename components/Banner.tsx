@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Banner() {
   return (
-    <div className="mt-20 w-full">
+    <div className="mt-[82px] w-full">
       <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31">
         <div
           className="rounded-xl py-3 text-center"
