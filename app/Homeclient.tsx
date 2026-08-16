@@ -348,11 +348,11 @@ export default function HomeClient() {
                   <Image src="/profile.png" alt="Samuel Cruz" fill priority sizes="96px" className="object-cover" />
                 </div>
                 <h2 className="text-white text-[26px] font-bold leading-tight mt-4">Samuel Cruz</h2>
-                <p className="text-gray-300 mt-2 text-[14px] flex items-center justify-center gap-1.5">
+                <p className="text-gray-300 mt-3 text-[14px] flex items-center justify-center gap-1.5">
                   <MapPin size={14} strokeWidth={2} className="relative -top-[2px] shrink-0" /> Philippines
                 </p>
-                <p className="text-gray-300 mt-1 text-[14px]">Full Stack Developer <span className="text-white">|</span> Project Manager</p>
-                <div className="flex flex-wrap justify-center gap-2 mt-4 text-[14px] font-semibold text-[#81E6D9] tracking-[0.38px]">
+                <p className="text-gray-300 mt-2 text-[14px]">Full Stack Developer <span className="text-white">|</span> Technical Project Manager</p>
+                <div className="flex flex-wrap justify-center gap-4 mt-2 text-[14px] font-semibold text-[#81E6D9] tracking-[0.38px]">
                   <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
                     <Instagram size={16} style={{ position: "relative", top: "-1px" }} />
                     <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
@@ -375,8 +375,8 @@ export default function HomeClient() {
                   <p className="text-gray-300 mt-2 text-[16px] flex items-center gap-1.5">
                     <MapPin size={15} strokeWidth={2} className="relative -top-[2px] shrink-0" /> Philippines
                   </p>
-                  <p className="text-gray-300 mt-2 text-[16px]">Full Stack Developer <span className="text-white">|</span> Project Manager</p>
-                  <div className="flex flex-wrap gap-6 mt-3 text-[17px] font-semibold text-[#81E6D9] tracking-[0.38px]">
+                  <p className="text-gray-300 mt-2 text-[16px]">Full Stack Developer <span className="text-white">|</span> Technical Project Manager</p>
+                  <div className="flex flex-wrap gap-6 mt-2 text-[17px] font-semibold text-[#81E6D9] tracking-[0.38px]">
                   <a href="https://www.instagram.com/samssiams/" target="_blank" rel="noopener noreferrer" data-cuelume-hover="press" className="flex items-center gap-1.5">
                     <Instagram size={17} style={{ position: "relative", top: "-1.5px" }} />
                       <span className="relative group">Samssiams<span className="absolute left-0 -bottom-[2px] w-0 h-[2px] bg-[#81E6D9] transition-all duration-300 group-hover:w-full" /></span>
