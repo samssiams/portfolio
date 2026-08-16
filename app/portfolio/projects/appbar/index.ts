@@ -2,18 +2,16 @@ import type { Project } from "../types";
 
 export const appBarProjects: Project[] = [
   {
-    title: "Upcoming App Bar Project",
+    title: "AXA HUMA",
     year: "2026",
     stacks: [],
     role: "Project Manager",
-    contributions: [
-      "Project details will be added once the work is ready to share",
-    ],
+    contributions: ["Project details will be added once the case study is ready to share"],
     shortDescription:
-      "A forward-looking App Bar initiative that will outline the product scope, delivery approach, and responsibilities once the work is ready to share.",
+      "Placeholder description for an AXA HUMA mobile experience. The full project scope, delivery approach, and responsibilities will be added soon.",
     description:
-      "This App Bar experience is being prepared as a public case study, with the project narrative, outcomes, and contribution details added as soon as they are available.",
-    image: "/appbar-placeholder.svg",
+      "This AXA HUMA mobile experience is being prepared as a public case study. A fuller overview of the project, including its outcomes and contributions, will be added soon.",
+    image: "/appbar-axa-huma.jpg",
     github: "",
     website: "https://www.app-bar.com/",
   },

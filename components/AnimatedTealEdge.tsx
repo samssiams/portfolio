@@ -12,15 +12,15 @@ export default function AnimatedTealEdge({ animated = true, transparentInterior 
     <>
       <span
         aria-hidden="true"
-        className="absolute -inset-[150%] -z-20 hidden bg-[conic-gradient(from_0deg,transparent_0deg,transparent_224deg,rgba(45,212,191,0.26)_264deg,#5eead4_312deg,#14f1d9_342deg,transparent_360deg)] opacity-70 transition-opacity duration-300 group-hover:opacity-100 sm:block sm:animate-[spin_3s_linear_infinite] motion-reduce:animate-none"
+        className="absolute -inset-[150%] -z-20 hidden bg-[conic-gradient(from_0deg,transparent_0deg,transparent_224deg,rgba(45,212,191,0.26)_264deg,#5eead4_312deg,#14f1d9_342deg,transparent_360deg)] opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:block sm:group-hover:animate-[spin_3s_linear_infinite] motion-reduce:animate-none"
       />
       <span
         aria-hidden="true"
-        className="absolute -inset-[135%] -z-20 hidden bg-[conic-gradient(from_0deg,transparent_0deg,transparent_232deg,rgba(20,241,217,0.88)_286deg,#5eead4_316deg,#2dd4bf_348deg,transparent_360deg)] opacity-0 blur-[7px] saturate-200 transition-opacity duration-300 group-hover:opacity-100 sm:block sm:animate-[spin_3s_linear_infinite] motion-reduce:animate-none"
+        className="absolute -inset-[135%] -z-20 hidden bg-[conic-gradient(from_0deg,transparent_0deg,transparent_232deg,rgba(20,241,217,0.88)_286deg,#5eead4_316deg,#2dd4bf_348deg,transparent_360deg)] opacity-0 blur-[7px] saturate-200 transition-opacity duration-300 group-hover:opacity-100 sm:block sm:group-hover:animate-[spin_3s_linear_infinite] motion-reduce:animate-none"
       />
       <span
         aria-hidden="true"
-        className="absolute -inset-[112%] -z-20 hidden bg-[conic-gradient(from_0deg,transparent_0deg,transparent_252deg,rgba(94,234,212,0.75)_310deg,#14f1d9_336deg,transparent_360deg)] opacity-0 blur-[2px] saturate-150 transition-opacity duration-300 group-hover:opacity-100 sm:block sm:animate-[spin_3s_linear_infinite] motion-reduce:animate-none"
+        className="absolute -inset-[112%] -z-20 hidden bg-[conic-gradient(from_0deg,transparent_0deg,transparent_252deg,rgba(94,234,212,0.75)_310deg,#5eead4_316deg,#14f1d9_336deg,transparent_360deg)] opacity-0 blur-[2px] saturate-150 transition-opacity duration-300 group-hover:opacity-100 sm:block sm:group-hover:animate-[spin_3s_linear_infinite] motion-reduce:animate-none"
       />
       <span
         aria-hidden="true"

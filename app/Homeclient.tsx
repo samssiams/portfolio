@@ -85,7 +85,7 @@ function ExperienceSummary({ title, employmentType, place, workMode, desc }: { t
         />
         <div className="w-px bg-gray-700 flex-1 mt-1" />
       </div>
-      <div className="flex flex-col pb-3">
+      <div className="flex flex-col">
         <p
           className="mb-1.5 flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-[14px] sm:text-[15px] font-semibold tracking-[0.3px] transition-colors duration-200"
           style={{ color: hovered ? "white" : "rgb(209,213,219)" }}
@@ -199,7 +199,6 @@ export default function HomeClient() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showMoreCerts, setShowMoreCerts] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "warning" | "error" } | null>(null);
-  const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [msgHovered, setMsgHovered] = useState(false);
 
   useEffect(() => {
@@ -412,13 +411,13 @@ export default function HomeClient() {
 
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Experiences</h3>
-              <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 flex flex-col gap-4">
+              <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 flex flex-col gap-[21px]">
                 <div className="flex flex-col gap-1">
                   <p className="flex items-baseline gap-2 leading-relaxed">
                     <span className="font-bold tracking-[0.38px]">2026 &ndash; Present</span>
                     <ExperienceLink href="https://www.app-bar.com/" label="App Bar" />
                   </p>
-                  <div className="ml-1 mt-3 flex flex-col gap-3">
+                  <div className="ml-1 mt-[6px] flex flex-col gap-3">
                     <ExperienceSummary
                       title="Project Manager"
                       employmentType="Full-time"
@@ -433,7 +432,7 @@ export default function HomeClient() {
                     <span className="font-bold tracking-[0.38px]">2025 &ndash; 2026</span>
                     <ExperienceLink href="https://www.freelancer.com/" label="Freelancer.com" />
                   </p>
-                  <div className="ml-1 mt-3 flex flex-col gap-3">
+                  <div className="ml-1 mt-[6px] flex flex-col gap-3">
                     <ExperienceSummary
                       title="Technical Project Manager"
                       employmentType="Full-time"
@@ -448,7 +447,7 @@ export default function HomeClient() {
                     <span className="font-bold tracking-[0.38px]">2024</span>
                     <ExperienceLink href="https://kynatech.ph/" label="Kynatech Co." />
                   </p>
-                  <div className="ml-1 mt-3 flex flex-col gap-3">
+                  <div className="ml-1 mt-[6px] flex flex-col gap-3">
                     <ExperienceSummary
                       title="Full-Stack Web Developer Intern"
                       place="Bonifacio Global City, Taguig"
@@ -462,12 +461,12 @@ export default function HomeClient() {
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31 mt-7">
               <h3 className="text-white text-[18px] sm:text-[20px] font-bold">Certifications</h3>
               <div className="text-gray-300 text-[14px] sm:text-[16px] mt-3 space-y-2">
-                <div className="ml-1 mt-3 flex flex-col gap-3">
+                <div className="ml-1 mt-3 flex flex-col gap-2">
                   <CertCard label="IC3 Digital Literacy" href="/IC3 GS6 Level 1.pdf" />
                   <CertCard label="Microsoft Office Specialist Associate" href="/Microsoft Office Specialist  Associate.pdf" />
                   <AnimatePresence>
                     {showMoreCerts && (
-                      <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3, ease: "easeOut" }} style={{ overflow: "hidden" }}>
+                      <motion.div className="flex flex-col gap-2" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3, ease: "easeOut" }} style={{ overflow: "hidden" }}>
                         <CertCard label="Information Technology Specialist in Network Security" href="/Network Security.pdf" />
                         <CertCard label="Information Technology Specialist in Networking" href="/Networking.pdf" />
                       </motion.div>
@@ -534,25 +533,14 @@ export default function HomeClient() {
                   ))}
                 </div>
                 <div className="flex justify-center mt-7">
-                  {/* Arrow always visible — animates upright on hover */}
                   <a
                     href={href}
-                    data-cuelume-hover="tick"
-                    onMouseEnter={() => { if (canHover) setHoveredSection(key); }}
-                    onMouseLeave={() => { if (canHover) setHoveredSection(null); }}
-                    className="group relative isolate flex items-center justify-center gap-1.5 overflow-hidden rounded-xl border-0 px-5 py-2 font-semibold tracking-[0.38px] transition-all duration-300"
+                    data-cuelume-hover="arrival"
+                    className="group relative isolate flex items-center justify-center overflow-hidden rounded-xl border-0 px-5 py-2 font-semibold tracking-[0.38px] transition-all duration-300"
                     style={mediaButtonStyle}
                   >
-                    <AnimatedTealEdge animated={false} />
+                    <AnimatedTealEdge />
                     <span className="relative z-10">{label}</span>
-                    <motion.span
-                      animate={hoveredSection === key ? { x: 4, y: -2, rotate: 18, scale: 1.05 } : { x: 0, y: 0, rotate: 0, scale: 1 }}
-                      transition={{ type: "spring", stiffness: 260, damping: 22 }}
-                      className="relative z-10"
-                      style={{ display: "flex", alignItems: "center" }}
-                    >
-                      <ArrowUpRight size={16} />
-                    </motion.span>
                   </a>
                 </div>
               </div>
@@ -571,12 +559,12 @@ export default function HomeClient() {
                 {/* Mail icon always visible — animates on hover */}
                 <button
                   onClick={handleOpenModal}
-                  data-cuelume-hover="tick"
+                  data-cuelume-hover="arrival"
                   onMouseEnter={() => { if (canHover) setMsgHovered(true); }}
                   onMouseLeave={() => { if (canHover) setMsgHovered(false); }}
                   className="group relative isolate flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl border-0 px-5 py-2 font-semibold tracking-[0.38px] text-[#81E6D9] transition-colors duration-300"
                 >
-                  <AnimatedTealEdge animated={false} />
+                  <AnimatedTealEdge />
                   <motion.span
                     animate={msgHovered ? { rotate: -15, scale: 1.2 } : { rotate: 0, scale: 1 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
