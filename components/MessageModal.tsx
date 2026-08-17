@@ -533,7 +533,8 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                 </div>
 
                 <button
-                  type="submit"
+                    type="submit"
+                                     data-cuelume-hover="success"
                   disabled={loading}
                   className="group relative isolate w-full overflow-hidden rounded-xl border-0 px-4 py-2.5 font-semibold tracking-[0.3px] transition-all duration-300"
                   style={{

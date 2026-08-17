@@ -535,7 +535,7 @@ export default function HomeClient() {
                 <div className="flex justify-center mt-7">
                   <a
                     href={href}
-                    data-cuelume-hover="arrival"
+                    data-cuelume-hover="tick"
                     className="group relative isolate flex items-center justify-center overflow-hidden rounded-xl border-0 px-5 py-2 font-semibold tracking-[0.38px] transition-all duration-300"
                     style={mediaButtonStyle}
                   >
@@ -559,7 +559,7 @@ export default function HomeClient() {
                 {/* Mail icon always visible — animates on hover */}
                 <button
                   onClick={handleOpenModal}
-                  data-cuelume-hover="arrival"
+                  data-cuelume-hover="tick"
                   onMouseEnter={() => { if (canHover) setMsgHovered(true); }}
                   onMouseLeave={() => { if (canHover) setMsgHovered(false); }}
                   className="group relative isolate flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl border-0 px-5 py-2 font-semibold tracking-[0.38px] text-[#81E6D9] transition-colors duration-300"

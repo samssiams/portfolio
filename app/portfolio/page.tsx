@@ -205,47 +205,46 @@ export default function PortfolioPage() {
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   className="mt-7 border-t border-white/10"
                 >
-                    {projectFolders.map((folder) => {
-                      const isHovered = hoveredItem === folder.id;
+                  {projectFolders.map((folder) => {
+                    const isHovered = hoveredItem === folder.id;
 
-                      return (
-                          <motion.button
-                            key={folder.id}
-                            type="button"
-                            data-cuelume-hover="whisper"
-                            onClick={() => setSelectedFolderId(folder.id)}
-                            onMouseEnter={() => handleMouseEnter(folder.id)}
-                            onMouseLeave={handleMouseLeave}
-                            className="group flex w-full cursor-pointer items-center gap-4 border-b border-white/10 bg-transparent px-1 py-5 text-left sm:gap-5 sm:py-6"
-                          >
-                            <span
-                              className={`flex h-11 w-11 shrink-0 items-center justify-center transition-colors duration-200 sm:h-12 sm:w-12 ${
-                                isHovered && canHover ? "text-[#81E6D9]" : "text-white/55"
-                              }`}
-                            >
-                              <FolderCategoryIcon id={folder.id} />
-                            </span>
-                            <span className="min-w-0 flex-1">
-                              <span className="block text-[15px] font-medium tracking-[0.25px] text-white sm:text-[16px]">
-                                {folder.title}
-                              </span>
-                              <span className="mt-1 block text-[12px] leading-relaxed text-white/60 sm:text-[13px]">
-                                {folder.description}
-                              </span>
-                              <span className="mt-1 block truncate text-[11px] tracking-[0.25px] text-white/35 sm:text-[12px]">
-                                {folder.eyebrow}
-                              </span>
-                            </span>
-                            <span className="hidden shrink-0 text-[11px] tracking-[0.12em] text-white/35 sm:block">
-                              {String(folder.projects.length).padStart(2, "0")}
-                            </span>
-                            <ChevronRight
-                              size={17}
-                              className="shrink-0 text-white/25 transition-all duration-200 group-hover:translate-x-1 group-hover:text-[#81E6D9]"
-                            />
-                          </motion.button>
-                      );
-                    })}
+                    return (
+                      <motion.button
+                        key={folder.id}
+                        type="button"
+                        data-cuelume-hover="whisper"
+                        onClick={() => setSelectedFolderId(folder.id)}
+                        onMouseEnter={() => handleMouseEnter(folder.id)}
+                        onMouseLeave={handleMouseLeave}
+                        className="group flex w-full cursor-pointer items-center gap-4 border-b border-white/10 bg-transparent px-1 py-5 text-left sm:gap-5 sm:py-6"
+                      >
+                        <span
+                          className={`flex h-11 w-11 shrink-0 items-center justify-center transition-colors duration-200 sm:h-12 sm:w-12 ${isHovered && canHover ? "text-[#81E6D9]" : "text-white/55"
+                            }`}
+                        >
+                          <FolderCategoryIcon id={folder.id} />
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block text-[15px] font-medium tracking-[0.25px] text-white sm:text-[16px]">
+                            {folder.title}
+                          </span>
+                          <span className="mt-1 block text-[12px] leading-relaxed text-white/60 sm:text-[13px]">
+                            {folder.description}
+                          </span>
+                          <span className="mt-1 block truncate text-[11px] tracking-[0.25px] text-white/35 sm:text-[12px]">
+                            {folder.eyebrow}
+                          </span>
+                        </span>
+                        <span className="hidden shrink-0 text-[11px] tracking-[0.12em] text-white/35 sm:block">
+                          {String(folder.projects.length).padStart(2, "0")}
+                        </span>
+                        <ChevronRight
+                          size={17}
+                          className="shrink-0 text-white/25 transition-all duration-200 group-hover:translate-x-1 group-hover:text-[#81E6D9]"
+                        />
+                      </motion.button>
+                    );
+                  })}
                 </motion.div>
               ) : (
                 <motion.div
@@ -255,147 +254,149 @@ export default function PortfolioPage() {
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   className="mt-6"
                 >
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setHoveredItem(null);
-                        setSelectedFolderId(null);
-                        setSelectedProject(null);
-                      }}
-                      className="mb-1 inline-flex cursor-pointer items-center gap-2 text-[13px] font-medium tracking-[0.3px] text-[#81E6D9] transition-colors hover:text-white"
-                    >
-                      <ArrowLeft size={15} />
-                      Back to folders
-                    </button>
+                  <button
+                    type="button"
+                    data-cuelume-hover="tick"
+                    onClick={() => {
+                      setHoveredItem(null);
+                      setSelectedFolderId(null);
+                      setSelectedProject(null);
+                    }}
+                    className="mb-1 inline-flex cursor-pointer items-center gap-2 text-[13px] font-medium tracking-[0.3px] text-[#81E6D9] transition-colors hover:text-white"
+                  >
+                    <ArrowLeft size={15} />
+                    Back to folders
+                  </button>
 
-                    <div>
-                      {selectedFolder.projects.map((project, index) => {
-                        const projectKey = `${selectedFolder.id}-${project.title}`;
-                        const isHovered = hoveredItem === projectKey;
+                  <div>
+                    {selectedFolder.projects.map((project, index) => {
+                      const projectKey = `${selectedFolder.id}-${project.title}`;
+                      const isHovered = hoveredItem === projectKey;
 
-                        return (
-                          <motion.div
-                            key={project.title}
-                            className={index === 0 ? "mt-3" : "mt-5"}
-                            onMouseEnter={() => handleMouseEnter(projectKey)}
-                            onMouseLeave={handleMouseLeave}
-                          >
-                            <div className="flex items-start gap-3">
-                              <div className="flex-1">
-                                <div className="flex items-baseline gap-3">
-                                  <span
-                                    style={{
-                                      fontSize: "13px",
-                                      color: isHovered && canHover ? "#81E6D9" : "rgba(129,230,217,0.25)",
-                                      fontVariantNumeric: "tabular-nums",
-                                      transition: "color 300ms ease, text-shadow 300ms ease",
-                                      letterSpacing: "0.05em",
-                                      flexShrink: 0,
-                                      textShadow: isHovered && canHover ? "0 0 8px rgba(129,230,217,0.6)" : "none",
-                                    }}
-                                  >
-                                    {String(index + 1).padStart(2, "0")}
-                                  </span>
-
-                                  <div className="text-gray-300 text-[14px] sm:text-[16px] space-y-1">
-                                    <p>
-                                      {project.title} —{" "}
-                                      <span className="tracking-[0.38px] text-[#81E6D9]">{project.year}</span>
-                                    </p>
-                                    {project.role && (
-                                      <p>
-                                        Role —{" "}
-                                        <span className="tracking-[0.38px] text-white">{project.role}</span>
-                                      </p>
-                                    )}
-                                    {project.stacks.length > 0 && (
-                                      <p className="flex flex-wrap gap-x-0">
-                                        Stacks —{" "}
-                                        {project.stacks.map((stack, idx) => (
-                                          <span key={idx} className="tracking-[0.38px] text-white mr-1">
-                                            {stack}{idx < project.stacks.length - 1 && ","}{" "}
-                                          </span>
-                                        ))}
-                                      </p>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:items-center pl-5">
-                              <div
-                                className="relative cursor-pointer group w-full sm:w-[250px] h-[180px] sm:h-[150px] rounded-[10px] overflow-hidden"
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  setSelectedProject(project);
-                                }}
-                                style={{
-                                  background: "rgba(22,26,35,0.95)",
-                                  border: "1px solid rgba(255,255,255,0.12)",
-                                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
-                                  backdropFilter: "blur(24px)",
-                                  WebkitBackdropFilter: "blur(24px)",
-                                }}
-                              >
-                                <div className="absolute inset-[7px] rounded-[6px] overflow-hidden">
-                                  {!loadedImages[project.image] && (
-                                    <div
-                                      aria-hidden="true"
-                                      className="absolute inset-0 animate-pulse"
-                                      style={{
-                                        background:
-                                          "linear-gradient(110deg, rgba(255,255,255,0.035) 20%, rgba(129,230,217,0.12) 45%, rgba(255,255,255,0.035) 70%)",
-                                        backgroundSize: "200% 100%",
-                                      }}
-                                    />
-                                  )}
-                                  <Image
-                                    src={project.image}
-                                    alt={`${project.title} project preview by Samuel Cruz`}
-                                    fill
-                                    priority={index === 0}
-                                    sizes="(min-width: 640px) 250px, 100vw"
-                                    onLoad={() =>
-                                      setLoadedImages((current) => ({ ...current, [project.image]: true }))
-                                    }
-                                    className={`object-cover transition-opacity duration-300 ${
-                                      loadedImages[project.image] ? "opacity-100" : "opacity-0"
-                                    }`}
-                                  />
-                                </div>
-
-                                <div
-                                  className="absolute inset-[6px] rounded-[6px] sm:opacity-0 sm:group-hover:opacity-100 opacity-0 flex items-center justify-center"
+                      return (
+                        <motion.div
+                          key={project.title}
+                          className={index === 0 ? "mt-3" : "mt-5"}
+                          onMouseEnter={() => handleMouseEnter(projectKey)}
+                          onMouseLeave={handleMouseLeave}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className="flex-1">
+                              <div className="flex items-baseline gap-3">
+                                <span
                                   style={{
-                                    background: "rgba(26, 30, 40, 0.82)",
-                                    backdropFilter: "blur(8px)",
-                                    WebkitBackdropFilter: "blur(8px)",
-                                    transition: "opacity 300ms ease-in-out",
-                                    zIndex: 10,
+                                    fontSize: "13px",
+                                    color: isHovered && canHover ? "#81E6D9" : "rgba(129,230,217,0.25)",
+                                    fontVariantNumeric: "tabular-nums",
+                                    transition: "color 300ms ease, text-shadow 300ms ease",
+                                    letterSpacing: "0.05em",
+                                    flexShrink: 0,
+                                    textShadow: isHovered && canHover ? "0 0 8px rgba(129,230,217,0.6)" : "none",
                                   }}
                                 >
-                                  <span className="text-white text-[15px] font-medium tracking-[0.3px] italic">View</span>
+                                  {String(index + 1).padStart(2, "0")}
+                                </span>
+
+                                <div className="text-gray-300 text-[14px] sm:text-[16px] space-y-1">
+                                  <p>
+                                    {project.title} —{" "}
+                                    <span className="tracking-[0.38px] text-[#81E6D9]">{project.year}</span>
+                                  </p>
+                                  {project.role && (
+                                    <p>
+                                      Role —{" "}
+                                      <span className="tracking-[0.38px] text-white">{project.role}</span>
+                                    </p>
+                                  )}
+                                  {project.stacks.length > 0 && (
+                                    <p className="flex flex-wrap gap-x-0">
+                                      Stacks —{" "}
+                                      {project.stacks.map((stack, idx) => (
+                                        <span key={idx} className="tracking-[0.38px] text-white mr-1">
+                                          {stack}{idx < project.stacks.length - 1 && ","}{" "}
+                                        </span>
+                                      ))}
+                                    </p>
+                                  )}
                                 </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:items-center pl-5">
+                            <div
+                              className="relative cursor-pointer group w-full sm:w-[250px] h-[180px] sm:h-[150px] rounded-[10px] overflow-hidden"
+                              data-cuelume-hover="tick"
+                              data-cuelume-press="bloom"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                setSelectedProject(project);
+                              }}
+                              style={{
+                                background: "rgba(22,26,35,0.95)",
+                                border: "1px solid rgba(255,255,255,0.12)",
+                                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                                backdropFilter: "blur(24px)",
+                                WebkitBackdropFilter: "blur(24px)",
+                              }}
+                            >
+                              <div className="absolute inset-[7px] rounded-[6px] overflow-hidden">
+                                {!loadedImages[project.image] && (
+                                  <div
+                                    aria-hidden="true"
+                                    className="absolute inset-0 animate-pulse"
+                                    style={{
+                                      background:
+                                        "linear-gradient(110deg, rgba(255,255,255,0.035) 20%, rgba(129,230,217,0.12) 45%, rgba(255,255,255,0.035) 70%)",
+                                      backgroundSize: "200% 100%",
+                                    }}
+                                  />
+                                )}
+                                <Image
+                                  src={project.image}
+                                  alt={`${project.title} project preview by Samuel Cruz`}
+                                  fill
+                                  priority={index === 0}
+                                  sizes="(min-width: 640px) 250px, 100vw"
+                                  onLoad={() =>
+                                    setLoadedImages((current) => ({ ...current, [project.image]: true }))
+                                  }
+                                  className={`object-cover transition-opacity duration-300 ${loadedImages[project.image] ? "opacity-100" : "opacity-0"
+                                    }`}
+                                />
                               </div>
 
                               <div
-                                className="text-gray-300 text-[13px] sm:text-[15px] leading-relaxed"
-                                dangerouslySetInnerHTML={{
-                                  __html: `<p class="sm:indent-8">${highlightWords(project.shortDescription)}</p>`,
+                                className="absolute inset-[6px] rounded-[6px] sm:opacity-0 sm:group-hover:opacity-100 opacity-0 flex items-center justify-center"
+                                style={{
+                                  background: "rgba(26, 30, 40, 0.82)",
+                                  backdropFilter: "blur(8px)",
+                                  WebkitBackdropFilter: "blur(8px)",
+                                  transition: "opacity 300ms ease-in-out",
+                                  zIndex: 10,
                                 }}
-                              />
+                              >
+                                <span className="text-white text-[15px] font-medium tracking-[0.3px] italic">View</span>
+                              </div>
                             </div>
 
-                            {index !== selectedFolder.projects.length - 1 && (
-                              <div className="w-full max-w-[800px] mx-auto mt-10">
-                                <div className="h-[0.5px] bg-gray-500 opacity-50" />
-                              </div>
-                            )}
-                          </motion.div>
-                        );
-                      })}
-                    </div>
+                            <div
+                              className="text-gray-300 text-[13px] sm:text-[15px] leading-relaxed"
+                              dangerouslySetInnerHTML={{
+                                __html: `<p class="sm:indent-8">${highlightWords(project.shortDescription)}</p>`,
+                              }}
+                            />
+                          </div>
+
+                          {index !== selectedFolder.projects.length - 1 && (
+                            <div className="w-full max-w-[800px] mx-auto mt-10">
+                              <div className="h-[0.5px] bg-gray-500 opacity-50" />
+                            </div>
+                          )}
+                        </motion.div>
+                      );
+                    })}
+                  </div>
                 </motion.div>
               )}
 
