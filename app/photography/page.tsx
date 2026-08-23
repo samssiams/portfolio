@@ -25,16 +25,16 @@ export default function PhotographyPage() {
   const [showAll, setShowAll] = useState(false);
 
   const photos: Photo[] = [
-    { src: "/catp1.jpg", cc: "Dreaming cat in slumber", location: "Tamarind Ridge, Bataan", theme: "Animals" },
-    { src: "/macrop4.jpg", cc: "Time at rest — the watch stills", location: "Balanga, Bataan", theme: "Macro" },
-    { src: "/urbanp12.jpg", cc: "A home embraced by whispering trees", location: "Sinag Tala, Bataan", theme: "Places" },
-    { src: "/flowerp13.jpg", cc: "A flower standing tall and proud", location: "Dinalupihan, Bataan", theme: "Nature" },
-    { src: "/flowerp3.jpg", cc: "A delicate bloom aged by time", location: "Memorial Park, Bataan", theme: "Nature" },
-    { src: "/catp2.jpg", cc: "Blue-eyed cat with a curious gaze", location: "Mulawin, Bataan", theme: "Animals" },
-    { src: "/macrop10.jpg", cc: "A sharpened pencil poised for ideas", location: "Balanga, Bataan", theme: "Macro" },
-    { src: "/cactus.jpg", cc: "A spiny cactus with sharp detail", location: "Beverly Heights, Bataan", theme: "Macro" },
-    { src: "/dry.jpg", cc: "Dried dandelion in the middle of the field", location: "Dona, Bataan", theme: "Nature" },
-    { src: "/beaches.jpg", cc: "A serene beach at sunset", location: "Bagac, Bataan", theme: "Places" },
+    { src: "/catp1.jpg", cc: "A sleepy cat taking a quiet nap", location: "Tamarind Ridge, Bataan", theme: "Animals" },
+    { src: "/macrop4.jpg", cc: "An old watch resting quietly", location: "Balanga, Bataan", theme: "Macro" },
+    { src: "/urbanp12.jpg", cc: "A quiet home surrounded by trees", location: "Sinag Tala, Bataan", theme: "Places" },
+    { src: "/flowerp13.jpg", cc: "A flower reaching up toward the light", location: "Dinalupihan, Bataan", theme: "Nature" },
+    { src: "/flowerp3.jpg", cc: "A flower slowly fading with age", location: "Memorial Park, Bataan", theme: "Nature" },
+    { src: "/catp2.jpg", cc: "A blue eyed cat looking at the camera", location: "Mulawin, Bataan", theme: "Animals" },
+    { src: "/macrop10.jpg", cc: "A sharpened pencil ready for a new idea", location: "Balanga, Bataan", theme: "Macro" },
+    { src: "/cactus.jpg", cc: "The small details of a spiny cactus", location: "Beverly Heights, Bataan", theme: "Macro" },
+    { src: "/dry.jpg", cc: "A dried dandelion standing in an open field", location: "Dona, Bataan", theme: "Nature" },
+    { src: "/beaches.jpg", cc: "A quiet beach as the sun goes down", location: "Bagac, Bataan", theme: "Places" },
   ];
 
   const groupedByTheme = photos.reduce<Record<string, Photo[]>>((acc, photo) => {

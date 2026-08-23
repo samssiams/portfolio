@@ -170,26 +170,20 @@ export default function PhotoModal({
               )}
             </div>
 
-            {/* Swipe hint — static, no looping animation */}
+            {/* Close hint */}
             {photos.length > 1 && (
               <motion.div
-                className="flex items-center gap-2 mt-4"
+                className="mt-4 text-center"
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.3 }}
               >
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <path d="M11 4L6 9L11 14" stroke="rgba(255,255,255,0.35)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
                 <span
                   className="text-[11px] tracking-[0.4px]"
                   style={{ color: "rgba(255,255,255,0.3)" }}
                 >
-                  swipe or drag to navigate
+                  Click anywhere outside to close
                 </span>
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <path d="M7 4L12 9L7 14" stroke="rgba(255,255,255,0.35)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
               </motion.div>
             )}
           </motion.div>

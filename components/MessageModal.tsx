@@ -338,6 +338,7 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
               <button
                 type="button"
                 onClick={handleClose}
+                data-cuelume-hover="tick"
                 className="flex w-8 h-8 items-center justify-center p-0 rounded-full cursor-pointer ml-2 mt-1 shrink-0 text-gray-400 transition-all duration-200 hover:text-white hover:bg-white/10"
                 style={{
                   background: "rgba(255,255,255,0.045)",
@@ -474,7 +475,7 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                   </AnimatePresence>
                 </div>
 
-                <div className="relative flex gap-2">
+                <div className="relative">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -486,7 +487,7 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="flex min-w-0 flex-1 cursor-pointer items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] tracking-[0.25px] transition-all duration-200"
+                    className="flex min-w-0 w-full cursor-pointer items-center justify-between gap-3 rounded-xl px-3 py-2.5 pr-11 text-left text-[13px] tracking-[0.25px] transition-all duration-200"
                     style={{
                       background: attachmentToast ? "rgba(255,200,80,0.1)" : "rgba(129,230,217,0.055)",
                       border: attachmentToast
@@ -516,18 +517,11 @@ export default function MessageModal({ isOpen, onClose, onSuccess }: MessageModa
                     <button
                       type="button"
                       onClick={clearAttachments}
-                      className="flex w-[42px] shrink-0 cursor-pointer items-center justify-center rounded-xl text-white/60 transition-all duration-200 hover:bg-white/10 hover:text-white"
-                      style={{
-                        background: "rgba(255,255,255,0.04)",
-                        border: "1px solid rgba(255,255,255,0.12)",
-                      }}
+                      data-cuelume-hover="tick"
+                      className="absolute right-3 top-1/2 flex h-6 w-6 -translate-y-1/2 cursor-pointer items-center justify-center text-white/60 transition-all duration-200 hover:text-white"
                       aria-label="Remove all attachments"
                     >
-                        <X
-                          size={50}
-                          strokeWidth={2}
-                          style={{ transform: "translateY(10px, -10px)" }}
-                        />
+                      <X size={14} strokeWidth={2} />
                     </button>
                   )}
                 </div>

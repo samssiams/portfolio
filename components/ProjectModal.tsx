@@ -104,6 +104,7 @@ export default function Modal({
 
               <button
                 onClick={onClose}
+                data-cuelume-hover="tick"
                 className="absolute right-4 top-4 z-20 flex items-center justify-center w-8 h-8 rounded-full cursor-pointer shrink-0 text-gray-300 transition-all duration-200 hover:text-white hover:bg-white/10"
                 style={{
                   background: "rgba(12,15,22,0.62)",
@@ -250,6 +251,7 @@ export default function Modal({
                           href={github}
                           target="_blank"
                           rel="noopener noreferrer"
+                          data-cuelume-hover="tick"
                           className="relative inline-flex items-center gap-1 text-[13px] cursor-pointer group"
                           style={{ color: "#81E6D9" }}
                         >
@@ -263,6 +265,7 @@ export default function Modal({
                           href={website}
                           target="_blank"
                           rel="noopener noreferrer"
+                          data-cuelume-hover="tick"
                           className="relative inline-flex items-center gap-1 text-[13px] cursor-pointer group"
                           style={{ color: "#81E6D9" }}
                         >
@@ -275,6 +278,7 @@ export default function Modal({
                         <a
                           href={apk}
                           download
+                          data-cuelume-hover="tick"
                           className="relative inline-flex items-center gap-1 text-[13px] cursor-pointer group"
                           style={{ color: "#81E6D9" }}
                         >
