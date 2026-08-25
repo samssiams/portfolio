@@ -8,6 +8,7 @@ import Banner from "@/components/Banner";
 import Footer from "@/components/Footer";
 import PhotoModal from "@/components/PhotoModal";
 import Skeleton from "@/components/Skeleton";
+import { Image as ImageIcon } from "lucide-react";
 
 type Photo = {
   src: string;
@@ -199,6 +200,7 @@ export default function PhotographyPage() {
                       <div className="w-full max-w-[800px] mx-auto mt-10 flex items-center">
                         <div className="flex-grow h-[0.5px] bg-gray-500 opacity-50"></div>
                         <button
+                          data-cuelume-hover="tick"
                           onClick={() => setShowAll(true)}
                           className="mx-4 text-white font-medium text-sm hover:text-[#81E6D9] transition cursor-pointer"
                         >
@@ -217,14 +219,18 @@ export default function PhotographyPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.4 }}
-                    className="flex flex-col gap-6 mt-2"
+                    className="grid grid-cols-1 gap-6 mt-2 sm:grid-cols-2"
                   >
                     {Object.entries(groupedByTheme).map(([theme, themePhotos], themeIndex) => {
-                      const [featured, ...rest] = themePhotos;
+                      const featured = themePhotos[0];
+                      const gallerySlots: (Photo | null)[] = [
+                        ...themePhotos.slice(1, 4),
+                        ...Array.from({ length: Math.max(0, 3 - (themePhotos.length - 1)) }, () => null),
+                      ];
                       return (
                         <div
                           key={themeIndex}
-                          className="relative rounded-2xl p-4 shadow-lg"
+                          className="relative mx-auto w-full max-w-[420px] rounded-2xl p-3 shadow-lg"
                           style={{
                             background: "rgba(26, 30, 40, 0.6)",
                             backdropFilter: "blur(12px)",
@@ -234,16 +240,11 @@ export default function PhotographyPage() {
                         >
                           <div className="flex items-center justify-between mb-3">
                             <span className="text-white text-sm font-semibold tracking-[0.3px]">{theme}</span>
-                            <span style={{ color: "rgba(255,255,255,0.4)" }} className="text-xs tracking-[0.3px]">
-                              {themePhotos.length} photo{themePhotos.length > 1 ? "s" : ""}
-                            </span>
                           </div>
 
-                          <div className="flex gap-2" style={{ height: "140px" }}>
-                            {/* Featured */}
+                          <div className="w-full">
                             <div
-                              className="relative rounded-lg overflow-hidden cursor-pointer flex-shrink-0"
-                              style={{ width: "55%", height: "100%" }}
+                              className="relative aspect-[16/9] w-full overflow-hidden rounded-lg cursor-pointer"
                               onClick={() => handlePhotoClick(featured, 0, themePhotos)}
                             >
                               {!loadedImages[featured.src] && <Skeleton className="absolute inset-0" />}
@@ -252,24 +253,17 @@ export default function PhotographyPage() {
                                 alt={featured.cc}
                                 fill
                                 loading="lazy"
-                                sizes="30vw"
+                                sizes="(max-width: 640px) 84vw, 420px"
                                 className={`object-cover transition-transform duration-300 hover:scale-105 ${loadedImages[featured.src] ? "opacity-100" : "opacity-0"}`}
                                 onLoad={() => handleImageLoad(featured.src)}
                               />
                             </div>
 
-                            {/* Rest */}
-                            <div className="flex flex-col gap-2 flex-1">
-                              {rest.length === 0 ? (
-                                <div className="flex-1 rounded-lg flex items-center justify-center"
-                                  style={{ border: "1px dashed rgba(255,255,255,0.1)" }}>
-                                  <span style={{ color: "rgba(255,255,255,0.2)" }} className="text-xs">only one photo</span>
-                                </div>
-                              ) : (
-                                rest.slice(0, 3).map((photo, index) => (
+                            <div className="mt-1.5 grid grid-cols-3 gap-1.5">
+                              {gallerySlots.map((photo, index) => photo ? (
                                   <div
                                     key={photo.src}
-                                    className="relative rounded-lg overflow-hidden cursor-pointer flex-1"
+                                    className="relative aspect-square rounded-lg overflow-hidden cursor-pointer"
                                     onClick={() => handlePhotoClick(photo, index + 1, themePhotos)}
                                   >
                                     {!loadedImages[photo.src] && <Skeleton className="absolute inset-0" />}
@@ -278,20 +272,26 @@ export default function PhotographyPage() {
                                       alt={photo.cc}
                                       fill
                                       loading="lazy"
-                                      sizes="15vw"
+                                      sizes="(max-width: 640px) 28vw, 132px"
                                       className={`object-cover transition-transform duration-300 hover:scale-105 ${loadedImages[photo.src] ? "opacity-100" : "opacity-0"}`}
                                       onLoad={() => handleImageLoad(photo.src)}
                                     />
-                                    {index === 2 && rest.length > 3 && (
+                                    {index === 2 && themePhotos.length > 4 && (
                                       <div className="absolute inset-0 flex items-center justify-center rounded-lg"
                                         style={{ background: "rgba(0,0,0,0.55)" }}>
-                                        <span className="text-white font-semibold text-sm">+{rest.length - 3}</span>
+                                        <span className="text-white font-semibold text-sm">+{themePhotos.length - 4}</span>
                                       </div>
                                     )}
                                   </div>
-                                ))
-                              )}
-                            </div>
+                                ) : (
+                                  <div key={`placeholder-${index}`} className="relative aspect-square rounded-lg overflow-hidden">
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-[#2F3445]">
+                                      <ImageIcon size={16} strokeWidth={1.5} className="text-white/35" aria-hidden="true" />
+                                      <span className="text-xs text-white/45">Empty</span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
                           </div>
 
                           <div className="mt-3 flex items-center gap-2">
