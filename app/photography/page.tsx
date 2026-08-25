@@ -219,7 +219,7 @@ export default function PhotographyPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.4 }}
-                    className="grid grid-cols-1 gap-6 mt-2 sm:grid-cols-2"
+                    className="grid w-full grid-cols-1 gap-6 mt-2"
                   >
                     {Object.entries(groupedByTheme).map(([theme, themePhotos], themeIndex) => {
                       const featured = themePhotos[0];
@@ -230,7 +230,7 @@ export default function PhotographyPage() {
                       return (
                         <div
                           key={themeIndex}
-                          className="relative mx-auto w-full max-w-[420px] rounded-2xl p-3 shadow-lg"
+                          className="relative mx-auto w-full max-w-[500px] rounded-lg p-2 shadow-lg"
                           style={{
                             background: "rgba(26, 30, 40, 0.6)",
                             backdropFilter: "blur(12px)",
@@ -238,13 +238,17 @@ export default function PhotographyPage() {
                             border: "1px solid rgba(255, 255, 255, 0.1)",
                           }}
                         >
-                          <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center justify-between mb-2">
                             <span className="text-white text-sm font-semibold tracking-[0.3px]">{theme}</span>
+                            <span className="flex items-center gap-1 text-white/50 text-xs" aria-label={`${themePhotos.length} photos`}>
+                              <ImageIcon size={14} strokeWidth={1.5} aria-hidden="true" />
+                              {themePhotos.length}
+                            </span>
                           </div>
 
                           <div className="w-full">
                             <div
-                              className="relative aspect-[16/9] w-full overflow-hidden rounded-lg cursor-pointer"
+                              className="relative aspect-[2/1] w-full overflow-hidden rounded-lg cursor-pointer"
                               onClick={() => handlePhotoClick(featured, 0, themePhotos)}
                             >
                               {!loadedImages[featured.src] && <Skeleton className="absolute inset-0" />}
@@ -253,17 +257,17 @@ export default function PhotographyPage() {
                                 alt={featured.cc}
                                 fill
                                 loading="lazy"
-                                sizes="(max-width: 640px) 84vw, 420px"
+                                sizes="(max-width: 640px) 84vw, 600px"
                                 className={`object-cover transition-transform duration-300 hover:scale-105 ${loadedImages[featured.src] ? "opacity-100" : "opacity-0"}`}
                                 onLoad={() => handleImageLoad(featured.src)}
                               />
                             </div>
 
-                            <div className="mt-1.5 grid grid-cols-3 gap-1.5">
+                            <div className="mt-1 grid grid-cols-3 gap-1">
                               {gallerySlots.map((photo, index) => photo ? (
                                   <div
                                     key={photo.src}
-                                    className="relative aspect-square rounded-lg overflow-hidden cursor-pointer"
+                                    className="relative aspect-[16/9] rounded-lg overflow-hidden cursor-pointer"
                                     onClick={() => handlePhotoClick(photo, index + 1, themePhotos)}
                                   >
                                     {!loadedImages[photo.src] && <Skeleton className="absolute inset-0" />}
@@ -284,7 +288,7 @@ export default function PhotographyPage() {
                                     )}
                                   </div>
                                 ) : (
-                                  <div key={`placeholder-${index}`} className="relative aspect-square rounded-lg overflow-hidden">
+                                  <div key={`placeholder-${index}`} className="relative aspect-[16/9] rounded-lg overflow-hidden">
                                     <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-[#2F3445]">
                                       <ImageIcon size={16} strokeWidth={1.5} className="text-white/35" aria-hidden="true" />
                                       <span className="text-xs text-white/45">Empty</span>
@@ -294,7 +298,7 @@ export default function PhotographyPage() {
                               </div>
                           </div>
 
-                          <div className="mt-3 flex items-center gap-2">
+                          <div className="mt-2 flex items-center gap-2">
                             <div className="relative w-7 h-7 rounded-full overflow-hidden">
                               <Image
                                 src="/profile.png"
