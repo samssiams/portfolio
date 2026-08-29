@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 
+// Cache the public Work & Projects route output for a short ISR window. This
+// affects the server-rendered HTML/RSC response only; its static images retain
+// their longer-lived browser/CDN and Next Image caches.
+export const revalidate = 15;
+
 const BASE_URL = "https://samssiams.vercel.app";
 
 export const metadata: Metadata = {
