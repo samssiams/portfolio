@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import { MapPin } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 interface Photo {
@@ -28,6 +28,21 @@ export default function PhotoModal({
   setCurrentIndex,
 }: PhotoModalProps) {
   const [dragging, setDragging] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, [isOpen]);
 
   if (!isOpen || photos.length === 0) return null;
 
