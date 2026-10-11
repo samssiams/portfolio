@@ -7,6 +7,7 @@ import Banner from "../components/Banner";
 import Footer from "../components/Footer";
 import AnimatedTealEdge from "../components/AnimatedTealEdge";
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { animateSlotText } from "slot-text";
@@ -196,10 +197,28 @@ function ExperienceLink({ href, label }: { href: string; label: string }) {
 }
 
 export default function HomeClient() {
+  const router = useRouter();
+  const avatarClickCount = useRef(0);
+  const avatarClickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showMoreCerts, setShowMoreCerts] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "warning" | "error" } | null>(null);
   const [msgHovered, setMsgHovered] = useState(false);
+
+  const handleAvatarClick = () => {
+    avatarClickCount.current += 1;
+    if (avatarClickTimer.current) clearTimeout(avatarClickTimer.current);
+
+    if (avatarClickCount.current >= 3) {
+      avatarClickCount.current = 0;
+      router.push("/moments");
+      return;
+    }
+
+    avatarClickTimer.current = setTimeout(() => {
+      avatarClickCount.current = 0;
+    }, 1400);
+  };
 
   useEffect(() => {
     const data = getMessageData();
@@ -344,9 +363,9 @@ export default function HomeClient() {
             <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31">
               {/* Mobile header */}
               <div className="flex flex-col items-center sm:hidden text-center mb-6">
-                <div className="relative w-24 h-24 rounded-full border-2 border-white shadow-lg overflow-hidden">
+                <button type="button" onClick={handleAvatarClick} aria-label="Click three times to reveal a hidden gallery" className="relative w-24 h-24 rounded-full border-2 border-white shadow-lg overflow-hidden cursor-pointer">
                   <Image src="/profile.png" alt="Samuel Cruz" fill priority sizes="96px" className="object-cover" />
-                </div>
+                </button>
                 <h2 className="text-white text-[26px] font-bold leading-tight mt-4">Samuel Cruz</h2>
                 <p className="text-gray-300 mt-3 text-[14px] flex items-center justify-center gap-1.5">
                   <MapPin size={14} strokeWidth={2} className="relative -top-[2px] shrink-0" /> Philippines
@@ -392,9 +411,9 @@ export default function HomeClient() {
                   </div>
                 </div>
                 <div className="shrink-0">
-                  <div className="relative w-24 h-24 md:w-[120px] md:h-[120px] rounded-full border-2 border-white shadow-lg overflow-hidden">
+                  <button type="button" onClick={handleAvatarClick} aria-label="Click three times to reveal a hidden gallery" className="relative w-24 h-24 md:w-[120px] md:h-[120px] rounded-full border-2 border-white shadow-lg overflow-hidden cursor-pointer">
                     <Image src="/profile.png" alt="Samuel Cruz" fill priority sizes="(min-width: 768px) 120px, 96px" className="object-cover" />
-                  </div>
+                  </button>
                 </div>
               </div>
             </div>

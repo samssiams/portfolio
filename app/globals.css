@@ -14,10 +14,21 @@
 }
 
 body {
-  background: #1a1e28;
+  background:
+    radial-gradient(circle at top, rgba(129, 230, 217, 0.12), transparent 30%),
+    #1a1e28;
   color: var(--foreground);
   font-family: var(--font-chakra-petch), sans-serif;
   cursor: default;
+}
+
+::selection {
+  background: rgba(129, 230, 217, 0.3);
+  color: white;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 /* --- Hover underline effect --- */

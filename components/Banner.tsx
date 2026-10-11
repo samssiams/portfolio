@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Banner() {
+export default function Banner({ message = "Hello, I'm Sam. Nice to meet you!" }: { message?: string }) {
   return (
     <div className="mt-[82px] w-full">
       <div className="max-w-[800px] w-full mx-auto px-5 sm:px-8 md:px-31">
@@ -15,7 +15,7 @@ export default function Banner() {
           }}
         >
           <p className="text-white text-[14px] sm:text-lg font-medium tracking-[0.3px]">
-            Hello, I&apos;m Sam. Nice to meet you!
+            {message}
           </p>
         </div>
       </div>
